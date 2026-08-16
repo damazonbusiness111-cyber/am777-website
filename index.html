@@ -159,12 +159,22 @@ h1{font:700 clamp(45px,7vw,92px)/.98 var(--display);letter-spacing:-.055em;max-w
 .router-layer span{color:var(--ink)}
 .router-layer.conditional span{color:var(--ink-faint);font-style:italic}
 .router-result .btn{margin-top:20px}
-.page-loader{position:fixed;inset:0;z-index:999;background:var(--paper);display:flex;align-items:center;justify-content:center;transition:opacity .5s var(--ease),visibility 0s linear 0s}
-.page-loader.is-hidden{opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility 0s linear .5s;pointer-events:none}
-.brand-mark.loader-logo{width:56px;height:56px}
-.loader-logo::before{content:"";position:absolute;inset:-16px;border-radius:50%;border:1px solid rgba(139,196,255,.32);animation:loaderRing 1.8s ease-in-out infinite}
-@keyframes loaderRing{0%{transform:scale(.85);opacity:.65}50%{transform:scale(1.1);opacity:.1}100%{transform:scale(.85);opacity:.65}}
-@media(prefers-reduced-motion:reduce){.loader-logo::before{animation:none;display:none}}
+.page-loader{position:fixed;inset:0;z-index:999;background:var(--paper);display:flex;align-items:center;justify-content:center;transition:opacity .6s var(--ease),visibility 0s linear 0s}
+.page-loader.is-hidden{opacity:0;visibility:hidden;transition:opacity .6s var(--ease),visibility 0s linear .6s;pointer-events:none}
+.loader-stage{display:flex;flex-direction:column;align-items:center;gap:18px}
+.brand-mark.loader-logo{width:56px;height:56px;opacity:0;transform:scale(.75);animation:loaderLogoIn .7s cubic-bezier(.16,1,.3,1) .1s forwards}
+.loader-logo::before,.loader-logo::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(139,196,255,.32)}
+.loader-logo::before{inset:-16px;animation:loaderRing 2.1s ease-in-out .3s infinite}
+.loader-logo::after{inset:-30px;border-color:rgba(139,196,255,.16);animation:loaderRing 2.1s ease-in-out .95s infinite}
+@keyframes loaderRing{0%{transform:scale(.85);opacity:.65}50%{transform:scale(1.14);opacity:.08}100%{transform:scale(.85);opacity:.65}}
+@keyframes loaderLogoIn{0%{opacity:0;transform:scale(.75)}100%{opacity:1;transform:scale(1)}}
+.loader-word{display:flex;align-items:baseline;gap:3px;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.28em;color:var(--ink-dim);text-transform:uppercase;opacity:0;transform:translateY(6px);animation:loaderWordIn .7s cubic-bezier(.16,1,.3,1) .55s forwards}
+.loader-word span{color:var(--blue-soft)}
+.loader-word small{font-family:var(--sans);font-weight:600;font-size:8.5px;letter-spacing:.18em;color:var(--ink-faint);margin-left:8px;text-transform:uppercase}
+@keyframes loaderWordIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+.loader-bar{width:112px;height:2px;border-radius:2px;background:rgba(139,196,255,.14);overflow:hidden;opacity:0;animation:loaderWordIn .5s ease .8s forwards}
+.loader-bar span{display:block;height:100%;width:0;border-radius:2px;background:linear-gradient(90deg,var(--blue-soft),#fff);transition:width 1.2s cubic-bezier(.22,.68,.36,1)}
+@media(prefers-reduced-motion:reduce){.loader-logo,.loader-logo::before,.loader-logo::after,.loader-word,.loader-bar{animation:none;opacity:1;transform:none}.loader-logo::before,.loader-logo::after{display:none}.loader-bar span{transition:none;width:100%}}
 @media(max-width:700px){.pricing-table th,.pricing-table td{padding:12px 14px;font-size:11.5px}}
 @media(max-width:980px){.hero{padding-top:80px}}
 
@@ -324,13 +334,20 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
 </head>
 <body>
 <div id="pageLoader" class="page-loader" aria-hidden="true">
-  <span class="brand-mark loader-logo"><span class="brand-mark-inner"><span class="brand-mark-face front"></span><span class="brand-mark-face back"></span></span></span>
+  <div class="loader-stage">
+    <span class="brand-mark loader-logo"><span class="brand-mark-inner"><span class="brand-mark-face front"></span><span class="brand-mark-face back"></span></span></span>
+    <div class="loader-word">AM<span>777</span><small>Automation Solutions</small></div>
+    <div class="loader-bar"><span id="loaderBarFill"></span></div>
+  </div>
 </div>
 <script>
 (() => {
   const loader = document.getElementById('pageLoader');
+  const barFill = document.getElementById('loaderBarFill');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const minTime = reduceMotion ? 0 : 400;
+  const minTime = reduceMotion ? 0 : 1250;
+  if (barFill && !reduceMotion) barFill.style.transitionDuration = minTime + 'ms';
+  requestAnimationFrame(() => { if (barFill) barFill.style.width = '100%'; });
   const start = Date.now();
   let hidden = false;
   function hide() {
