@@ -176,7 +176,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
 <div class="layout">
   <div class="panel config-left">
     <h2>Configure a customer estimate</h2>
-    <p class="sub">Use only what the customer actually needs. The tool separates standard quotes from configurations that need AM777 review.</p>
+    <p class="sub">Only what the customer needs — 5 quick steps.</p>
 
     <div class="next-action" style="margin-bottom:18px">
       <span>Quick Presets</span>
@@ -223,7 +223,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
     </div>
 
     <div class="step" data-page="2">
-      <div class="stephead"><div class="num">2</div><div><h3>What needs improvement?</h3><p class="sub">Select the real needs. This guides recommendations.</p></div></div>
+      <div class="stephead"><div class="num">2</div><div><h3>What needs improvement?</h3><p class="sub">Select the real needs.</p></div></div>
       <div class="chips" id="needsChips"></div>
       <div class="next-action" style="margin-top:12px">
         <span>Recommended Core System</span>
@@ -237,18 +237,18 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
     </div>
 
     <div class="step" data-page="3">
-      <div class="stephead"><div class="num">3</div><div><h3>Users & connectivity</h3><p class="sub">Staff capacity is one-time and applies to the system itself. Cloud (below) is separate — it only adds admin/device/branch capacity when active.</p></div></div>
+      <div class="stephead"><div class="num">3</div><div><h3>Users & connectivity</h3><p class="sub">Staff capacity is one-time. Cloud (next step) is separate.</p></div></div>
       <div class="fieldgrid">
         <div class="field"><label>Staff Users</label><input id="staffUsers" type="number" min="1" value="5" /></div>
         <div class="field"><label>Owner / Admin Users</label><input id="adminUsers" type="number" min="1" value="1" /></div>
         <div class="field"><label>Connected Devices</label><input id="devices" type="number" min="1" value="1" /></div>
         <div class="field"><label>Branches</label><input id="branches" type="number" min="1" value="1" /></div>
       </div>
-      <div class="helper">Staff/user capacity (one-time, any system): 5 included · +5 ₱777 · +10 ₱1,477 · +20 ₱2,777 · +50 ₱5,777 — lowest-cost combination is chosen automatically, up to 55 users total. Above that, Evaluation Required. Cloud capacity (only relevant with Cloud active): up to 3 connected devices · 2 owner/admin accounts · 1 branch included. Approved annual expansion: +1 owner/admin ₱1,277/year · +1 connected device ₱2,177/year · additional branch setup from ₱7,777 one-time · additional branch Cloud from ₱5,777/year. A 6-month Cloud customer exceeding included admin/device/branch capacity is flagged for AM777 approval rather than an invented price.</div>
+      <div class="helper">5 staff/users included, one-time pricing beyond that (lowest-cost bundle applied automatically). Full pricing table and Cloud capacity rules: see the Product Knowledge tab.</div>
     </div>
 
     <div class="step" data-page="4">
-      <div class="stephead"><div class="num">4</div><div><h3>Cloud & support</h3><p class="sub">Optional. Add Cloud only if the business needs remote/online access to this system — a fully offline system does not require it.</p></div></div>
+      <div class="stephead"><div class="num">4</div><div><h3>Cloud & support</h3><p class="sub">Optional — only for remote/online access.</p></div></div>
       <div class="segment" id="cloudSegment">
         <button data-cloud="none" class="selected">No Cloud</button>
         <button data-cloud="6m">6 Months · ₱12,777</button>
@@ -258,7 +258,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
     </div>
 
     <div class="step" data-page="5">
-      <div class="stephead"><div class="num">5</div><div><h3>Recommended systems</h3><p class="sub">Only industry-relevant systems show first. Click Details for full product knowledge.</p></div></div>
+      <div class="stephead"><div class="num">5</div><div><h3>Recommended systems</h3><p class="sub">Tailored to the business type first.</p></div></div>
       <div class="toggle-row"><span class="mini" id="addonModeText">Showing recommended systems</span><button id="toggleAllAddons">Show all systems</button></div>
       <div id="addonGrid" class="addon-grid"></div>
     </div>
