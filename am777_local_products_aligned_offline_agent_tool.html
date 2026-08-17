@@ -3,629 +3,731 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AM777 Local — Product, Pricing &amp; Commission Tool (Offline)</title>
-<meta name="robots" content="noindex, nofollow" />
+<meta name="color-scheme" content="dark" />
+<title>AM777 Offline Agent Knowledge Tool</title>
 <style>
-/* System fonts only — this tool must render identically with zero internet access. */
 :root{
-  --paper:#0a0c10; --panel:#12151b; --panel-2:#171b23; --ink:#eef1f6; --ink-dim:#9aa4b6; --ink-faint:#5c6579;
-  --blue:#4b9bfa; --blue-soft:#bcdcff; --line:#232833; --good:#3ecf8e; --warn:#f5b942; --bad:#ff6b6b;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  --mono:ui-monospace,"SF Mono",Consolas,monospace;
-  --radius:10px; --ease:cubic-bezier(.2,.7,.3,1);
+  --bg:#07101b;--panel:#0d1927;--panel2:#111f30;--text:#f5f8fc;--muted:#96a6b9;
+  --line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.16);--accent:#dbe8fb;--accent2:#7fa9e9;
+  --green:#9adbb9;--amber:#e8ca88;--red:#e5a4a4;--shadow:0 22px 70px rgba(0,0,0,.28);
+  --r:18px;--rs:12px;--max:1380px
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55}
-body{padding-bottom:60px}
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
-header{border-bottom:1px solid var(--line);padding:18px 0;position:sticky;top:0;background:rgba(10,12,16,.94);backdrop-filter:blur(10px);z-index:20}
-header .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.badge{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--blue),#8a5cff);display:grid;place-items:center;font-weight:800;font-size:13px;color:#05070b;flex-shrink:0}
-header h1{font-size:15px;font-weight:700}
-header small{display:block;color:var(--ink-faint);font-size:11px;margin-top:1px}
-.offline-pill{margin-left:auto;font-size:11px;color:var(--good);border:1px solid rgba(62,207,142,.35);background:rgba(62,207,142,.08);padding:5px 10px;border-radius:999px;white-space:nowrap}
-nav.tabs{display:flex;gap:6px;padding:12px 0 0;flex-wrap:wrap}
-.tab-btn{background:var(--panel);border:1px solid var(--line);color:var(--ink-dim);font:600 12.5px var(--sans);padding:9px 14px;border-radius:8px 8px 0 0;cursor:pointer;border-bottom:none}
-.tab-btn.is-active{color:var(--ink);background:var(--panel-2);border-color:var(--blue)}
-main{padding-top:22px}
-.panel{display:none}
-.panel.is-active{display:block}
-h2{font-size:17px;margin-bottom:4px}
-.sub{color:var(--ink-faint);font-size:12px;margin-bottom:18px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px}
-.card h3{font-size:13.5px;margin-bottom:10px;color:var(--blue-soft)}
-.price-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line);gap:12px}
-.price-row:last-child{border-bottom:none}
-.price-row b{font-size:13px;font-weight:600}
-.price-row span.amt{font-family:var(--mono);font-weight:700;color:var(--blue-soft);white-space:nowrap}
-.price-row small{display:block;color:var(--ink-faint);font-size:11px;margin-top:2px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr}}
-ul.plain{list-style:none;font-size:12.5px;color:var(--ink-dim)}
-ul.plain li{padding:3px 0;padding-left:14px;position:relative}
-ul.plain li::before{content:"•";position:absolute;left:0;color:var(--blue)}
-.field-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
-.field-row:last-child{border-bottom:none}
-.field-row label{font-size:12.5px;font-weight:600;color:var(--ink-dim)}
-.field-row .hint{font-size:10.5px;color:var(--ink-faint);display:block;margin-top:2px;font-weight:400}
-select,input[type=text],input[type=number]{background:#0d0f14;border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:8px 10px;font:600 12.5px var(--sans);outline:none}
-select:focus,input:focus{border-color:var(--blue)}
-input[type=number]{width:80px;text-align:right}
-.stepper{display:flex;align-items:center;gap:8px}
-.stepper button{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:#0d0f14;color:var(--ink);font-size:14px;cursor:pointer;line-height:1}
-label.chk{display:flex;align-items:center;gap:9px;padding:8px 0;font-size:12.5px;cursor:pointer}
-label.chk input{width:15px;height:15px}
-label.chk .amt{margin-left:auto;font-family:var(--mono);color:var(--blue-soft);font-weight:700;font-size:12px}
-.status-pill{display:inline-flex;align-items:center;gap:6px;font:700 11px var(--sans);padding:6px 12px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
-.status-ready{background:rgba(62,207,142,.12);color:var(--good);border:1px solid rgba(62,207,142,.35)}
-.status-assess{background:rgba(245,185,66,.12);color:var(--warn);border:1px solid rgba(245,185,66,.35)}
-.status-approval{background:rgba(255,107,107,.12);color:var(--bad);border:1px solid rgba(255,107,107,.35)}
-.quote-total{font-size:22px;font-weight:800;font-family:var(--mono)}
-.quote-line{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--line)}
-.quote-line b{font-family:var(--mono)}
-.note{background:rgba(245,185,66,.07);border:1px solid rgba(245,185,66,.25);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--warn);margin-top:8px}
-.note.bad{background:rgba(255,107,107,.07);border-color:rgba(255,107,107,.25);color:var(--bad)}
-.note.plain{background:rgba(255,255,255,.02);border-color:var(--line);color:var(--ink-faint)}
-.industry-card{border:1px solid var(--line);border-radius:9px;padding:14px 16px;background:#0d0f14}
-.industry-card b{font-size:13px}
-.industry-card .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
-.industry-card .tags span{font-size:10.5px;background:rgba(75,155,250,.1);color:var(--blue-soft);padding:3px 8px;border-radius:999px}
-.disclaimer{font-size:11px;color:var(--ink-faint);line-height:1.7;border-top:1px solid var(--line);margin-top:26px;padding-top:16px}
-.commission-out{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
-.commission-out .box{flex:1;min-width:180px;background:#0d0f14;border:1px solid var(--line);border-radius:9px;padding:16px}
-.commission-out .box span{display:block;font-size:11px;color:var(--ink-faint);margin-bottom:6px}
-.commission-out .box b{font-size:20px;font-family:var(--mono);color:var(--blue-soft)}
-button.reset{background:none;border:1px solid var(--line);color:var(--ink-faint);font:600 11.5px var(--sans);padding:7px 12px;border-radius:7px;cursor:pointer}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);
+background:radial-gradient(circle at 88% 0%,rgba(58,103,171,.18),transparent 28%),radial-gradient(circle at 4% 24%,rgba(34,70,117,.12),transparent 25%),var(--bg)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{width:min(var(--max),calc(100% - 28px));margin:0 auto}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(7,16,27,.84);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.topbar-inner{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:11px}.mark{width:38px;height:38px;border-radius:12px;border:1px solid var(--line2);display:grid;place-items:center;font-weight:900;font-size:12px;letter-spacing:.08em;background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02))}
+.brand strong{display:block;font-size:14px}.brand span{display:block;color:var(--muted);font-size:10.5px;margin-top:2px}
+.nav{display:flex;gap:6px;flex-wrap:wrap}.nav button,.tab{color:var(--muted);background:transparent;border:1px solid transparent;border-radius:10px;padding:9px 11px}
+.nav button:hover,.nav button.active,.tab.active{color:var(--text);border-color:var(--line);background:rgba(255,255,255,.035)}
+.hero{padding:48px 0 26px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:24px;align-items:end}
+.eyebrow{font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:var(--accent2);font-weight:800}
+.hero h1{font-size:clamp(38px,6vw,66px);line-height:1;letter-spacing:-.055em;margin:13px 0 14px}.hero p{margin:0;color:#b8c4d1;line-height:1.65;max-width:780px;font-size:16px}
+.hero-card,.panel{border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01)),var(--panel);box-shadow:0 14px 42px rgba(0,0,0,.17)}
+.hero-card{padding:18px;box-shadow:var(--shadow)}.statrow{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}.statrow:last-child{border-bottom:0}.statrow span{color:var(--muted);font-size:12px}.statrow strong{text-align:right;font-size:12px}
+.notice{border:1px solid rgba(127,169,233,.24);background:rgba(127,169,233,.055);color:#ced9e8;border-radius:14px;padding:13px 15px;font-size:12.5px;line-height:1.6;margin-bottom:22px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 20px}.tab{border-color:var(--line);background:rgba(255,255,255,.02);border-radius:999px}.view{display:none}.view.active{display:block}
+.layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:16px;align-items:start}.panel{padding:18px}.panel.sticky{position:sticky;top:88px}.panel h2{margin:0 0 4px;font-size:22px;letter-spacing:-.03em}.panel h3{margin:0 0 4px;font-size:16px}.sub{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+.step{padding:17px 0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}.stephead{display:flex;gap:10px;align-items:center;margin-bottom:12px}.num{width:26px;height:26px;flex:0 0 26px;border-radius:8px;display:grid;place-items:center;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11px;color:#d8e4f5}
+.fieldgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}label{color:#c9d4e0;font-size:11.5px}
+input,select,textarea{width:100%;border:1px solid var(--line);background:#08131f;color:var(--text);border-radius:11px;padding:12px;outline:none}input:focus,select:focus,textarea:focus{border-color:rgba(127,169,233,.48)}
+textarea{min-height:80px;resize:vertical}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:rgba(255,255,255,.02);color:#b9c5d2;border-radius:999px;padding:8px 10px;font-size:11.5px}.chip.selected{color:var(--text);background:rgba(127,169,233,.10);border-color:rgba(127,169,233,.28)}
+.segment{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.segment button{border:1px solid var(--line);background:#091522;color:#aab7c6;border-radius:11px;padding:11px 8px}.segment button.selected{background:rgba(127,169,233,.10);border-color:rgba(127,169,233,.30);color:var(--text)}
+.helper{font-size:10.5px;color:var(--muted);line-height:1.45;margin-top:6px}
+.rec-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.rec-top strong{font-size:16px}.price{font-size:28px;font-weight:760;letter-spacing:-.045em;margin:8px 0 4px}.mini{font-size:11px;color:var(--muted)}
+.status{display:inline-flex;border-radius:999px;padding:7px 9px;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line)}.status.ready{color:var(--green);border-color:rgba(154,219,185,.24);background:rgba(154,219,185,.055)}.status.assess{color:var(--amber);border-color:rgba(232,202,136,.25);background:rgba(232,202,136,.055)}.status.approval{color:var(--red);border-color:rgba(229,164,164,.25);background:rgba(229,164,164,.055)}
+.lineitems{display:grid;gap:8px;margin-top:14px}.lineitem{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:12px}.lineitem:last-child{border-bottom:0}.lineitem span{color:#b9c5d2}.lineitem strong{white-space:nowrap}
+.totalbox{margin-top:15px;border-top:1px solid var(--line2);padding-top:15px;display:grid;gap:10px}.totalrow{display:flex;justify-content:space-between;align-items:end;gap:12px}.totalrow span{color:var(--muted);font-size:11px}.totalrow strong{font-size:24px;letter-spacing:-.035em;text-align:right}.totalrow.secondary strong{font-size:15px}
+.next-action{margin-top:14px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.025);padding:13px}.next-action span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.next-action strong{display:block;margin-top:5px;font-size:13px;line-height:1.45}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:15px}.btn{border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);border-radius:11px;padding:11px 12px;font-weight:700;font-size:12px}.btn.primary{background:#e5edf8;color:#07101a;border-color:#e5edf8}.btn:hover{transform:translateY(-1px)}
+.quote-output{margin-top:14px;border:1px solid var(--line);background:#08131f;border-radius:14px;padding:14px;white-space:pre-wrap;color:#d2dbe5;font-size:11.5px;line-height:1.6}
+.addon-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.addon{border:1px solid var(--line);border-radius:12px;padding:11px;background:rgba(255,255,255,.02)}.addon.recommended{box-shadow:inset 0 0 0 1px rgba(127,169,233,.12)}.addon.selected{border-color:rgba(127,169,233,.30);background:rgba(127,169,233,.055)}.addon-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.addon strong{font-size:12px}.addon small{color:var(--muted);font-size:10px}.addon-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}.addon button{border:1px solid var(--line);background:#091522;color:#c9d4e0;border-radius:9px;padding:8px;font-size:10.5px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.toggle-row button{border:1px solid var(--line);background:rgba(255,255,255,.025);color:#c4d0dd;border-radius:10px;padding:8px 10px;font-size:10.5px}
+.catalog-tools{display:grid;grid-template-columns:1fr 220px;gap:10px;margin:14px 0}.catalog{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:15px;background:var(--panel);padding:15px}.card h3{font-size:15px;margin:0}.card .p{font-size:21px;font-weight:750;letter-spacing:-.035em;margin:10px 0 7px}.card p{color:var(--muted);font-size:11.5px;line-height:1.5;margin:0}.tag{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:5px 8px;color:#c5d4e7;font-size:9.5px;margin-bottom:9px}.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.card-actions button{border:1px solid var(--line);background:#091522;color:#c9d4e0;border-radius:9px;padding:8px;font-size:10.5px}
+.industrygrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.industry{border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.018);padding:13px}.industry strong{display:block;font-size:12.5px;margin-bottom:6px}.industry span{color:var(--muted);font-size:10.8px;line-height:1.5}
+.calcgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}.bigresult{margin-top:13px;border:1px solid rgba(127,169,233,.22);background:rgba(127,169,233,.06);border-radius:14px;padding:16px}.bigresult span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.bigresult strong{display:block;font-size:34px;letter-spacing:-.05em;margin-top:5px}.rules{display:grid;gap:8px;margin-top:12px}.rule{border-bottom:1px solid var(--line);padding:8px 0;color:#cbd5df;font-size:11.5px;line-height:1.5}.rule:last-child{border-bottom:0}.hidden{display:none!important}
+.modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(2,7,13,.74);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.open{display:flex}.modal{width:min(900px,100%);max-height:88vh;overflow:auto;border:1px solid var(--line2);border-radius:20px;background:linear-gradient(180deg,#101e2e,#0b1623);box-shadow:0 30px 100px rgba(0,0,0,.55)}.modal-head{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:18px;border-bottom:1px solid var(--line);background:rgba(13,25,39,.96);backdrop-filter:blur(12px)}.modal-head h2{margin:4px 0 0;font-size:24px;letter-spacing:-.035em}.close{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font-size:18px}.modal-body{padding:18px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.detail-block{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);padding:14px}.detail-block.full{grid-column:1/-1}.detail-block h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#c5d4e7}.detail-block p{margin:0;color:#cbd5df;font-size:12.5px;line-height:1.6}.detail-list{margin:0;padding-left:17px;color:#cbd5df;font-size:12.5px;line-height:1.7}.detail-price{font-size:31px;font-weight:780;letter-spacing:-.045em}.pillrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.pill{border:1px solid var(--line);border-radius:999px;padding:6px 8px;color:#b8c5d4;font-size:10px;background:rgba(255,255,255,.025)}
+
+.product-ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:0 0 22px}
+.ladder-item{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.022);padding:12px}
+.ladder-item strong{display:block;font-size:11px;letter-spacing:.11em;color:#dce8f7}
+.ladder-item span{display:block;color:var(--muted);font-size:10.5px;line-height:1.45;margin-top:5px}
+@media(max-width:900px){.product-ladder{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.product-ladder{grid-template-columns:1fr}}
+
+footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;color:var(--muted);font-size:11px}.footerinner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+@media(max-width:1080px){.hero,.layout{grid-template-columns:1fr}.panel.sticky{position:static}.catalog,.industrygrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.nav{display:none}.hero{padding-top:36px}.hero h1{font-size:44px}.fieldgrid,.segment,.addon-grid,.catalog,.industrygrid,.calcgrid,.actions,.card-actions,.detail-grid{grid-template-columns:1fr}.catalog-tools{grid-template-columns:1fr}.detail-block.full{grid-column:auto}.totalrow{align-items:flex-start}.totalrow strong{font-size:18px}}
+@media print{.topbar,.hero,.notice,.tabs,.config-left,.actions,footer,.modal-backdrop{display:none!important}body{background:#fff;color:#111}.layout{display:block}.panel{border:0;box-shadow:none;background:#fff;color:#111}.panel.sticky{position:static}.lineitem span,.mini,.sub,.helper{color:#444}.quote-output{border:1px solid #ccc;background:#fff;color:#111}}
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <span class="badge">AM</span>
-    <div><h1>AM777 Local — Product, Pricing &amp; Commission Tool</h1><small>Powered by AM777 Automation Solutions · Agent reference, not a public site</small></div>
-    <span class="offline-pill">● Offline-ready — no internet required</span>
+<header class="topbar"><div class="shell topbar-inner"><div class="brand"><div class="mark">A7</div><div><strong>AM777 Offline Agent Knowledge Tool</strong><span>Products · Pricing · Quote Reference</span></div></div><nav class="nav"><button data-tab="configure" class="active">Configure</button><button data-tab="catalog">Products</button><button data-tab="industries">Industries</button><button data-tab="commission">Commission</button></nav></div></header>
+
+<main class="shell">
+<section class="hero">
+  <div><div class="eyebrow">Offline Knowledge Base</div><h1>One aligned local product reference your agents can use anywhere.</h1>
+  <p>No login, no CRM, no internet required. Agents can learn the approved AM777 local products, match them to different industries, configure a customer estimate, size connected users/devices/branches, and calculate their own conservative commission estimate.</p></div>
+  <aside class="hero-card">
+    <div class="statrow"><span>General business systems</span><strong>From ₱2,777+</strong></div>
+    <div class="statrow"><span>Offline POS option</span><strong>₱9,777 one-time</strong></div>
+    <div class="statrow"><span>Cloud 6 months</span><strong>₱12,777</strong></div>
+    <div class="statrow"><span>Cloud 12 months</span><strong>₱15,777 · Best Value</strong></div>
+    <div class="statrow"><span>Cloud included</span><strong>10 staff · 2 admins · 3 devices · 1 branch</strong></div>
+    <div class="statrow"><span>Support</span><strong>AM777 Care from ₱777/month</strong></div>
+    <div class="statrow"><span>Standard downpayment</span><strong>50% before work begins</strong></div>
+  </aside>
+</section>
+
+<div class="notice"><strong>Offline-use rule:</strong> this file contains the approved product/pricing knowledge needed by the agent. Existing software / system integration is always assessment-first. POS is only one product option—not the universal starting point. Complex scope, multi-branch setups, 6-month plans that exceed included Cloud capacity, regulatory claims, and custom integrations must be confirmed by AM777 before the agent presents a final price. <strong>Standard payment term:</strong> 50% downpayment on any product before work begins, balance due on delivery.</div>
+
+
+<div class="product-ladder" aria-label="AM777 local product ladder">
+  <div class="ladder-item"><strong>START</strong><span>Offline POS or the simplest system that solves today’s bottleneck.</span></div>
+  <div class="ladder-item"><strong>CONNECT</strong><span>Cloud, website, messaging, ordering, booking, and approved integrations.</span></div>
+  <div class="ladder-item"><strong>MANAGE</strong><span>Customers, employees, inventory, suppliers, expenses, and reporting.</span></div>
+  <div class="ladder-item"><strong>AUTOMATE</strong><span>Notifications, follow-ups, workflow automation, platform connections, and AI assistance.</span></div>
+  <div class="ladder-item"><strong>SCALE</strong><span>Business Management Systems, HR/operations combinations, multi-branch, and custom systems.</span></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="configure">Quote Configurator</button>
+  <button class="tab" data-tab="catalog">Product Knowledge</button>
+  <button class="tab" data-tab="industries">Industry Guide</button>
+  <button class="tab" data-tab="commission">Private Commission</button>
+</div>
+
+<section id="configure" class="view active">
+<div class="layout">
+  <div class="panel config-left">
+    <h2>Configure a customer estimate</h2>
+    <p class="sub">Use only what the customer actually needs. The tool separates standard quotes from configurations that need AM777 review.</p>
+
+    <div class="step">
+      <div class="stephead"><div class="num">1</div><div><h3>Customer context</h3><p class="sub">Only for the quote; this is not a CRM record.</p></div></div>
+      <div class="fieldgrid">
+        <div class="field"><label>Business Name</label><input id="customerName" placeholder="Optional" /></div>
+        <div class="field"><label>Business Type</label><select id="businessType"></select></div>
+        <div class="field"><label>Quote Language</label><select id="quoteLanguage"><option value="en">English</option><option value="tl">Tagalog</option></select></div>
+        <div class="field"><label>Current Operating Setup</label><select id="currentSetup">
+          <option value="none">No System Yet</option>
+          <option value="manual">Manual / Paper</option>
+          <option value="sheets">Excel / Google Sheets</option>
+          <option value="am777">Existing AM777 System</option>
+          <option value="thirdparty">Existing Third-Party Software</option>
+          <option value="multiple">Multiple Disconnected Tools</option>
+        </select></div>
+      </div>
+      <div id="existingSystemBox" class="fieldgrid hidden" style="margin-top:10px">
+        <div class="field"><label>Main Current System Type</label><select id="currentSystemType">
+          <option value="pos">POS / Sales</option>
+          <option value="booking">Booking / Appointment</option>
+          <option value="inventory">Inventory / Stock</option>
+          <option value="crm">CRM / Customer Management</option>
+          <option value="hr">HR / Payroll</option>
+          <option value="accounting">Accounting / Finance</option>
+          <option value="ordering">Ordering / E-commerce</option>
+          <option value="website">Website / Online System</option>
+          <option value="logistics">Logistics / Fleet</option>
+          <option value="project">Project / Construction</option>
+          <option value="erp">Business Management / ERP</option>
+          <option value="other">Other Business Software</option>
+        </select></div>
+        <div class="field"><label>System / Platform Name</label><input id="existingSystemName" placeholder="e.g. current app, platform, software" /></div>
+        <div class="field"><label>Known Access</label><select id="existingAccess"><option value="unknown">Unknown</option><option value="api">API / webhook</option><option value="export">CSV / Excel export</option><option value="database">Database / admin access</option><option value="closed">No known external access</option></select></div>
+        <div id="integrationFields" class="field"><label>Integration Starting Reference</label><select id="integrationTier"></select><div class="helper">For third-party or disconnected tools only. Starting reference; compatibility and final price are confirmed after AM777 assessment.</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="stephead"><div class="num">2</div><div><h3>What needs improvement?</h3><p class="sub">Select the real needs. This guides recommendations.</p></div></div>
+      <div class="chips" id="needsChips"></div>
+      <div class="next-action" style="margin-top:12px">
+        <span>Recommended Core System</span>
+        <strong id="recommendedCore">Select the business needs to refine the recommendation.</strong>
+        <div class="mini" id="recommendedCoreReason" style="margin-top:5px"></div>
+        <div class="actions" style="margin-top:10px">
+          <button id="coreDetails" class="btn">View Core Details</button>
+          <button id="coreToggle" class="btn primary">Included in Quote</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="stephead"><div class="num">3</div><div><h3>Users & connectivity</h3><p class="sub">Cloud base includes 10 staff, 2 owner/admin users, 3 connected devices, and 1 branch.</p></div></div>
+      <div class="fieldgrid">
+        <div class="field"><label>Staff Users</label><input id="staffUsers" type="number" min="1" value="5" /></div>
+        <div class="field"><label>Owner / Admin Users</label><input id="adminUsers" type="number" min="1" value="1" /></div>
+        <div class="field"><label>Connected Devices</label><input id="devices" type="number" min="1" value="1" /></div>
+        <div class="field"><label>Branches</label><input id="branches" type="number" min="1" value="1" /></div>
+      </div>
+      <div class="helper">Base Cloud capacity: 1 business · 1 branch · up to 3 connected devices · up to 10 staff users · 2 owner/admin accounts. Approved annual expansion: +5 staff ₱1,277/year · +10 staff ₱2,277/year · +1 owner/admin ₱1,277/year · +1 connected device ₱2,177/year · additional branch setup from ₱7,777 one-time · additional branch Cloud from ₱5,777/year. If a 6-month Cloud customer exceeds included capacity, the tool flags AM777 approval rather than inventing a 6-month add-on price.</div>
+    </div>
+
+    <div class="step">
+      <div class="stephead"><div class="num">4</div><div><h3>Cloud & support</h3><p class="sub">Offline POS does not require Cloud.</p></div></div>
+      <div class="segment" id="cloudSegment">
+        <button data-cloud="none" class="selected">No Cloud</button>
+        <button data-cloud="6m">6 Months · ₱12,777</button>
+        <button data-cloud="12m">12 Months · ₱15,777</button>
+      </div>
+      <div class="chips" style="margin-top:10px"><button id="careToggle" class="chip">Add AM777 Care · ₱777/month</button></div>
+    </div>
+
+    <div class="step">
+      <div class="stephead"><div class="num">5</div><div><h3>Recommended systems</h3><p class="sub">Only industry-relevant systems show first. Click Details for full product knowledge.</p></div></div>
+      <div class="toggle-row"><span class="mini" id="addonModeText">Showing recommended systems</span><button id="toggleAllAddons">Show all systems</button></div>
+      <div id="addonGrid" class="addon-grid"></div>
+    </div>
   </div>
-  <div class="wrap">
-    <nav class="tabs">
-      <button class="tab-btn is-active" data-tab="reference" type="button">Product &amp; Pricing Reference</button>
-      <button class="tab-btn" data-tab="configurator" type="button">Quote Configurator</button>
-      <button class="tab-btn" data-tab="industry" type="button">Industry Guide</button>
-      <button class="tab-btn" data-tab="commission" type="button">Agent Commission</button>
-    </nav>
+
+  <aside class="panel sticky">
+    <div class="rec-top"><div><div class="eyebrow">Recommended Route</div><strong id="recommendationName">Offline POS Starter</strong></div><span id="quoteStatus" class="status ready">Ready to Quote</span></div>
+    <div id="recommendationPrice" class="price">₱9,777</div>
+    <div id="recommendationReason" class="mini"></div>
+    <div id="quoteLineItems" class="lineitems"></div>
+    <div class="totalbox">
+      <div class="totalrow"><span>Estimated Initial Quote</span><strong id="initialTotal">₱9,777</strong></div>
+      <div class="totalrow secondary"><span>Downpayment (50%)</span><strong id="downpaymentTotal">₱0</strong></div>
+      <div class="totalrow secondary"><span>Balance (on delivery)</span><strong id="balanceTotal">₱0</strong></div>
+      <div class="totalrow secondary"><span>Cloud / Capacity Renewal</span><strong id="renewalTotal">None</strong></div>
+      <div class="totalrow secondary"><span>Optional Support</span><strong id="careTotal">None</strong></div>
+      <div class="totalrow secondary"><span>Estimated Delivery</span><strong id="deliveryEstimate">7–14 business days</strong></div>
+    </div>
+    <div id="assessmentNote" class="notice" style="margin:14px 0 0"></div>
+    <div class="next-action"><span>Recommended Next Action</span><strong id="nextAction"></strong></div>
+    <div class="actions">
+      <button id="generateQuote" class="btn primary">Generate Quote</button>
+      <button id="copyQuote" class="btn">Copy Quote</button>
+      <button id="saveDraft" class="btn">Save Offline Draft</button>
+      <button id="loadDraft" class="btn">Load Draft</button>
+      <button id="printQuote" class="btn">Print</button>
+      <button id="resetConfig" class="btn">Reset</button>
+    </div>
+    <div id="quoteOutput" class="quote-output">Configure the system, then generate the customer-facing quote.</div>
+  </aside>
+</div>
+</section>
+
+<section id="catalog" class="view">
+  <div class="panel">
+    <div class="eyebrow">Product Knowledge</div><h2>AM777 local systems catalog</h2>
+    <p class="sub">Search any system. Click View Details to review what it solves, inclusions, best fit, limitations, billing, delivery, and upgrade path.</p>
+    <div class="catalog-tools"><input id="catalogSearch" placeholder="Search POS, HR, booking, inventory, automation..." /><select id="catalogCategory"><option value="all">All categories</option></select></div>
+    <div id="catalogGrid" class="catalog"></div>
   </div>
-</header>
+</section>
 
-<main class="wrap">
+<section id="industries" class="view">
+  <div class="panel"><div class="eyebrow">Industry Guide</div><h2>Recommended starting systems</h2><p class="sub">Use these as knowledge cues, not forced bundles.</p><div id="industryGrid" class="industrygrid" style="margin-top:14px"></div></div>
+</section>
 
-  <section class="panel is-active" id="panel-reference">
-    <h2>Product &amp; Pricing Reference</h2>
-    <p class="sub">Locked local pricing Source of Truth. Nothing here is editable — this is the reference to quote from.</p>
-
-    <div class="card">
-      <h3>Offline POS Starter — ₱9,777 one-time</h3>
-      <p class="sub" style="margin-bottom:8px">Manage your sales and stocks even without internet. Estimated delivery: 7–14 business days.</p>
-      <ul class="plain" id="posIncludes"></ul>
-    </div>
-
-    <div class="card">
-      <h3>AM777 Cloud (optional upgrade — not a complete POS by itself)</h3>
-      <p class="sub" style="margin-bottom:8px">Check your business from another connected device and keep important records backed up online.</p>
-      <div class="grid2">
-        <div class="price-row"><div><b>6 months</b><small>Base capacity: 1 business, 1 branch, 3 devices, 10 staff, 2 admins</small></div><span class="amt">₱12,777</span></div>
-        <div class="price-row"><div><b>12 months</b><small>Marked Best Value</small></div><span class="amt">₱15,777</span></div>
+<section id="commission" class="view">
+  <div class="calcgrid">
+    <div class="panel"><div class="eyebrow">Private Agent Tool</div><h2>Commission estimate</h2><p class="sub">The agent enters only the collected sale amount. This shows a straight 20% reference — no hidden expense allowance is assumed or applied.</p>
+      <div class="fieldgrid" style="margin-top:14px">
+        <div class="field"><label>Collected Customer Payment</label><input id="commPayment" type="number" min="0" placeholder="e.g. 25554" /></div>
+        <div class="field"><label>Commission Policy</label><input value="20% of collected payment (reference)" readonly /></div>
       </div>
-      <div class="grid2" style="margin-top:10px">
-        <div class="price-row"><div><b>New POS + 6-month Cloud</b></div><span class="amt">₱22,554</span></div>
-        <div class="price-row"><div><b>New POS + 12-month Cloud</b></div><span class="amt">₱25,554</span></div>
-      </div>
-      <div class="note plain">Existing AM777 Offline POS owners do not re-buy the ₱9,777 POS when adding Cloud — they pay the Cloud term price only, then renew Cloud only after. Offline POS keeps working if Cloud isn't renewed; backup/remote access/sync/integrations pause.</div>
+      <div class="actions" style="margin-top:10px"><button id="useCurrentQuote" class="btn">Use Current Quote Total</button></div>
+      <div class="bigresult"><span>Your Estimated Commission (20%)</span><strong id="commResult">₱0.00</strong></div>
+      <div class="helper">This is a reference estimate, not the final approved figure — the SOT defines commission as 20% of the approved commissionable net amount after approved project/tool/system expense allowance and adjustments, and this offline tool has no approved allowance formula to apply. Because it is a standalone HTML file, a technical user can inspect its source code; true secrecy requires server-side calculation in a future connected version.</div>
     </div>
-
-    <div class="card">
-      <h3>Cloud Capacity Add-ons — annual only</h3>
-      <div id="capacityRef"></div>
-      <div class="note bad">A 6-month Cloud term has no approved capacity add-on pricing. If a 6-month customer exceeds base capacity, flag AM777 PRICE APPROVAL REQUIRED — do not invent a 6-month add-on price.</div>
-    </div>
-
-    <div class="grid2">
-      <div class="card">
-        <h3>AM777 Care — from ₱777/month (optional)</h3>
-        <ul class="plain"><li>Minor fixes</li><li>Basic troubleshooting</li><li>System checks</li><li>Small settings changes</li><li>Basic update assistance</li></ul>
-        <div class="note plain">Does not include new major features, new modules, major redesign, new integrations, or major workflow changes — those are quoted separately.</div>
-      </div>
-      <div class="card">
-        <h3>Existing-System Integration — starting reference only, after assessment</h3>
-        <div id="integrationRef"></div>
-        <div class="note">Always assessment first. Never say "we can integrate any system."</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Approved Local Add-ons</h3>
-      <div class="grid3" id="addonRef"></div>
-    </div>
-
-    <div class="card">
-      <h3>Complete System Packages</h3>
-      <div id="packageRef"></div>
-      <div class="note plain">Prefer "Business Management System" in customer conversation over ERP/API/database/SaaS terminology unless the customer asks for the technical detail.</div>
-    </div>
-
-    <div class="card">
-      <h3>Other Business Systems — no locked public price</h3>
-      <p class="sub" style="margin-bottom:8px">Display "Request Assessment." Do not invent a price for any of these.</p>
-      <div class="tags" id="otherSystemsRef" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-    </div>
-
-    <div class="card">
-      <h3>Estimated Delivery — Source of Truth</h3>
-      <div id="deliveryRef"></div>
-      <div class="note plain">Always say "Estimated delivery." Never guarantee delivery before scope confirmation.</div>
-    </div>
-  </section>
-
-  <section class="panel" id="panel-configurator">
-    <h2>Quote Configurator</h2>
-    <p class="sub">Builds a quote from the locked pricing above. Separates one-time from recurring. Flags anything needing assessment or approval automatically — nothing here is invented.</p>
-
-    <div class="grid2">
-      <div>
-        <div class="card">
-          <h3>Customer &amp; Base System</h3>
-          <div class="field-row"><label>Business / customer name<span class="hint">optional — for the printed quote only, not stored anywhere</span></label><input type="text" id="cfgName" placeholder="e.g. Aling Nena's Store" /></div>
-          <div class="field-row"><label>Customer type</label>
-            <select id="cfgCustomerType"><option value="new">New customer</option><option value="existing_pos">Existing AM777 Offline POS owner</option></select>
-          </div>
-          <div class="field-row" id="rowIncludePos"><label>Include Offline POS Starter?<span class="hint">₱9,777 one-time</span></label>
-            <select id="cfgIncludePos"><option value="yes">Yes</option><option value="no">No — not needed</option></select>
-          </div>
-          <div class="field-row"><label>Or use a Complete System Package instead</label>
-            <select id="cfgPackage"><option value="">None — build from parts</option></select>
-          </div>
-        </div>
-
-        <div class="card" id="cardCloud">
-          <h3>Cloud &amp; Capacity</h3>
-          <div class="field-row"><label>Cloud term</label>
-            <select id="cfgCloudTerm"><option value="none">No Cloud</option><option value="6">6 months — ₱12,777</option><option value="12">12 months — ₱15,777 (Best Value)</option></select>
-          </div>
-          <div class="field-row"><label>Staff users needed<span class="hint">base included: 10</span></label><div class="stepper"><button type="button" data-step="staff" data-dir="-1">−</button><input type="number" id="cfgStaff" value="10" min="0" /><button type="button" data-step="staff" data-dir="1">+</button></div></div>
-          <div class="field-row"><label>Owner/Admin accounts needed<span class="hint">base included: 2</span></label><div class="stepper"><button type="button" data-step="admins" data-dir="-1">−</button><input type="number" id="cfgAdmins" value="2" min="0" /><button type="button" data-step="admins" data-dir="1">+</button></div></div>
-          <div class="field-row"><label>Connected devices needed<span class="hint">base included: 3</span></label><div class="stepper"><button type="button" data-step="devices" data-dir="-1">−</button><input type="number" id="cfgDevices" value="3" min="0" /><button type="button" data-step="devices" data-dir="1">+</button></div></div>
-          <div class="field-row"><label>Branches needed<span class="hint">base included: 1</span></label><div class="stepper"><button type="button" data-step="branches" data-dir="-1">−</button><input type="number" id="cfgBranches" value="1" min="1" /><button type="button" data-step="branches" data-dir="1">+</button></div></div>
-        </div>
-
-        <div class="card">
-          <h3>Existing-System Integration</h3>
-          <div class="field-row"><label>Does the customer have an existing system to connect?</label>
-            <select id="cfgIntegration">
-              <option value="none">No existing system</option>
-              <option value="basic">Basic Connection — from ₱4,777+</option>
-              <option value="standard">Standard Integration — from ₱9,777+</option>
-              <option value="twoway">Two-Way Integration — from ₱14,777+</option>
-              <option value="multiplatform">Multi-Platform Integration — from ₱24,777+</option>
-              <option value="complex">Complex Integration — Assessment / Custom Quote</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <h3>Add-ons</h3>
-          <div id="addonChecks"></div>
-        </div>
-        <div class="card">
-          <label class="chk"><input type="checkbox" id="cfgCare" /> AM777 Care (ongoing support) <span class="amt">from ₱777/mo</span></label>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="border-color:var(--blue)">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-        <h3 style="margin:0">Quote Summary</h3>
-        <div><span id="quoteStatusPill" class="status-pill status-ready">Ready to Quote</span> <button class="reset" id="cfgReset" type="button">Reset</button></div>
-      </div>
-      <div id="quoteName" style="font-size:12px;color:var(--ink-faint);margin:10px 0 4px"></div>
-      <div style="margin:6px 0 14px">
-        <span class="quote-total" id="quoteOneTime">₱0</span> <span style="color:var(--ink-faint);font-size:12px">one-time</span>
-      </div>
-      <div id="quoteRecurring"></div>
-      <div id="quoteDelivery" style="margin-top:12px;font-size:12px;color:var(--ink-dim)"></div>
-      <div id="quoteNotes"></div>
-    </div>
-  </section>
-
-  <section class="panel" id="panel-industry">
-    <h2>Industry Guide</h2>
-    <p class="sub">Recommend by actual business type and need — POS is one product, not the default for every industry.</p>
-    <div class="grid3" id="industryGrid"></div>
-  </section>
-
-  <section class="panel" id="panel-commission">
-    <h2>Agent Commission Estimator</h2>
-    <p class="sub">Enter what the customer actually paid. This tool never shows AM777 margin, internal cost, or profit — only your estimated commission.</p>
-    <div class="card">
-      <div class="field-row"><label>Customer payment (₱)</label><input type="number" id="commPayment" min="0" step="1" placeholder="e.g. 22554" /></div>
-      <div class="commission-out">
-        <div class="box"><span>Customer Payment</span><b id="commPaymentOut">₱0</b></div>
-        <div class="box"><span>Estimated Commission (20%)</span><b id="commOut">₱0</b></div>
-      </div>
-      <div class="note plain">Commission is 20% of the approved commissionable net amount after approved project/tool/system expense allowance and adjustments. This calculator shows a straight 20% reference on what you enter — it does not know or apply any expense allowance, so treat it as a starting estimate, not the final approved figure.</div>
-      <div class="note plain">Renewal commission is optional and not guaranteed — it applies only if the customer actually renews and pays. No fixed renewal percentage is set here; nothing is invented.</div>
-      <div class="note bad">A static HTML file is not secure — anyone can view its source in a browser. Nothing sensitive is hidden here on purpose. If this tool becomes server-connected later, commission and margin logic should move server-side.</div>
-    </div>
-  </section>
-
-  <div class="disclaimer">
-    AM777 Local Product Knowledge + Pricing + Quote Tool. Scope: product knowledge, local pricing, customer quote configuration, capacity estimation, existing-system integration assessment, agent commission estimation, offline agent reference. This is not a CRM, lead tracker, outreach manager, or sales pipeline — those belong to a separate AM777 project. All prices above are the locked local Source of Truth; nothing was invented or discounted by this tool.
+    <div class="panel"><div class="eyebrow">Commission Rules</div><h2>Agent reference</h2><div class="rules">
+      <div class="rule">Commission applies to successfully collected customer payments.</div>
+      <div class="rule">This offline estimate is a straight 20% reference — it does not know or apply any expense allowance; treat it as a starting estimate, not the final approved figure.</div>
+      <div class="rule">Renewals are not guaranteed; any renewal commission applies only when the customer actually renews and pays. No fixed renewal percentage is set.</div>
+      <div class="rule">Custom scope, discounts, multi-branch complexity, and integrations require AM777 confirmation before commitment.</div>
+    </div></div>
   </div>
+</section>
 </main>
 
+<div id="detailModal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="modal"><div class="modal-head"><div><div class="eyebrow" id="modalCategory"></div><h2 id="modalTitle"></h2></div><button class="close" id="closeModal">×</button></div><div class="modal-body" id="modalBody"></div></div>
+</div>
+
+<footer><div class="shell footerinner"><div><strong style="color:#d9e2ed">AM777 Automation Solutions</strong><br>Offline Agent Product Knowledge & Quote Tool</div><div>Powered by AM777 Automation Solutions</div></div></footer>
+
 <script>
-/* ===================== SOURCE OF TRUTH — single place all pricing lives ===================== */
-const SOT = {
-  pos: {
-    price: 9777, delivery: '7–14 business days',
-    includes: ['1 business','1 branch','1 main POS device','Sales / cashier','Product management','Inventory','Barcode support','Receipts','Customer records','Utang records','Basic employee / cashier access','Basic sales reports','Excel / CSV export','English / Tagalog','Works without internet','30-day defect warranty']
-  },
-  cloud: {
-    base: { branches: 1, devices: 3, staff: 10, admins: 2 },
-    terms: { '6': 12777, '12': 15777 },
-    delivery: '10–20 business days'
-  },
-  capacity: {
-    staffBundles: [ { qty: 5, price: 1277 }, { qty: 10, price: 2277 } ],
-    adminPrice: 1277,
-    devicePrice: 2177,
-    branchSetup: { min: 7777, max: 12777 },
-    branchCloud: { from: 5777 }
-  },
-  care: { from: 777 },
-  integration: {
-    basic: { label: 'Basic Connection', price: 4777 },
-    standard: { label: 'Standard Integration', price: 9777 },
-    twoway: { label: 'Two-Way Integration', price: 14777 },
-    multiplatform: { label: 'Multi-Platform Integration', price: 24777 },
-    complex: { label: 'Complex Integration', price: null }
-  },
-  addons: {
-    website: [
-      { key: 'landing', label: 'Business Landing Page', price: 4777 },
-      { key: 'inquiry', label: 'Online Inquiry', price: 3777 },
-      { key: 'ordering', label: 'Online Ordering', price: 7777 },
-      { key: 'booking', label: 'Booking / Appointment', price: 5777 },
-      { key: 'messenger', label: 'Messenger / WhatsApp Connection', price: 2777 },
-      { key: 'loyalty', label: 'Loyalty / Points', price: 4777 },
-      { key: 'tracking', label: 'Delivery / Order Tracking', price: 7777 }
-    ],
-    operations: [
-      { key: 'invExpiry', label: 'Advanced Inventory / Expiry', price: 3777 },
-      { key: 'expenses', label: 'Expenses & Cash Monitoring', price: 3777 },
-      { key: 'supplier', label: 'Supplier & Purchasing', price: 4777 },
-      { key: 'attendance', label: 'Employee Attendance', price: 4777 },
-      { key: 'hr', label: 'HR Management', price: 9777 },
-      { key: 'payroll', label: 'Payroll', price: 9777 },
-      { key: 'crm', label: 'CRM / Customer Management', price: 9777 },
-      { key: 'salesFollowup', label: 'Sales Follow-up', price: 7777 },
-      { key: 'warehouse', label: 'Warehouse Management', price: 12777 },
-      { key: 'accounting', label: 'Accounting / Financial Dashboard', price: 9777 },
-      { key: 'analytics', label: 'Advanced Analytics', price: 7777 }
-    ],
-    automation: [
-      { key: 'notifications', label: 'Automated Notifications', price: 3777 },
-      { key: 'followupAuto', label: 'Automated Customer Follow-up', price: 4777 },
-      { key: 'workflow', label: 'Workflow Automation', price: 5777 },
-      { key: 'platformConn', label: 'Platform Connection (after assessment)', price: 5777, needsAssessment: true },
-      { key: 'aiAssistant', label: 'AI Customer Assistant', price: 7777 },
-      { key: 'customAuto', label: 'Advanced API / Custom Automation', price: null, needsAssessment: true }
-    ]
-  },
-  packages: {
-    posOps: { label: 'POS + Business Operations', price: 29777, delivery: '20–45 business days' },
-    bms: { label: 'Business Management System', price: 44777, delivery: '20–45 business days' },
-    posHrOps: { label: 'POS + HR + Operations', price: 49777, delivery: '30–60 business days' },
-    posErpHr: { label: 'POS + ERP + HR', price: 69777, delivery: '30–60 business days' },
-    multiBranch: { label: 'Multi-Branch / Custom Business System', price: null, delivery: '45–90+ business days' }
-  },
-  otherSystems: ['Quotation system','Invoicing system','Job orders','Queue management','Memberships','Reservations','Rental management','Asset / equipment tracking','Maintenance tracking','Project management','Document approval','Procurement','Field staff','Service / repair','Fleet management','Delivery management','Order management','Customer portal','Employee portal','Supplier portal','Multi-branch dashboard','Custom internal business portal'],
-  delivery: {
-    simple: '2–5 business days — Simple automation',
-    website: '3–7 business days — Landing page / business website',
-    basicIntegration: '2–10+ business days — Basic integration, compatibility first',
-    pos: '7–14 business days — Offline POS',
-    cloud: '10–20 business days — Cloud POS',
-    booking: '5–10 business days — Booking / customer system',
-    hr: '10–20 business days — HR / attendance',
-    payroll: '15–30 business days — Payroll / full HR',
-    bms: '20–45 business days — Business Management System',
-    posErpHr: '30–60 business days — POS + ERP + HR',
-    complex: '45–90+ business days — Complex multi-branch / custom'
-  },
-  industries: [
-    { key: 'retail', label: 'Retail / Mini Mart / Grocery', recommend: ['POS','Inventory','Barcode','Expiry','Utang','Suppliers','Purchasing','Cloud'] },
-    { key: 'restaurant', label: 'Restaurant / Café', recommend: ['POS','Ordering','Menu','Inventory','Employees','Online ordering','Delivery'] },
-    { key: 'salon', label: 'Salon / Spa / Wellness', recommend: ['Booking','Customer records','Staff schedules','POS when needed','Loyalty','Reminders'] },
-    { key: 'clinic', label: 'Clinic / Dental', recommend: ['Booking','Customer / patient records','Queue','Billing','Reminders','Inventory'], note: 'No unsupported medical-compliance claims.' },
-    { key: 'wholesale', label: 'Wholesale / Distribution', recommend: ['Inventory','Wholesale pricing','Orders','Purchasing','Warehouse','Delivery'] },
-    { key: 'automotive', label: 'Automotive / Repair', recommend: ['Customer records','Vehicle records','Job orders','Parts','Quotations','Service history'] },
-    { key: 'logistics', label: 'Logistics / Transport', recommend: ['Booking','Drivers','Vehicles','Trips','Expenses','Notifications','Dashboard'] },
-    { key: 'construction', label: 'Construction', recommend: ['Projects','Materials','Employees','Suppliers','Purchasing','Expenses','Documents'] },
-    { key: 'realestate', label: 'Real Estate', recommend: ['Leads / customers','Listings','Follow-ups','Schedules','Agent management'] },
-    { key: 'hotel', label: 'Hotel / Resort', recommend: ['Reservations','Guests','Rooms','Payments','Housekeeping','Reports'] },
-    { key: 'rental', label: 'Rental', recommend: ['Bookings','Assets','Deposits / payments','Returns','Maintenance'] },
-    { key: 'professional', label: 'Professional Services', recommend: ['Clients','Quotations','Projects','Billing','Follow-ups','Documents'] },
-    { key: 'ecommerce', label: 'E-commerce', recommend: ['Website','Orders','Inventory','Customers','Delivery','Automation'] },
-    { key: 'manufacturing', label: 'Manufacturing', recommend: ['Materials','Production','Inventory','Purchasing','Warehouse','Reporting'] }
-  ],
-  commissionRate: 0.20
+/* ===== SINGLE SOURCE OF TRUTH: APPROVED LOCAL PRICING ===== */
+const P = {
+  pos:{id:'pos',name:'Offline POS Starter',category:'POS & Cloud',price:9777,billing:'One-time',delivery:[7,14],
+    solves:'Daily sales and stock control for a local business that needs to keep operating without internet.',
+    inclusions:['Sales / cashier','Products & inventory','Barcode support','Receipts','Customer and utang records','Basic cashier access','Basic reports','Excel / CSV export','English / Tagalog','1 business · 1 branch · 1 main POS device','30-day defect warranty'],
+    best:['Retail / Mini Mart / Grocery','Small café / restaurant','Clothing / hardware / similar retail'],
+    limits:['Base package is for one main local POS device','No remote owner dashboard without Cloud','New modules and major customization are separate'],
+    customer:'Manage your sales and stocks even without internet.',
+    upgrades:['Cloud access','Advanced inventory','Supplier & purchasing','Website / ordering','Employee attendance','Business operations modules']},
+  cloud6:{id:'cloud6',name:'Cloud Access — 6 Months',category:'POS & Cloud',price:12777,billing:'6 months',delivery:[10,20],
+    solves:'Adds online backup, remote owner access, and connected business records to an AM777 local system.',
+    inclusions:['Online backup','Remote owner access','Connected business records','Connected sales / inventory where included in the system','Remote reports where included','Data recovery support','Up to 10 staff users','2 owner/admin users','3 connected devices','1 branch'],
+    best:['Owners who want to check the business remotely','Businesses using multiple connected devices'],
+    limits:['Extra capacity uses approved annual add-on pricing','If a 6-month plan exceeds included capacity, final add-on pricing requires AM777 approval'],
+    customer:'Check your business from another connected device and keep important records backed up online.',
+    upgrades:['12-month Cloud','Extra users / devices','Additional branch assessment']},
+  cloud12:{id:'cloud12',name:'Cloud Access — 12 Months',category:'POS & Cloud',price:15777,billing:'12 months',delivery:[10,20],
+    solves:'Annual Cloud access with the same connected-business capabilities at the preferred long-term term.',
+    inclusions:['Online backup','Remote owner access','Connected business records','Remote reports where included','Data recovery support','Up to 10 staff users','2 owner/admin users','3 connected devices','1 branch'],
+    best:['Businesses planning to use connected access throughout the year'],
+    limits:['Additional branches and complex integrations require assessment'],
+    customer:'Best-value annual Cloud access for remote monitoring, backup, and connected records.',
+    upgrades:['Extra users / devices','Additional branch assessment','Website / automation integrations']},
+  integrationBasic:{id:'integrationBasic',name:'Basic Existing Software Integration',category:'Integration',price:4777,billing:'Starting reference',delivery:[2,10],assessment:true,
+    solves:'Connects supported existing business software to one simple external workflow after compatibility is confirmed.',
+    inclusions:['Compatibility assessment','One simple supported connection','Basic import/export, form, notification, or data handoff depending on system access','Initial testing'],
+    best:['Businesses that already use software and do not want to replace it'],
+    limits:['Not a guaranteed price before assessment','Existing software must allow a supported connection method','Closed or restricted systems may not be integrable'],
+    customer:'We first check your current software, then confirm what can be connected and the exact price.',
+    upgrades:['Standard integration','Two-way integration','Multi-platform integration']},
+  integrationStandard:{id:'integrationStandard',name:'Standard Integration',category:'Integration',price:9777,billing:'Starting reference',delivery:[5,15],assessment:true,
+    solves:'Connects existing supported business software to a broader website, order, customer, reporting, or workflow use case.',
+    inclusions:['Compatibility assessment','Broader approved connection','Basic workflow/data mapping','Testing and handoff'],
+    best:['Businesses with existing software needing website, order, report, customer, or workflow connections'],
+    limits:['Final scope depends on API/export/admin access'],
+    customer:'Keep your current software if it can connect; AM777 confirms compatibility first.',
+    upgrades:['Two-way integration','Multi-platform integration']},
+  integrationTwo:{id:'integrationTwo',name:'Two-Way Integration',category:'Integration',price:14777,billing:'Starting reference',delivery:[10,20],assessment:true,
+    solves:'Moves supported data in both directions between existing business software and another system.',
+    inclusions:['Assessment','Two-way supported data flow','Error handling / testing','Approved field/status mapping'],
+    best:['Businesses needing orders, stock, customer, or status updates in both systems'],
+    limits:['Requires supported read/write access from the existing software'],
+    customer:'Data can update both ways only when your current software supports it.',
+    upgrades:['Multi-platform integration']},
+  integrationMulti:{id:'integrationMulti',name:'Multi-Platform Integration',category:'Integration',price:24777,billing:'Starting reference',delivery:[15,30],assessment:true,
+    solves:'Connects several supported business tools into one approved workflow.',
+    inclusions:['Technical assessment','Multiple platform connections','Workflow/data mapping','Testing'],
+    best:['Businesses connecting POS + website + CRM/accounting/delivery/other approved tools'],
+    limits:['Third-party fees are separate','Final scope requires assessment'],
+    customer:'We connect the tools your business already uses when those systems allow integration.',
+    upgrades:['Custom business management system']},
+  integrationComplex:{id:'integrationComplex',name:'Complex Integration',category:'Integration',price:null,billing:'Assessment / Custom Quote',delivery:null,assessment:true,
+    solves:'Covers integration scope beyond the standard tiers — unusual access methods, heavy custom mapping, or multiple complex systems together.',
+    inclusions:['Full technical assessment','Custom scope definition','Price and delivery confirmed after review'],
+    best:['Businesses whose existing setup does not fit Basic, Standard, Two-Way, or Multi-Platform integration'],
+    limits:['Do not invent a price','Do not promise compatibility before assessment'],
+    customer:'Since this doesn’t fit our standard connection tiers, we’ll assess it directly and confirm scope and price.',
+    upgrades:['Custom business management system']},
+  landing:{id:'landing',name:'Business Landing Page',category:'Website & Customer',price:4777,billing:'Starting',delivery:[3,7],industries:['retail','restaurant','salon','clinic','automotive','logistics','construction','realestate','services'],
+    solves:'Gives the business a clear customer-facing page for services, location, contact, and inquiries.',
+    inclusions:['Responsive business page','Services / offer sections','Contact / inquiry path','Basic business information'],
+    best:['Local businesses without a focused online business page'],
+    limits:['Advanced ordering, booking, or integrations are separate'],
+    customer:'A simple professional page customers can use to understand and contact your business.',
+    upgrades:['Online inquiry','Ordering','Booking','Messaging connection']},
+  inquiry:{id:'inquiry',name:'Online Inquiry System',category:'Website & Customer',price:3777,billing:'Starting',delivery:[3,7],industries:['services','realestate','construction','clinic','retail'],
+    solves:'Captures customer inquiries in a structured way instead of relying only on scattered messages.',
+    inclusions:['Inquiry form','Required customer fields','Basic notification / handoff'],
+    best:['Service, property, clinic, retail, and contractor businesses'],
+    limits:['CRM and advanced automation are separate'],
+    customer:'Collect customer inquiries in one clear form.',
+    upgrades:['CRM','Automated follow-up']},
+  ordering:{id:'ordering',name:'Online Ordering',category:'Website & Customer',price:7777,billing:'Starting',delivery:[5,12],industries:['restaurant','retail','ecommerce','wholesale'],
+    solves:'Lets customers submit orders online and gives the business a structured order flow.',
+    inclusions:['Order capture','Customer details','Order status basics','Optional inventory/POS connection after assessment'],
+    best:['Food, retail, e-commerce, wholesale'],
+    limits:['Payment gateway, delivery platforms, and POS integration may require separate scope'],
+    customer:'Receive customer orders online in a cleaner process.',
+    upgrades:['Delivery tracking','POS integration','Automated notifications']},
+  booking:{id:'booking',name:'Booking / Appointment System',category:'Website & Customer',price:5777,billing:'Starting',delivery:[5,10],industries:['clinic','salon','automotive','hotel','rental','services'],
+    solves:'Organizes customer appointments and service schedules.',
+    inclusions:['Booking capture','Customer details','Date/time request','Basic confirmation/reminder options'],
+    best:['Clinic / dental','Salon / wellness','Repair / service','Rental / hospitality'],
+    limits:['Complex calendars, payments, and third-party integrations may change scope'],
+    customer:'Let customers request appointments and keep the schedule organized.',
+    upgrades:['CRM','Notifications','Payments / custom integrations']},
+  messaging:{id:'messaging',name:'Messenger / WhatsApp Connection',category:'Website & Customer',price:2777,billing:'Starting',delivery:[2,5],industries:['retail','restaurant','services','realestate','clinic','salon','automotive','logistics'],
+    solves:'Connects the customer-facing website or workflow to an approved messaging contact path.',
+    inclusions:['Messaging/contact connection','Basic customer handoff'],
+    best:['Businesses using Messenger or WhatsApp for inquiries'],
+    limits:['Official API automation and third-party charges are separate'],
+    customer:'Make it easier for customers to reach the business from the system.',
+    upgrades:['Automated notifications','AI customer assistant']},
+  loyalty:{id:'loyalty',name:'Loyalty / Points System',category:'Website & Customer',price:4777,billing:'Starting',delivery:[5,10],industries:['retail','restaurant','salon'],
+    solves:'Tracks approved customer rewards or points.',
+    inclusions:['Customer loyalty record','Points/reward basics'],
+    best:['Retail','Restaurant / café','Salon / wellness'],
+    limits:['Complex membership tiers and external loyalty integrations are separate'],
+    customer:'Reward repeat customers with a simple loyalty system.',
+    upgrades:['CRM','Customer portal']},
+  delivery:{id:'delivery',name:'Delivery / Order Tracking',category:'Website & Customer',price:7777,billing:'Starting',delivery:[7,14],industries:['restaurant','ecommerce','wholesale','logistics'],
+    solves:'Tracks order/delivery status inside an approved business workflow.',
+    inclusions:['Order/delivery status','Basic tracking workflow','Internal visibility'],
+    best:['Food delivery','E-commerce','Distribution','Logistics'],
+    limits:['GPS, third-party courier APIs, or live maps may require separate assessment'],
+    customer:'Track where an order is in the delivery process.',
+    upgrades:['Notifications','Platform integration']},
+  inventory:{id:'inventory',name:'Advanced Inventory / Expiry',category:'Operations',price:3777,billing:'Starting',delivery:[4,8],industries:['retail','pharmacy','wholesale','restaurant'],
+    solves:'Adds deeper stock visibility beyond basic POS inventory.',
+    inclusions:['Expiry monitoring','Low-stock awareness','Stock movement visibility','Advanced stock fields'],
+    best:['Grocery / mini mart','Pharmacy','Wholesale','Food businesses'],
+    limits:['Warehouse/multi-location inventory is separate'],
+    customer:'See what is running low and what is nearing expiry.',
+    upgrades:['Supplier & purchasing','Warehouse management']},
+  cash:{id:'cash',name:'Expenses & Cash Monitoring',category:'Operations',price:3777,billing:'Starting',delivery:[3,7],industries:['retail','restaurant','services','construction','logistics'],
+    solves:'Organizes business expenses and basic cash movement.',
+    inclusions:['Expense records','Categories','Basic cash monitoring','Reports'],
+    best:['Most local SMEs'],
+    limits:['Full accounting/compliance is separate'],
+    customer:'See what money came in, what went out, and where it was spent.',
+    upgrades:['Financial dashboard']},
+  purchasing:{id:'purchasing',name:'Supplier & Purchasing',category:'Operations',price:4777,billing:'Starting',delivery:[5,10],industries:['retail','restaurant','wholesale','manufacturing','construction'],
+    solves:'Tracks suppliers, purchases, deliveries, and stock-in activity.',
+    inclusions:['Supplier records','Purchasing records','Receiving / stock-in workflow'],
+    best:['Retail','Restaurant','Wholesale','Manufacturing','Construction'],
+    limits:['Complex procurement approval chains may require custom scope'],
+    customer:'Keep supplier and restocking records organized.',
+    upgrades:['Warehouse','Procurement workflow']},
+  attendance:{id:'attendance',name:'Employee Attendance',category:'Operations',price:4777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','construction','manufacturing','hotel','services'],
+    solves:'Organizes time-in/time-out and employee attendance records.',
+    inclusions:['Employee records','Attendance logs','Basic time-in/time-out'],
+    best:['Businesses with multiple staff'],
+    limits:['Payroll and full HR are separate'],
+    customer:'Track employee attendance in one system.',
+    upgrades:['HR Management','Payroll']},
+  hr:{id:'hr',name:'HR Management',category:'Operations',price:9777,billing:'Starting',delivery:[10,20],industries:['retail','restaurant','construction','manufacturing','hotel','services'],
+    solves:'Organizes employee information and basic HR workflows.',
+    inclusions:['Employee profiles','HR records','Basic schedule/attendance connections','Access controls as scoped'],
+    best:['Growing SMEs with multiple employees'],
+    limits:['Payroll and regulated compliance claims require separate scope/validation'],
+    customer:'Keep employee records and HR information organized.',
+    upgrades:['Payroll','Employee portal']},
+  payroll:{id:'payroll',name:'Payroll Module',category:'Operations',price:9777,billing:'Starting',delivery:[15,30],industries:['retail','restaurant','construction','manufacturing','hotel','services'],assessment:true,
+    solves:'Reduces manual payroll record handling and computation workflow.',
+    inclusions:['Payroll records','Employee/payroll data connection','Attendance input connection where scoped'],
+    best:['Businesses ready to digitize payroll workflow'],
+    limits:['Do not promise government/statutory compliance unless specifically validated for the final build'],
+    customer:'Reduce manual payroll work with a structured payroll system.',
+    upgrades:['Full HR system','Custom compliance scope']},
+  crm:{id:'crm',name:'Customer / CRM System',category:'Operations',price:9777,billing:'Starting',delivery:[7,14],industries:['services','realestate','automotive','wholesale','construction'],
+    solves:'Keeps customer and sales follow-up information from getting lost across chats and spreadsheets.',
+    inclusions:['Customer / lead records','Follow-up status','Basic sales stages','Customer history as scoped'],
+    best:['Service businesses','Real estate','Automotive','Wholesale','Contractors'],
+    limits:['This is a product module; the offline agent tool itself is not a CRM'],
+    customer:'Keep customers and follow-ups organized in one place.',
+    upgrades:['Automated follow-up','Inquiry integration']},
+  followup:{id:'followup',name:'Sales Follow-up System',category:'Operations',price:7777,billing:'Starting',delivery:[5,10],industries:['services','realestate','automotive','wholesale','construction'],
+    solves:'Makes follow-up responsibilities and statuses visible.',
+    inclusions:['Follow-up records','Status / due tracking','Customer connection'],
+    best:['Businesses with recurring inquiries and quotations'],
+    limits:['Messaging automation is separate'],
+    customer:'Know who needs a follow-up and what happens next.',
+    upgrades:['Automated follow-up','CRM']},
+  warehouse:{id:'warehouse',name:'Warehouse Management',category:'Operations',price:12777,billing:'Starting',delivery:[15,30],industries:['wholesale','manufacturing','retail'],assessment:true,
+    solves:'Adds deeper inventory control for warehouse-heavy operations.',
+    inclusions:['Warehouse stock visibility','Receiving / movement workflow','Purchasing connection as scoped'],
+    best:['Wholesale','Distribution','Manufacturing'],
+    limits:['Multiple warehouses / branches require assessment'],
+    customer:'Manage larger stock operations beyond a basic store inventory.',
+    upgrades:['Multi-branch business system']},
+  finance:{id:'finance',name:'Financial Dashboard',category:'Operations',price:9777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','construction','wholesale','services'],
+    solves:'Summarizes approved sales, expense, and business figures into a management view.',
+    inclusions:['Dashboard','Selected financial summaries','Date filters / reports as scoped'],
+    best:['Owners who need faster visibility into operations'],
+    limits:['Not a replacement for regulated accounting unless specifically scoped'],
+    customer:'See important business numbers in one management view.',
+    upgrades:['Advanced analytics']},
+  analytics:{id:'analytics',name:'Advanced Analytics',category:'Operations',price:7777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','wholesale','manufacturing','services'],
+    solves:'Provides deeper reporting and trend visibility using available business data.',
+    inclusions:['Custom business metrics','Trend reports','Selected charts / comparisons'],
+    best:['Businesses with enough reliable data to analyze'],
+    limits:['Quality depends on available data'],
+    customer:'Understand what is selling, changing, or underperforming.',
+    upgrades:['Custom reporting']},
+  notifications:{id:'notifications',name:'Automated Notifications',category:'Automation',price:3777,billing:'Starting',delivery:[2,5],industries:['retail','restaurant','clinic','salon','services','logistics'],
+    solves:'Alerts staff or customers when approved business events occur.',
+    inclusions:['Trigger definition','Approved notification path','Basic testing'],
+    best:['Bookings','Orders','Low stock','Internal alerts'],
+    limits:['Third-party messaging/API fees are separate'],
+    customer:'Get automatic alerts when important business events happen.',
+    upgrades:['Workflow automation']},
+  autoFollow:{id:'autoFollow',name:'Automated Follow-up',category:'Automation',price:4777,billing:'Starting',delivery:[3,7],industries:['services','realestate','clinic','automotive'],
+    solves:'Reduces missed follow-ups by triggering an approved reminder or communication workflow.',
+    inclusions:['Follow-up trigger','Customer/status connection','Approved notification/message path'],
+    best:['Service sales','Real estate','Bookings','Repair/service'],
+    limits:['Platform access and messaging rules may affect implementation'],
+    customer:'Automatically remind the team or customer when a follow-up is due.',
+    upgrades:['CRM','Workflow automation']},
+  workflow:{id:'workflow',name:'Workflow Automation',category:'Automation',price:5777,billing:'Starting',delivery:[5,12],industries:['retail','restaurant','services','construction','wholesale','logistics'],
+    solves:'Connects repetitive business steps so information moves with less manual work.',
+    inclusions:['Approved trigger','Action flow','Basic error handling/testing'],
+    best:['Forms → records → alerts','Orders → inventory → notification','Booking → confirmation → reminder'],
+    limits:['Complex multi-platform workflows require assessment'],
+    customer:'Reduce repetitive manual steps by connecting the business workflow.',
+    upgrades:['Platform integration','Custom automation']},
+  platform:{id:'platform',name:'Platform Connection',category:'Automation',price:5777,billing:'Starting',delivery:[5,12],industries:['retail','restaurant','services','ecommerce','wholesale'],assessment:true,
+    solves:'Connects an approved external platform to an AM777 workflow.',
+    inclusions:['Compatibility check','One supported platform connection','Testing'],
+    best:['Businesses already using external tools'],
+    limits:['Requires supported access/API/export','Third-party fees are separate'],
+    customer:'Connect a supported platform to the system after compatibility is checked.',
+    upgrades:['Multi-platform integration']},
+  ai:{id:'ai',name:'AI Customer Assistant',category:'Automation',price:7777,billing:'Starting',delivery:[7,14],industries:['services','clinic','realestate','retail','restaurant'],assessment:true,
+    solves:'Handles approved repetitive customer questions or routing using business-specific knowledge.',
+    inclusions:['Business knowledge setup','Approved FAQ/inquiry handling','Escalation/routing as scoped'],
+    best:['Businesses with repeated customer questions'],
+    limits:['Usage/API costs may be separate','Final capabilities depend on connected channels'],
+    customer:'Use AI to help answer common customer questions and route requests.',
+    upgrades:['CRM / booking / automation integration']},
+  completeOps:{id:'completeOps',name:'POS + Business Operations',category:'Complete Systems',price:29777,billing:'Starting',delivery:[15,30],assessment:true,
+    solves:'Combines POS with several operational modules into one business workflow.',
+    inclusions:['POS foundation','Selected operations modules','Reporting as scoped'],
+    best:['Growing businesses that need more than a basic POS'],
+    limits:['Final module list must be scoped'],
+    customer:'Connect your POS with the other parts of daily operations.',
+    upgrades:['Business Management System']},
+  management:{id:'management',name:'Business Management System',category:'Complete Systems',price:44777,billing:'Starting',delivery:[20,45],assessment:true,
+    solves:'Connects several business functions into a broader management system.',
+    inclusions:['Selected operations','Customers/employees/inventory options','Reports / workflow connections'],
+    best:['Established SMEs with multiple operational bottlenecks'],
+    limits:['Always requires scope confirmation'],
+    customer:'Manage several parts of the business in one connected system.',
+    upgrades:['POS + ERP + HR','Multi-branch custom system']},
+  posHr:{id:'posHr',name:'POS + HR + Operations',category:'Complete Systems',price:49777,billing:'Starting',delivery:[25,45],assessment:true,
+    solves:'Connects store operations with employee/HR workflows.',
+    inclusions:['POS','Selected operations','Employee/HR modules'],
+    best:['Businesses with both retail/store and staff-management needs'],
+    limits:['Payroll/compliance and branch complexity are separately assessed'],
+    customer:'Connect daily store operations and employee management.',
+    upgrades:['POS + ERP + HR']},
+  full:{id:'full',name:'POS + ERP + HR',category:'Complete Systems',price:69777,billing:'Starting',delivery:[30,60],assessment:true,
+    solves:'Larger connected business operations platform combining sales, operations, and HR modules.',
+    inclusions:['POS','Operations modules','HR modules','Reporting/workflows as scoped'],
+    best:['Established businesses requiring several connected modules'],
+    limits:['Final price depends on scope, users, branches, integrations, and compliance requirements'],
+    customer:'A larger connected system for managing several parts of the business.',
+    upgrades:['Multi-branch / custom business system']},
+
+  customModules:{id:'customModules',name:'Other / Custom Business Systems',category:'Assessment / Custom',price:null,billing:'Request Assessment',delivery:null,assessment:true,
+    solves:'Covers business-system requests that do not yet have a locked public starting price in the local catalog.',
+    inclusions:['Quotation system','Invoicing system','Job order system','Queue management','Membership system','Reservation system','Rental management','Asset / equipment tracking','Maintenance tracking','Project management','Document approval','Procurement workflow','Field staff system','Service / repair system','Fleet management','Delivery management','Order management','Customer portal','Employee portal','Supplier portal','Multi-branch dashboard','Custom internal business portal'],
+    best:['Businesses with a specific workflow not covered by the standard priced modules'],
+    limits:['Do not invent a price','Do not promise delivery before scope review','Use Request Assessment until AM777 approves scope and price'],
+    customer:'We start with what your business needs now, then confirm the right custom system and price after assessment.',
+    upgrades:['Custom integration','Cloud connection','Business Management System']},
+
+  care:{id:'care',name:'AM777 Care',category:'Support',price:777,billing:'Month',delivery:[0,0],
+    solves:'Optional ongoing minor support after the included defect warranty.',
+    inclusions:['Minor fixes','Basic troubleshooting','System checks','Small settings adjustments','Basic update assistance'],
+    best:['Clients who want ongoing minor support'],
+    limits:['Does not include new major features, modules, redesigns, or complex integrations'],
+    customer:'Optional monthly support for minor system fixes and assistance.',
+    upgrades:['New features quoted separately']}
 };
 
-const peso = (n) => n == null ? '—' : '₱' + Number(n).toLocaleString('en-PH');
 
-/* ===================== Capacity cost optimizer (true minimum, not greedy) ===================== */
-function minStaffCost(needed) {
-  if (needed <= 0) return { cost: 0, tens: 0, fives: 0 };
-  let best = null;
-  const maxTens = Math.ceil(needed / 10);
-  for (let tens = 0; tens <= maxTens; tens++) {
-    const remain = Math.max(0, needed - tens * 10);
-    const fives = Math.ceil(remain / 5);
-    const cost = tens * 2277 + fives * 1277;
-    if (!best || cost < best.cost) best = { cost, tens, fives };
-  }
-  return best;
+const CAPACITY = {
+  staff5:{name:'+5 Staff Users',price:1277,billing:'year'},
+  staff10:{name:'+10 Staff Users',price:2277,billing:'year'},
+  admin1:{name:'+1 Owner / Admin',price:1277,billing:'year'},
+  device1:{name:'+1 Connected Device',price:2177,billing:'year'},
+  branchSetup:{name:'Additional Branch Setup',min:7777,max:12777,billing:'one-time starting'},
+  branchCloud:{name:'Additional Branch Cloud',price:5777,billing:'year starting'}
+};
+
+const INTEGRATION_IDS=['integrationBasic','integrationStandard','integrationTwo','integrationMulti','integrationComplex'];
+const ADDON_IDS=['landing','inquiry','ordering','booking','messaging','loyalty','delivery','inventory','cash','purchasing','attendance','hr','payroll','crm','followup','warehouse','finance','analytics','notifications','autoFollow','workflow','platform','ai'];
+const CATALOG_IDS=['pos','cloud6','cloud12',...INTEGRATION_IDS,...ADDON_IDS,'completeOps','management','posHr','full','customModules','care'];
+const INDUSTRIES={
+ retail:{label:'Retail / Mini Mart / Grocery',core:'pos',products:['inventory','purchasing','cash','attendance','loyalty','messaging']},
+ restaurant:{label:'Restaurant / Café',core:'pos',products:['ordering','inventory','purchasing','attendance','delivery','messaging']},
+ salon:{label:'Salon / Spa / Wellness',core:'booking',products:['crm','loyalty','notifications','messaging']},
+ clinic:{label:'Clinic / Dental',core:'booking',products:['crm','notifications','messaging']},
+ pharmacy:{label:'Pharmacy',core:'inventory',products:['purchasing','attendance','cash']},
+ wholesale:{label:'Wholesale / Distribution',core:'inventory',products:['purchasing','warehouse','crm','delivery']},
+ automotive:{label:'Automotive / Repair',core:'booking',products:['crm','followup','notifications','messaging']},
+ logistics:{label:'Logistics / Transport',core:'workflow',products:['booking','cash','delivery','notifications']},
+ construction:{label:'Construction / Contractor',core:'purchasing',products:['attendance','cash','crm','workflow']},
+ realestate:{label:'Real Estate',core:'crm',products:['followup','autoFollow','landing','messaging']},
+ hotel:{label:'Hotel / Resort',core:'booking',products:['attendance','notifications','crm']},
+ rental:{label:'Rental Business',core:'booking',products:['crm','notifications','cash']},
+ services:{label:'Professional Services',core:'crm',products:['followup','inquiry','workflow','landing']},
+ ecommerce:{label:'E-commerce / Online Seller',core:'ordering',products:['delivery','inventory','platform']},
+ manufacturing:{label:'Manufacturing',core:'inventory',products:['purchasing','warehouse','attendance','analytics']},
+ school:{label:'School / Training Center',core:'crm',products:['attendance','notifications','booking']},
+ other:{label:'Other / Custom',core:'workflow',products:['crm','landing','inquiry']}
+};
+const NEEDS=[['sales','Sales / POS'],['stocks','Stocks'],['customers','Customers'],['employees','Employees'],['orders','Orders'],['booking','Bookings'],['expenses','Expenses'],['reports','Reports'],['online','Online Access'],['automation','Automation'],['branches','Multiple Branches'],['everything','Everything']];
+const NEED_TO_PRODUCT={everything:'management',branches:'management',sales:'pos',stocks:'inventory',customers:'crm',employees:'hr',orders:'ordering',booking:'booking',expenses:'cash',reports:'analytics',automation:'workflow',online:'landing'};
+const SYSTEM_TYPE_TO_PRODUCT={pos:'pos',booking:'booking',inventory:'inventory',crm:'crm',hr:'hr',accounting:'finance',ordering:'ordering',website:'landing',logistics:'workflow',project:'workflow',erp:'management',other:null};
+const SETUP_LABELS={none:'No System Yet',manual:'Manual / Paper',sheets:'Excel / Google Sheets',am777:'Existing AM777 System',thirdparty:'Existing Third-Party Software',multiple:'Multiple Disconnected Tools'};
+const INTERNAL={agentRate:.20};
+
+const state={cloud:'none',care:false,needs:new Set(),addons:new Set(),showAll:false,coreIncluded:true,coreId:null};
+const $=id=>document.getElementById(id);
+const peso=v=>new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',maximumFractionDigits:0}).format(v||0);
+function lineAmountLabel(a){if(typeof a==='string')return a;if(a===null)return 'Assessment / Custom Quote';return a?peso(a):'Included / owned';}
+
+function init(){
+ $('businessType').innerHTML=Object.entries(INDUSTRIES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+ $('integrationTier').innerHTML=INTEGRATION_IDS.map(id=>`<option value="${id}">${P[id].name} · ${P[id].price==null?'Assessment / Custom Quote':peso(P[id].price)+'+'}</option>`).join('');
+ $('needsChips').innerHTML=NEEDS.map(([k,l])=>`<button class="chip" data-need="${k}">${l}</button>`).join('');
+ document.querySelectorAll('[data-need]').forEach(b=>b.onclick=()=>{const k=b.dataset.need;if(state.needs.has(k))state.needs.delete(k);else state.needs.add(k);if(k==='everything'&&state.needs.has(k))NEEDS.forEach(([n])=>state.needs.add(n));syncCoreDefault();renderNeeds();renderAddons();render();});
+ document.querySelectorAll('[data-cloud]').forEach(b=>b.onclick=()=>{state.cloud=b.dataset.cloud;renderCloud();render();});
+ $('careToggle').onclick=()=>{state.care=!state.care;$('careToggle').classList.toggle('selected',state.care);render();};
+ $('toggleAllAddons').onclick=()=>{state.showAll=!state.showAll;renderAddons();};
+ $('coreDetails').onclick=()=>{if(state.coreId)openDetails(state.coreId);};
+ $('coreToggle').onclick=()=>{state.coreIncluded=!state.coreIncluded;render();};
+ ['businessType','currentSetup','currentSystemType'].forEach(id=>$(id).addEventListener('input',()=>{syncCoreDefault();renderExisting();renderAddons();render();}));
+ ['staffUsers','adminUsers','devices','branches','integrationTier','existingSystemName','existingAccess','customerName','quoteLanguage'].forEach(id=>$(id).addEventListener('input',()=>{renderExisting();render();}));
+ $('generateQuote').onclick=()=>{$('quoteOutput').textContent=generateQuote();};
+ $('copyQuote').onclick=async()=>{const t=generateQuote();$('quoteOutput').textContent=t;try{await navigator.clipboard.writeText(t);$('copyQuote').textContent='Copied';setTimeout(()=>$('copyQuote').textContent='Copy Quote',1000)}catch(e){}};
+ $('printQuote').onclick=()=>{$('quoteOutput').textContent=generateQuote();window.print();};
+ $('saveDraft').onclick=saveDraft;$('loadDraft').onclick=loadDraft;$('resetConfig').onclick=reset;
+ document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
+ $('catalogSearch').addEventListener('input',renderCatalog);$('catalogCategory').addEventListener('change',renderCatalog);
+ $('commPayment').addEventListener('input',calcCommission);$('useCurrentQuote').onclick=()=>{$('commPayment').value=compute().initial;calcCommission();};
+ $('closeModal').onclick=closeModal;$('detailModal').onclick=e=>{if(e.target===$('detailModal'))closeModal();};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+ syncCoreDefault();renderNeeds();renderCloud();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();render();
+}
+function switchTab(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:document.querySelector('.tabs').offsetTop-78,behavior:'smooth'});}
+function renderNeeds(){document.querySelectorAll('[data-need]').forEach(b=>b.classList.toggle('selected',state.needs.has(b.dataset.need)));}
+function renderCloud(){document.querySelectorAll('[data-cloud]').forEach(b=>b.classList.toggle('selected',b.dataset.cloud===state.cloud));}
+function renderExisting(){
+ const setup=$('currentSetup').value;
+ const hasSoftware=['am777','thirdparty','multiple'].includes(setup);
+ $('existingSystemBox').classList.toggle('hidden',!hasSoftware);
+ $('integrationFields').classList.toggle('hidden',!['thirdparty','multiple'].includes(setup));
 }
 
-/* ===================== Quote compute — pure function, no invented numbers ===================== */
-const STATUS_RANK = { 'READY TO QUOTE': 0, 'NEEDS ASSESSMENT': 1, 'AM777 PRICE APPROVAL REQUIRED': 2 };
-function worse(a, b) { return STATUS_RANK[b] > STATUS_RANK[a] ? b : a; }
-
-function computeQuote(cfg) {
-  let status = 'READY TO QUOTE';
-  let oneTime = 0;
-  const recurring = [];
-  const notes = [];
-  const deliveryLines = [];
-
-  if (cfg.packageKey) {
-    const pkg = SOT.packages[cfg.packageKey];
-    deliveryLines.push(pkg.delivery + ' — ' + pkg.label);
-    if (pkg.price == null) {
-      status = worse(status, 'AM777 PRICE APPROVAL REQUIRED');
-      notes.push(pkg.label + ' has no fixed floor — Assessment / Custom Quote required.');
-    } else {
-      oneTime += pkg.price;
-    }
-    return { status, oneTime, recurring, notes, deliveryLines, packageMode: true };
-  }
-
-  if (cfg.customerType === 'new' && cfg.includePos) {
-    oneTime += SOT.pos.price;
-    deliveryLines.push(SOT.delivery.pos);
-  } else if (cfg.customerType === 'existing_pos') {
-    notes.push('Existing AM777 Offline POS owner — no POS charge.');
-  }
-
-  if (cfg.cloudTerm !== 'none') {
-    const termPrice = SOT.cloud.terms[cfg.cloudTerm];
-    recurring.push({ label: `Cloud (${cfg.cloudTerm}-month term)`, amount: termPrice, note: `renews at ${peso(termPrice)} every ${cfg.cloudTerm} months` });
-    deliveryLines.push(SOT.cloud.delivery);
-
-    const staffNeeded = Math.max(0, (cfg.staff || 0) - SOT.cloud.base.staff);
-    const adminsNeeded = Math.max(0, (cfg.admins || 0) - SOT.cloud.base.admins);
-    const devicesNeeded = Math.max(0, (cfg.devices || 0) - SOT.cloud.base.devices);
-    const branchesExtra = Math.max(0, (cfg.branches || 1) - SOT.cloud.base.branches);
-    const exceedsCapacity = staffNeeded > 0 || adminsNeeded > 0 || devicesNeeded > 0;
-
-    if (exceedsCapacity && cfg.cloudTerm === '6') {
-      status = worse(status, 'AM777 PRICE APPROVAL REQUIRED');
-      notes.push('6-month Cloud exceeds included capacity. No approved 6-month capacity add-on price exists — flagged for AM777 price approval, not invented.');
-    } else if (exceedsCapacity && cfg.cloudTerm === '12') {
-      const staffCost = minStaffCost(staffNeeded);
-      const adminCost = adminsNeeded * SOT.capacity.adminPrice;
-      const deviceCost = devicesNeeded * SOT.capacity.devicePrice;
-      const total = staffCost.cost + adminCost + deviceCost;
-      const parts = [];
-      if (staffCost.tens) parts.push(`${staffCost.tens}× +10 staff (${peso(staffCost.tens * 2277)})`);
-      if (staffCost.fives) parts.push(`${staffCost.fives}× +5 staff (${peso(staffCost.fives * 1277)})`);
-      if (adminsNeeded) parts.push(`+${adminsNeeded} admin (${peso(adminCost)})`);
-      if (devicesNeeded) parts.push(`+${devicesNeeded} device (${peso(deviceCost)})`);
-      recurring.push({ label: 'Extra Cloud capacity (annual)', amount: total, note: parts.join(', ') });
-    }
-
-    if (branchesExtra > 0) {
-      status = worse(status, 'NEEDS ASSESSMENT');
-      notes.push(`+${branchesExtra} additional branch(es): setup ${peso(SOT.capacity.branchSetup.min)}–${peso(SOT.capacity.branchSetup.max)}+ one-time each, Cloud from ${peso(SOT.capacity.branchCloud.from)}+/year each — exact pricing requires assessment, shown as a range only.`);
-    }
-  } else if ((cfg.staff > SOT.cloud.base.staff) || (cfg.admins > SOT.cloud.base.admins) || (cfg.devices > SOT.cloud.base.devices) || (cfg.branches > SOT.cloud.base.branches)) {
-    notes.push('Extra capacity only applies with Cloud selected — ignored while Cloud is "No Cloud."');
-  }
-
-  if (cfg.integration !== 'none') {
-    const level = SOT.integration[cfg.integration];
-    status = worse(status, 'NEEDS ASSESSMENT');
-    notes.push('Existing-system integration always requires assessment first — price below is a starting reference only, confirmed after compatibility review.');
-    if (level.price == null) {
-      status = worse(status, 'AM777 PRICE APPROVAL REQUIRED');
-      notes.push('Complex Integration has no fixed starting price — Assessment / Custom Quote.');
-    } else {
-      oneTime += level.price;
-      deliveryLines.push(SOT.delivery.basicIntegration);
-    }
-  }
-
-  (cfg.addonKeys || []).forEach((key) => {
-    const all = [...SOT.addons.website, ...SOT.addons.operations, ...SOT.addons.automation];
-    const addon = all.find((a) => a.key === key);
-    if (!addon) return;
-    if (addon.price == null) {
-      status = worse(status, 'AM777 PRICE APPROVAL REQUIRED');
-      notes.push(addon.label + ' has no fixed price — Assessment / Custom Quote.');
-    } else {
-      oneTime += addon.price;
-      if (addon.needsAssessment) status = worse(status, 'NEEDS ASSESSMENT');
-    }
-  });
-
-  if (cfg.care) {
-    recurring.push({ label: 'AM777 Care', amount: SOT.care.from, note: 'per month, starting price — final may be higher depending on scope' });
-  }
-
-  if (!deliveryLines.length) deliveryLines.push(SOT.delivery.simple);
-
-  return { status, oneTime, recurring, notes, deliveryLines, packageMode: false };
+function recommendCoreId(){
+ if(state.needs.has('everything')||state.needs.has('branches'))return 'management';
+ const priority=['sales','stocks','customers','employees','orders','booking','expenses','reports','automation','online'];
+ for(const need of priority)if(state.needs.has(need)&&NEED_TO_PRODUCT[need])return NEED_TO_PRODUCT[need];
+ return INDUSTRIES[$('businessType').value]?.core||'workflow';
 }
 
-if (typeof module !== 'undefined') module.exports = { SOT, computeQuote, minStaffCost, peso };
-</script>
+function syncCoreDefault(){
+ const newCore=recommendCoreId();
+ state.coreId=newCore;
+ const setup=$('currentSetup').value;
+ if(['none','manual','sheets'].includes(setup))state.coreIncluded=true;
+ else if(setup==='am777')state.coreIncluded=SYSTEM_TYPE_TO_PRODUCT[$('currentSystemType').value]!==newCore;
+ else state.coreIncluded=false;
+}
 
-<script>
-(() => {
-  if (typeof module !== 'undefined') return; // node test-load guard, no-op in browser
+function recommendedIds(){
+ const base=INDUSTRIES[$('businessType').value]?.products||[];
+ return [...new Set([state.coreId||recommendCoreId(),...base])].filter(id=>ADDON_IDS.includes(id));
+}
+function renderAddons(){
+ const rec=new Set(recommendedIds());let ids=state.showAll?ADDON_IDS:recommendedIds();
+ $('addonModeText').textContent=state.showAll?'Showing all approved systems':'Showing recommended systems';
+ $('toggleAllAddons').textContent=state.showAll?'Show recommended only':'Show all systems';
+ $('addonGrid').innerHTML=ids.map(id=>{const p=P[id];return `<div class="addon ${rec.has(id)?'recommended':''} ${state.addons.has(id)?'selected':''}">
+  <div class="addon-top"><div><strong>${p.name}</strong><br><small>${p.category}${rec.has(id)?' · Recommended':''}</small></div><strong>${peso(p.price)}+</strong></div>
+  <div class="addon-actions"><button data-detail="${id}">Details</button><button data-add="${id}">${state.addons.has(id)?'Remove':'Add'}</button></div></div>`}).join('');
+ document.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>openDetails(b.dataset.detail));
+ document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const id=b.dataset.add;if(state.addons.has(id))state.addons.delete(id);else state.addons.add(id);renderAddons();render();});
+}
 
-  // ---- Reference tab render ----
-  document.getElementById('posIncludes').innerHTML = SOT.pos.includes.map((i) => `<li>${i}</li>`).join('');
+function cheapestStaff(extra){if(extra<=0)return {amount:0,label:''};let best={amount:Infinity,label:''};for(let t=0;t<=Math.ceil(extra/10)+1;t++)for(let f=0;f<=Math.ceil(extra/5)+2;f++){if(t*10+f*5>=extra){const a=t*CAPACITY.staff10.price+f*CAPACITY.staff5.price;if(a<best.amount)best={amount:a,label:[t?`${t}× +10 staff`:null,f?`${f}× +5 staff`:null].filter(Boolean).join(', ')}}}return best;}
 
-  document.getElementById('capacityRef').innerHTML = `
-    <div class="price-row"><b>+5 staff users</b><span class="amt">₱1,277/year</span></div>
-    <div class="price-row"><b>+10 staff users</b><span class="amt">₱2,277/year</span></div>
-    <div class="price-row"><b>+1 Owner/Admin</b><span class="amt">₱1,277/year</span></div>
-    <div class="price-row"><b>+1 connected device</b><span class="amt">₱2,177/year</span></div>
-    <div class="price-row"><b>Additional branch setup</b><span class="amt">₱7,777–₱12,777+ one-time</span></div>
-    <div class="price-row"><b>Additional branch Cloud</b><span class="amt">from ₱5,777/year</span></div>`;
+function compute(){
+ const setup=$('currentSetup').value,staff=+$('staffUsers').value||1,admins=+$('adminUsers').value||1,devices=+$('devices').value||1,branches=+$('branches').value||1;
+ const coreId=state.coreId||recommendCoreId(),core=P[coreId];
+ let initial=0,cloudRenewal=0,capacityRenewal=0,care=state.care?P.care.price:0,lines=[],assessment=false,approval=false,minD=core.delivery?.[0]??3,maxD=core.delivery?.[1]??14,recName=core.name,recPrice=core.price,reason='';
 
-  document.getElementById('integrationRef').innerHTML = Object.values(SOT.integration).map((i) =>
-    `<div class="price-row"><b>${i.label}</b><span class="amt">${i.price == null ? 'Assessment / Custom Quote' : peso(i.price) + '+'}</span></div>`).join('');
+ if(['thirdparty','multiple'].includes(setup)){
+   const i=P[$('integrationTier').value];assessment=true;
+   if(i.price==null){approval=true;lines.push([`${i.name}`,null]);}
+   else{initial+=i.price;lines.push([`${i.name} (starting reference)`,i.price]);}
+   if(i.delivery){minD=Math.max(minD,i.delivery[0]);maxD=Math.max(maxD,i.delivery[1]);}
+   recName=state.coreIncluded?`Connect Existing Software + ${core.name}`:`Connect Existing Software — ${i.name}`;
+   recPrice=i.price==null?(state.coreIncluded?core.price:null):(state.coreIncluded?i.price+core.price:i.price);
+   reason=`${SETUP_LABELS[setup]}: assess the current software first. The likely AM777 target system is ${core.name}. ${state.coreIncluded?'This estimate includes the new AM777 core system plus the integration starting reference.':'It is not charged unless the agent adds it as a new/replacement system.'}${i.price==null?' Complex Integration has no fixed starting price — Assessment / Custom Quote.':''}`;
+ }else if(setup==='am777'){
+   const ownedId=SYSTEM_TYPE_TO_PRODUCT[$('currentSystemType').value];
+   if(ownedId)lines.push([`Existing AM777 ${P[ownedId].name} — already owned`,0]);
+   reason=state.coreIncluded?`The customer already has an AM777 system, but the selected needs point to an additional ${core.name} module.`:`The current AM777 system already covers the recommended core route. Quote only selected upgrades, connectivity, or add-ons.`;
+ }else{
+   reason=`${SETUP_LABELS[setup]} → ${core.name} is the recommended starting system for the selected industry and needs.`;
+ }
 
-  function addonBlock(title, list) {
-    return `<div><h4 style="font-size:12px;color:var(--ink-faint);margin-bottom:8px">${title}</h4>${
-      list.map((a) => `<div class="price-row"><b style="font-size:12px">${a.label}</b><span class="amt" style="font-size:12px">${a.price == null ? 'Assessment' : peso(a.price) + '+'}</span></div>`).join('')
-    }</div>`;
-  }
-  document.getElementById('addonRef').innerHTML =
-    addonBlock('Website / Customer-Facing', SOT.addons.website) +
-    addonBlock('Operations', SOT.addons.operations) +
-    addonBlock('Automation', SOT.addons.automation);
+ if(state.coreIncluded){
+   initial+=core.price;lines.push([`${core.name}${core.assessment?' (starting)':''}`,core.price]);
+   if(core.assessment)assessment=true;
+ }else if(!state.coreIncluded && !['thirdparty','multiple'].includes(setup) && setup!=='am777'){
+   assessment=true;
+ }
 
-  document.getElementById('packageRef').innerHTML = Object.values(SOT.packages).map((p) =>
-    `<div class="price-row"><div><b>${p.label}</b><small>Estimated delivery: ${p.delivery}</small></div><span class="amt">${p.price == null ? 'Assessment / Custom Quote' : peso(p.price) + '+'}</span></div>`).join('');
+ if(state.cloud==='6m'){initial+=P.cloud6.price;cloudRenewal=P.cloud6.price;lines.push([P.cloud6.name,P.cloud6.price]);minD=Math.max(minD,10);maxD=Math.max(maxD,20);}
+ if(state.cloud==='12m'){initial+=P.cloud12.price;cloudRenewal=P.cloud12.price;lines.push([P.cloud12.name,P.cloud12.price]);minD=Math.max(minD,10);maxD=Math.max(maxD,20);}
 
-  document.getElementById('otherSystemsRef').innerHTML = SOT.otherSystems.map((s) =>
-    `<span style="font-size:11px;background:rgba(255,255,255,.03);border:1px solid var(--line);padding:5px 10px;border-radius:999px;color:var(--ink-dim)">${s} — Request Assessment</span>`).join('');
+ if(state.cloud!=='none'){
+   const extraStaff=Math.max(0,staff-10),extraAdmins=Math.max(0,admins-2),extraDevices=Math.max(0,devices-3),extraBranches=Math.max(0,branches-1);
+   if(state.cloud==='6m'&&(extraStaff||extraAdmins||extraDevices||extraBranches))approval=true;
+   if(state.cloud==='12m'){
+     const sp=cheapestStaff(extraStaff);if(sp.amount){capacityRenewal+=sp.amount;initial+=sp.amount;lines.push([`Extra staff capacity (${sp.label})`,sp.amount]);}
+     if(extraAdmins){const a=extraAdmins*CAPACITY.admin1.price;capacityRenewal+=a;initial+=a;lines.push([`${extraAdmins}× +1 Owner/Admin`,a]);}
+     if(extraDevices){const a=extraDevices*CAPACITY.device1.price;capacityRenewal+=a;initial+=a;lines.push([`${extraDevices}× +1 Connected Device`,a]);}
+     if(extraBranches){const renew=extraBranches*CAPACITY.branchCloud.price;capacityRenewal+=renew;initial+=renew;lines.push([`${extraBranches}× additional branch Cloud (starting)`,renew]);lines.push([`${extraBranches}× additional branch setup`,`${peso(CAPACITY.branchSetup.min)}–${peso(CAPACITY.branchSetup.max)}+ one-time each (range — not totaled, assessment required)`]);assessment=true;approval=true;}
+   }
+ }else if(staff>10||admins>2||devices>1||branches>1){assessment=true;if(branches>1)approval=true;}
 
-  document.getElementById('deliveryRef').innerHTML = Object.values(SOT.delivery).map((d) =>
-    `<div class="price-row"><b style="font-weight:500;font-size:12.5px">${d}</b></div>`).join('');
+ state.addons.forEach(id=>{if(id===coreId&&state.coreIncluded)return;const p=P[id];initial+=p.price;lines.push([`${p.name} (starting)`,p.price]);minD=Math.max(minD,p.delivery[0]);maxD=Math.max(maxD,p.delivery[1]);if(p.assessment)assessment=true;});
+ if(state.care){initial+=P.care.price;lines.push([`${P.care.name} — first month`,P.care.price]);}
+ if(state.addons.size>=5||state.needs.has('everything')||branches>1)approval=true;
+ if(coreId==='management'&&state.coreIncluded){initial=Math.max(initial,P.management.price);}
+ if(initial===0)assessment=true;
+ const status=approval?'approval':assessment?'assess':'ready';
+ return {initial,cloudRenewal,capacityRenewal,care,lines,status,delivery:[minD,maxD],recName,recPrice,reason,coreId,setup};
+}
+function render(){
+ const q=compute();
+ const core=P[q.coreId];$('recommendedCore').textContent=`${core.name} · ${peso(core.price)}${core.assessment?'+':''}`;$('recommendedCoreReason').textContent=core.solves;$('coreToggle').textContent=state.coreIncluded?'Included in Quote':'Add Recommended System';$('coreToggle').classList.toggle('primary',state.coreIncluded);
+ $('recommendationName').textContent=q.recName;$('recommendationPrice').textContent=q.recPrice===null?'Assessment / Custom Quote':q.recPrice?`${peso(q.recPrice)}${q.status!=='ready'?'+':''}`:'Select an upgrade';$('recommendationReason').textContent=q.reason;
+ const m={ready:['Ready to Quote','ready'],assess:['Needs Assessment','assess'],approval:['AM777 Approval Required','approval']}[q.status];$('quoteStatus').textContent=m[0];$('quoteStatus').className=`status ${m[1]}`;
+ $('quoteLineItems').innerHTML=q.lines.map(([l,a])=>`<div class="lineitem"><span>${l}</span><strong>${lineAmountLabel(a)}</strong></div>`).join('');
+ $('initialTotal').textContent=`${peso(q.initial)}${q.status!=='ready'?'+':''}`;
+ if(q.initial>0){const dp=Math.round(q.initial*0.5);$('downpaymentTotal').textContent=`${peso(dp)}${q.status!=='ready'?'+':''}`;$('balanceTotal').textContent=`${peso(q.initial-dp)}${q.status!=='ready'?'+':''}`;}
+ else{$('downpaymentTotal').textContent='—';$('balanceTotal').textContent='—';}
+ const renew=[];if(q.cloudRenewal)renew.push(`${peso(q.cloudRenewal)} / ${state.cloud==='6m'?'6 months':'12 months'} Cloud`);if(q.capacityRenewal)renew.push(`${peso(q.capacityRenewal)} / year capacity`);
+ $('renewalTotal').textContent=renew.length?renew.join(' + '):'None';$('careTotal').textContent=q.care?`${peso(q.care)} / month`:'None';$('deliveryEstimate').textContent=`${q.delivery[0]}–${q.delivery[1]} business days`;
+ let note='',next='';if(q.status==='ready'){note='<strong>READY TO QUOTE.</strong> Standard approved configuration.';next='Generate the customer quote and explain the selected inclusions and renewal clearly.'}
+ if(q.status==='assess'){note='<strong>NEEDS ASSESSMENT.</strong> Use this as a starting estimate only; do not promise final compatibility or scope.';next='Collect the current software/system name, type, access method, and target connection or improvement, then ask AM777 to confirm the final scope.'}
+ if(q.status==='approval'){note='<strong>AM777 APPROVAL REQUIRED.</strong> Do not present this estimate as a final committed price.';next='Send the configuration to AM777 for price/scope approval before committing to the customer.'}
+ if(state.cloud==='6m'&&q.status==='approval'&&((+$('staffUsers').value>10)||(+$('adminUsers').value>2))){next='The 6-month Cloud plan exceeds included capacity. AM777 must confirm the add-on pricing before final quote.'}
+ $('assessmentNote').innerHTML=note;$('nextAction').textContent=next;
+}
 
-  // ---- Industry tab render ----
-  document.getElementById('industryGrid').innerHTML = SOT.industries.map((ind) => `
-    <div class="industry-card">
-      <b>${ind.label}</b>
-      <div class="tags">${ind.recommend.map((r) => `<span>${r}</span>`).join('')}</div>
-      ${ind.note ? `<div class="note" style="margin-top:10px">${ind.note}</div>` : ''}
-    </div>`).join('');
+function recurringText(q,lang){const parts=[];if(q.cloudRenewal)parts.push(`${peso(q.cloudRenewal)} / ${state.cloud==='6m'?'6':'12'} ${lang==='tl'?'buwan':'months'} Cloud`);if(q.capacityRenewal)parts.push(`${peso(q.capacityRenewal)} / ${lang==='tl'?'taon':'year'} extra capacity`);if(q.care)parts.push(`${peso(q.care)} / ${lang==='tl'?'buwan':'month'} AM777 Care`);return parts.length?parts.join(' + '):(lang==='tl'?'Wala':'None');}
+function generateQuote(){
+ const q=compute(),lang=$('quoteLanguage').value,b=$('customerName').value.trim()||'Your Business',industry=INDUSTRIES[$('businessType').value].label,setup=SETUP_LABELS[$('currentSetup').value],sysType=$('currentSystemType').selectedOptions?.[0]?.textContent||'',items=q.lines.map(([l,a])=>`• ${l}: ${typeof a==='string'?a:a===null?'Assessment / Custom Quote':a?peso(a):'Already owned / included'}`).join('\n'),status=q.status==='ready'?'Standard configuration':q.status==='assess'?'Subject to AM777 assessment':'Subject to AM777 approval';
+ const currentDetail=['am777','thirdparty','multiple'].includes($('currentSetup').value)?`${setup} · ${sysType}${$('existingSystemName').value.trim()?` · ${$('existingSystemName').value.trim()}`:''}`:setup;
+ const dp=q.initial>0?Math.round(q.initial*0.5):0,bal=q.initial>0?q.initial-dp:0;
+ const paymentLineEn=q.initial>0?`\nDOWNPAYMENT (50%): ${peso(dp)}${q.status!=='ready'?'+':''}\nBALANCE (on delivery): ${peso(bal)}${q.status!=='ready'?'+':''}`:'';
+ const paymentLineTl=q.initial>0?`\nDOWNPAYMENT (50%): ${peso(dp)}${q.status!=='ready'?'+':''}\nBALANSE (sa delivery): ${peso(bal)}${q.status!=='ready'?'+':''}`:'';
+ if(lang==='tl')return `AM777 AUTOMATION SOLUTIONS\nESTIMATED CUSTOMER QUOTE\n\nBusiness: ${b}\nIndustry: ${industry}\nCurrent Setup: ${currentDetail}\nRecommended: ${q.recName}\n\n${items}\n\nESTIMATED INITIAL QUOTE: ${peso(q.initial)}${q.status!=='ready'?'+':''}${paymentLineTl}\nRENEWAL / RECURRING: ${recurringText(q,'tl')}\nESTIMATED DELIVERY: ${q.delivery[0]}–${q.delivery[1]} business days\n\nStatus: ${status}\n\nAng final scope at presyo ay kino-confirm base sa actual requirements. Existing software/system integration, complex setups, at multi-branch requirements ay kailangang ma-review muna bago maging final ang quotation. Standard na downpayment ay 50% bago magsimula ang trabaho.\n\nPowered by AM777 Automation Solutions`;
+ return `AM777 AUTOMATION SOLUTIONS\nESTIMATED CUSTOMER QUOTE\n\nBusiness: ${b}\nIndustry: ${industry}\nCurrent Setup: ${currentDetail}\nRecommended: ${q.recName}\n\n${items}\n\nESTIMATED INITIAL QUOTE: ${peso(q.initial)}${q.status!=='ready'?'+':''}${paymentLineEn}\nRENEWAL / RECURRING: ${recurringText(q,'en')}\nESTIMATED DELIVERY: ${q.delivery[0]}–${q.delivery[1]} business days\n\nStatus: ${status}\n\nFinal scope and pricing are confirmed against the actual requirements. Existing software/system integrations, complex setups, and multi-branch requirements require review before a quotation is final. Standard downpayment is 50% before work begins.\n\nPowered by AM777 Automation Solutions`;
+}
+function buildCatalogCategories(){const cats=[...new Set(CATALOG_IDS.map(id=>P[id].category))];$('catalogCategory').innerHTML='<option value="all">All categories</option>'+cats.map(c=>`<option value="${c}">${c}</option>`).join('');}
+function renderCatalog(){const s=($('catalogSearch').value||'').toLowerCase(),cat=$('catalogCategory').value;$('catalogGrid').innerHTML=CATALOG_IDS.filter(id=>{const p=P[id],txt=`${p.name} ${p.category} ${p.solves} ${p.customer}`.toLowerCase();return(cat==='all'||p.category===cat)&&(!s||txt.includes(s));}).map(id=>{const p=P[id];const priceLabel=p.price==null?'Request Assessment':`${peso(p.price)}${p.billing.includes('Starting')||p.assessment?'+':''}`;return `<div class="card"><span class="tag">${p.category}</span><h3>${p.name}</h3><div class="p">${priceLabel}</div><p>${p.solves}</p><div class="card-actions"><button data-detail="${id}">View Details</button><button data-add-catalog="${id}" ${ADDON_IDS.includes(id)?'':'disabled'}>${ADDON_IDS.includes(id)?(state.addons.has(id)?'Remove from Quote':'Add to Quote'):'Reference'}</button></div></div>`}).join('');
+ document.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>openDetails(b.dataset.detail));document.querySelectorAll('[data-add-catalog]').forEach(b=>{if(!b.disabled)b.onclick=()=>{const id=b.dataset.addCatalog;if(state.addons.has(id))state.addons.delete(id);else state.addons.add(id);renderCatalog();renderAddons();render();};});}
 
-  // ---- Tabs ----
-  document.querySelectorAll('.tab-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach((b) => b.classList.toggle('is-active', b === btn));
-      document.querySelectorAll('.panel').forEach((p) => p.classList.toggle('is-active', p.id === 'panel-' + btn.dataset.tab));
-    });
-  });
+function openDetails(id){const p=P[id];$('modalCategory').textContent=p.category;$('modalTitle').textContent=p.name;
+ const list=a=>`<ul class="detail-list">${(a||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`;
+ const modalPrice=p.price==null?'Request Assessment':`${peso(p.price)}${p.billing.includes('Starting')||p.assessment?'+':''}`;
+ const deliveryLabel=p.delivery?`${p.delivery[0]}–${p.delivery[1]} business days`:'Delivery after assessment';
+ $('modalBody').innerHTML=`<div class="detail-grid">
+ <div class="detail-block"><h3>Price & Billing</h3><div class="detail-price">${modalPrice}</div><div class="pillrow"><span class="pill">${p.billing}</span><span class="pill">${deliveryLabel}</span>${p.assessment?'<span class="pill">Assessment required</span>':''}</div></div>
+ <div class="detail-block"><h3>What it solves</h3><p>${p.solves}</p></div>
+ <div class="detail-block full"><h3>Included</h3>${list(p.inclusions)}</div>
+ <div class="detail-block"><h3>Best Fit</h3>${list(p.best||((p.industries||[]).map(k=>INDUSTRIES[k]?.label).filter(Boolean)))}</div>
+ <div class="detail-block"><h3>Limits / Important Notes</h3>${list(p.limits)}</div>
+ <div class="detail-block"><h3>Simple Customer Explanation</h3><p>${p.customer}</p></div>
+ <div class="detail-block"><h3>Upgrade Path</h3>${list(p.upgrades)}</div></div>`;
+ $('detailModal').classList.add('open');}
+function closeModal(){$('detailModal').classList.remove('open');}
 
-  // ---- Configurator ----
-  const packageSel = document.getElementById('cfgPackage');
-  Object.entries(SOT.packages).forEach(([key, p]) => {
-    const opt = document.createElement('option');
-    opt.value = key; opt.textContent = p.label + ' — ' + (p.price == null ? 'Assessment' : peso(p.price) + '+');
-    packageSel.appendChild(opt);
-  });
-
-  const addonWrap = document.getElementById('addonChecks');
-  function renderAddonGroup(title, list) {
-    const box = document.createElement('div');
-    box.innerHTML = `<div style="font-size:11px;color:var(--ink-faint);margin:10px 0 2px;text-transform:uppercase;letter-spacing:.04em">${title}</div>`;
-    list.forEach((a) => {
-      const lab = document.createElement('label');
-      lab.className = 'chk';
-      lab.innerHTML = `<input type="checkbox" value="${a.key}" /> ${a.label} <span class="amt">${a.price == null ? 'Assessment' : peso(a.price) + '+'}</span>`;
-      box.appendChild(lab);
-    });
-    addonWrap.appendChild(box);
-  }
-  renderAddonGroup('Website / Customer-Facing', SOT.addons.website);
-  renderAddonGroup('Operations', SOT.addons.operations);
-  renderAddonGroup('Automation', SOT.addons.automation);
-
-  const ids = ['cfgName','cfgCustomerType','cfgIncludePos','cfgPackage','cfgCloudTerm','cfgStaff','cfgAdmins','cfgDevices','cfgBranches','cfgIntegration','cfgCare'];
-  const el = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
-
-  document.querySelectorAll('.stepper button').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const input = document.getElementById('cfg' + btn.dataset.step[0].toUpperCase() + btn.dataset.step.slice(1));
-      const dir = Number(btn.dataset.dir);
-      input.value = Math.max(0, Number(input.value || 0) + dir);
-      renderQuote();
-    });
-  });
-
-  function readConfig() {
-    return {
-      name: el.cfgName.value.trim(),
-      packageKey: el.cfgPackage.value || null,
-      customerType: el.cfgCustomerType.value,
-      includePos: el.cfgIncludePos.value === 'yes',
-      cloudTerm: el.cfgCloudTerm.value,
-      staff: Number(el.cfgStaff.value || 0),
-      admins: Number(el.cfgAdmins.value || 0),
-      devices: Number(el.cfgDevices.value || 0),
-      branches: Number(el.cfgBranches.value || 1),
-      integration: el.cfgIntegration.value,
-      addonKeys: Array.from(addonWrap.querySelectorAll('input:checked')).map((i) => i.value),
-      care: el.cfgCare.checked
-    };
-  }
-
-  function renderQuote() {
-    const cfg = readConfig();
-    const packageMode = !!cfg.packageKey;
-    document.getElementById('rowIncludePos').style.display = (cfg.customerType === 'existing_pos' || packageMode) ? 'none' : 'flex';
-    document.getElementById('cardCloud').style.display = packageMode ? 'none' : 'block';
-
-    const q = computeQuote(cfg);
-    document.getElementById('quoteName').textContent = cfg.name ? 'Quote for: ' + cfg.name : '';
-    document.getElementById('quoteOneTime').textContent = peso(q.oneTime);
-    document.getElementById('quoteRecurring').innerHTML = q.recurring.map((r) =>
-      `<div class="quote-line"><span>${r.label}${r.note ? ` <small style="color:var(--ink-faint)">(${r.note})</small>` : ''}</span><b>${peso(r.amount)}</b></div>`).join('') || '<div class="quote-line"><span style="color:var(--ink-faint)">No recurring items selected</span><b></b></div>';
-    document.getElementById('quoteDelivery').innerHTML = 'Estimated delivery: ' + [...new Set(q.deliveryLines)].join(' · ');
-    document.getElementById('quoteNotes').innerHTML = q.notes.map((n) => `<div class="note${q.status === 'AM777 PRICE APPROVAL REQUIRED' ? ' bad' : ''}">${n}</div>`).join('');
-
-    const pill = document.getElementById('quoteStatusPill');
-    pill.textContent = q.status;
-    pill.className = 'status-pill ' + (q.status === 'READY TO QUOTE' ? 'status-ready' : q.status === 'NEEDS ASSESSMENT' ? 'status-assess' : 'status-approval');
-  }
-
-  document.querySelectorAll('#panel-configurator select, #panel-configurator input').forEach((f) => f.addEventListener('input', renderQuote));
-  document.getElementById('cfgReset').addEventListener('click', () => {
-    el.cfgName.value = ''; el.cfgPackage.value = ''; el.cfgCustomerType.value = 'new'; el.cfgIncludePos.value = 'yes';
-    el.cfgCloudTerm.value = 'none'; el.cfgStaff.value = 10; el.cfgAdmins.value = 2; el.cfgDevices.value = 3; el.cfgBranches.value = 1;
-    el.cfgIntegration.value = 'none'; el.cfgCare.checked = false;
-    addonWrap.querySelectorAll('input:checked').forEach((i) => i.checked = false);
-    renderQuote();
-  });
-  renderQuote();
-
-  // ---- Commission ----
-  const commPayment = document.getElementById('commPayment');
-  function renderCommission() {
-    const val = Math.max(0, Number(commPayment.value || 0));
-    document.getElementById('commPaymentOut').textContent = peso(val);
-    document.getElementById('commOut').textContent = peso(Math.round(val * SOT.commissionRate));
-  }
-  commPayment.addEventListener('input', renderCommission);
-  renderCommission();
-})();
+function renderIndustries(){$('industryGrid').innerHTML=Object.entries(INDUSTRIES).map(([k,v])=>`<div class="industry"><strong>${v.label}</strong><span><b>Core:</b> ${P[v.core]?.name||'Assessment'}<br>${v.products.map(id=>P[id]?.name).filter(Boolean).join(' · ')}</span></div>`).join('');}
+function calcCommission(){const collected=Math.max(0,+$('commPayment').value||0),commission=collected*INTERNAL.agentRate;$('commResult').textContent=new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',minimumFractionDigits:2}).format(commission);}
+function saveDraft(){const data={customerName:$('customerName').value,businessType:$('businessType').value,quoteLanguage:$('quoteLanguage').value,currentSetup:$('currentSetup').value,currentSystemType:$('currentSystemType').value,existingSystemName:$('existingSystemName').value,existingAccess:$('existingAccess').value,integrationTier:$('integrationTier').value,staffUsers:$('staffUsers').value,adminUsers:$('adminUsers').value,devices:$('devices').value,branches:$('branches').value,cloud:state.cloud,care:state.care,needs:[...state.needs],addons:[...state.addons],coreIncluded:state.coreIncluded};localStorage.setItem('am777_offline_quote_draft',JSON.stringify(data));$('saveDraft').textContent='Saved';setTimeout(()=>$('saveDraft').textContent='Save Offline Draft',1000);}
+function loadDraft(){try{const d=JSON.parse(localStorage.getItem('am777_offline_quote_draft')||'null');if(!d)return alert('No offline draft saved.');['customerName','businessType','quoteLanguage','currentSetup','currentSystemType','existingSystemName','existingAccess','integrationTier','staffUsers','adminUsers','devices','branches'].forEach(id=>{if(d[id]!=null)$(id).value=d[id];});state.cloud=d.cloud||'none';state.care=!!d.care;state.needs=new Set(d.needs||[]);state.addons=new Set(d.addons||[]);syncCoreDefault();if(typeof d.coreIncluded==='boolean')state.coreIncluded=d.coreIncluded;$('careToggle').classList.toggle('selected',state.care);renderNeeds();renderCloud();renderExisting();renderAddons();render();}catch(e){alert('Could not load the saved draft.');}}
+function reset(){localStorage.removeItem('am777_offline_quote_draft');$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.care=false;state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('careToggle').classList.remove('selected');$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderExisting();renderAddons();render();}
+document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>
