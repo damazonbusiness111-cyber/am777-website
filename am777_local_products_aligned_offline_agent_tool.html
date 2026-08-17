@@ -177,6 +177,12 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
     <h2>Configure a customer estimate</h2>
     <p class="sub">Use only what the customer actually needs. The tool separates standard quotes from configurations that need AM777 review.</p>
 
+    <div class="next-action" style="margin-bottom:18px">
+      <span>Quick Presets</span>
+      <strong>One click fills a common setup below — every field stays editable after.</strong>
+      <div class="chips" id="presetChips" style="margin-top:10px"></div>
+    </div>
+
     <div class="step">
       <div class="stephead"><div class="num">1</div><div><h3>Customer context</h3><p class="sub">Only for the quote; this is not a CRM record.</p></div></div>
       <div class="fieldgrid">
@@ -663,6 +669,12 @@ const INDUSTRIES={
  other:{label:'Other / Custom',core:'workflow',products:['crm','landing','inquiry']}
 };
 const NEEDS=[['sales','Sales / POS'],['stocks','Stocks'],['customers','Customers'],['employees','Employees'],['orders','Orders'],['booking','Bookings'],['expenses','Expenses'],['reports','Reports'],['online','Online Access'],['automation','Automation'],['branches','Multiple Branches'],['everything','Everything']];
+const PRESETS=[
+ {id:'retailStart',label:'Retail Starter',businessType:'retail',needs:['sales','stocks'],cloud:'none',care:false,staffUsers:5,branches:1},
+ {id:'restaurantCloud',label:'Restaurant + Cloud',businessType:'restaurant',needs:['sales','orders','stocks'],cloud:'6m',care:true,staffUsers:5,branches:1},
+ {id:'bookingBiz',label:'Salon / Clinic Booking',businessType:'salon',needs:['booking','customers'],cloud:'none',care:false,staffUsers:5,branches:1},
+ {id:'multiBranch',label:'Multi-Branch Retail',businessType:'retail',needs:['sales','stocks','branches'],cloud:'12m',care:true,staffUsers:10,branches:2}
+];
 const NEED_TO_PRODUCT={everything:'management',branches:'management',sales:'pos',stocks:'inventory',customers:'crm',employees:'hr',orders:'ordering',booking:'booking',expenses:'cash',reports:'analytics',automation:'workflow',online:'landing'};
 const SYSTEM_TYPE_TO_PRODUCT={pos:'pos',booking:'booking',inventory:'inventory',crm:'crm',hr:'hr',accounting:'finance',ordering:'ordering',website:'landing',logistics:'workflow',project:'workflow',erp:'management',other:null};
 const SETUP_LABELS={none:'No System Yet',manual:'Manual / Paper',sheets:'Excel / Google Sheets',am777:'Existing AM777 System',thirdparty:'Existing Third-Party Software',multiple:'Multiple Disconnected Tools'};
@@ -677,6 +689,8 @@ function init(){
  $('businessType').innerHTML=Object.entries(INDUSTRIES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
  $('integrationTier').innerHTML=INTEGRATION_IDS.map(id=>`<option value="${id}">${P[id].name} · ${P[id].price==null?'Assessment / Custom Quote':peso(P[id].price)+'+'}</option>`).join('');
  $('needsChips').innerHTML=NEEDS.map(([k,l])=>`<button class="chip" data-need="${k}">${l}</button>`).join('');
+ $('presetChips').innerHTML=PRESETS.map(p=>`<button class="chip" data-preset="${p.id}">${p.label}</button>`).join('');
+ document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>applyPreset(b.dataset.preset));
  document.querySelectorAll('[data-need]').forEach(b=>b.onclick=()=>{const k=b.dataset.need;if(state.needs.has(k))state.needs.delete(k);else state.needs.add(k);if(k==='everything'&&state.needs.has(k))NEEDS.forEach(([n])=>state.needs.add(n));syncCoreDefault();renderNeeds();renderAddons();render();});
  document.querySelectorAll('[data-cloud]').forEach(b=>b.onclick=()=>{state.cloud=b.dataset.cloud;renderCloud();render();});
  $('careToggle').onclick=()=>{state.care=!state.care;$('careToggle').classList.toggle('selected',state.care);render();};
@@ -1107,7 +1121,24 @@ function initCommissionCalculator(){
 }
 function saveDraft(){const data={customerName:$('customerName').value,businessType:$('businessType').value,quoteLanguage:$('quoteLanguage').value,currentSetup:$('currentSetup').value,currentSystemType:$('currentSystemType').value,existingSystemName:$('existingSystemName').value,existingAccess:$('existingAccess').value,integrationTier:$('integrationTier').value,staffUsers:$('staffUsers').value,adminUsers:$('adminUsers').value,devices:$('devices').value,branches:$('branches').value,cloud:state.cloud,care:state.care,needs:[...state.needs],addons:[...state.addons],coreIncluded:state.coreIncluded};localStorage.setItem('am777_offline_quote_draft',JSON.stringify(data));$('saveDraft').textContent='Saved';setTimeout(()=>$('saveDraft').textContent='Save Offline Draft',1000);}
 function loadDraft(){try{const d=JSON.parse(localStorage.getItem('am777_offline_quote_draft')||'null');if(!d)return alert('No offline draft saved.');['customerName','businessType','quoteLanguage','currentSetup','currentSystemType','existingSystemName','existingAccess','integrationTier','staffUsers','adminUsers','devices','branches'].forEach(id=>{if(d[id]!=null)$(id).value=d[id];});state.cloud=d.cloud||'none';state.care=!!d.care;state.needs=new Set(d.needs||[]);state.addons=new Set(d.addons||[]);syncCoreDefault();if(typeof d.coreIncluded==='boolean')state.coreIncluded=d.coreIncluded;$('careToggle').classList.toggle('selected',state.care);renderNeeds();renderCloud();renderExisting();renderAddons();render();}catch(e){alert('Could not load the saved draft.');}}
-function reset(){localStorage.removeItem('am777_offline_quote_draft');$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.care=false;state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('careToggle').classList.remove('selected');$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderExisting();renderAddons();render();}
+function applyPreset(id){
+ const p=PRESETS.find(x=>x.id===id);if(!p)return;
+ $('businessType').value=p.businessType;
+ $('currentSetup').value='none';
+ $('currentSystemType').value='pos';
+ $('existingSystemName').value='';
+ $('existingAccess').value='unknown';
+ $('staffUsers').value=p.staffUsers;
+ $('adminUsers').value=1;
+ $('devices').value=1;
+ $('branches').value=p.branches;
+ state.cloud=p.cloud;state.care=p.care;state.needs=new Set(p.needs);state.addons.clear();
+ syncCoreDefault();
+ $('careToggle').classList.toggle('selected',state.care);
+ document.querySelectorAll('[data-preset]').forEach(b=>b.classList.toggle('selected',b.dataset.preset===id));
+ renderNeeds();renderCloud();renderExisting();renderAddons();render();
+}
+function reset(){localStorage.removeItem('am777_offline_quote_draft');document.querySelectorAll('[data-preset]').forEach(b=>b.classList.remove('selected'));$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.care=false;state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('careToggle').classList.remove('selected');$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderExisting();renderAddons();render();}
 document.addEventListener('DOMContentLoaded',init);
 </script>
 <script>
