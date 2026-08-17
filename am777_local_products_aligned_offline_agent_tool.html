@@ -88,6 +88,9 @@ textarea{min-height:80px;resize:vertical}.chips{display:flex;gap:8px;flex-wrap:w
 .comm-grandtotal strong{font-size:26px;letter-spacing:-.04em;color:var(--accent)}
 .modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(2,7,13,.74);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.open{display:flex}.modal{width:min(900px,100%);max-height:88vh;overflow:auto;border:1px solid var(--line2);border-radius:20px;background:linear-gradient(180deg,var(--panel),var(--panel2));box-shadow:0 30px 100px rgba(0,0,0,.55)}.modal-head{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:18px;border-bottom:1px solid var(--line);background:rgba(13,25,39,.96);backdrop-filter:blur(12px)}.modal-head h2{margin:4px 0 0;font-size:24px;letter-spacing:-.035em}.close{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font-size:18px}.modal-body{padding:18px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.detail-block{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);padding:14px}.detail-block.full{grid-column:1/-1}.detail-block h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--text)}.detail-block p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.6}.detail-list{margin:0;padding-left:17px;color:var(--muted);font-size:12.5px;line-height:1.7}.detail-price{font-size:31px;font-weight:780;letter-spacing:-.045em}.pillrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.pill{border:1px solid var(--line);border-radius:999px;padding:6px 8px;color:var(--muted);font-size:10px;background:rgba(255,255,255,.025)}
 
+.auth-gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;transition:opacity .5s ease}.auth-gate.closing{opacity:0;pointer-events:none}.auth-gate.is-unlocked{display:none}.auth-box{width:min(360px,100%);border:1px solid var(--line2);border-radius:var(--r);background:linear-gradient(180deg,var(--panel),var(--panel2));box-shadow:var(--shadow);padding:28px 26px;text-align:center;opacity:1;transform:translateY(0) scale(1);transition:opacity .5s ease,transform .5s cubic-bezier(.22,1,.36,1)}.auth-gate.closing .auth-box{opacity:0;transform:translateY(-16px) scale(.96)}.auth-box h2{margin:0 0 6px;font-size:19px;letter-spacing:-.02em}.auth-box .sub{color:var(--muted);font-size:12px;margin:0 0 16px}.auth-box input{width:100%;border:1px solid var(--line2);background:var(--panel2);color:var(--text);border-radius:11px;padding:12px 14px;font-size:15px;text-align:center;letter-spacing:.3em;box-sizing:border-box}.auth-box input:focus{outline:none;border-color:var(--accent)}.auth-box .btn{width:100%;margin-top:10px}.auth-box .helper{color:var(--muted);font-size:10px;line-height:1.5;text-align:left}
+.topbar,main.shell{opacity:0;transform:translateY(10px);transition:opacity .5s ease .1s,transform .5s cubic-bezier(.22,1,.36,1) .1s}body.tool-unlocked .topbar,body.tool-unlocked main.shell{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){.auth-gate,.auth-box,.topbar,main.shell{transition:none!important}}
 .product-ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:0 0 22px}
 .ladder-item{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.022);padding:12px}
 .ladder-item strong{display:block;font-size:11px;letter-spacing:.11em;color:var(--text)}
@@ -102,12 +105,46 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
 </style>
 </head>
 <body>
+<div id="authGate" class="auth-gate" role="dialog" aria-modal="true" aria-label="Access code required">
+  <div class="auth-box">
+    <span class="mark" role="img" aria-label="AM777 mark" style="margin:0 auto 14px"><svg class="brand-mark-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="20" y1="8" x2="9" y2="30" class="bm-line"/><line x1="20" y1="8" x2="31" y2="30" class="bm-line"/><line x1="14" y1="21" x2="26" y2="21" class="bm-line"/><circle cx="14" cy="21" r="1.3" class="bm-node-soft"/><circle cx="26" cy="21" r="1.3" class="bm-node-soft"/><circle cx="9" cy="30" r="1.9" class="bm-node"/><circle cx="31" cy="30" r="1.9" class="bm-node"/><circle cx="20" cy="8" r="2.6" class="bm-node-core"/></svg></span>
+    <h2>AM777 Offline Agent Tool</h2>
+    <p class="sub">Enter your access code to continue.</p>
+    <input id="authCode" type="password" inputmode="numeric" maxlength="6" placeholder="Access code" autocomplete="off" />
+    <button id="authSubmit" class="btn primary" type="button">Unlock</button>
+    <div id="authError" class="mini" style="color:var(--red);margin-top:8px;display:none">Incorrect code. Try again.</div>
+    <div class="helper" style="margin-top:16px">Basic access gate for this offline file only — not real authentication. Anyone with the file can view its source and read the code. Do not use this to protect sensitive data.</div>
+  </div>
+</div>
+<script>
+(() => {
+  const ACCESS_CODE = '315987'; // visible in source — this is a casual-access deterrent, not security
+  const gate = document.getElementById('authGate');
+  const input = document.getElementById('authCode');
+  const err = document.getElementById('authError');
+  function unlock(instant) {
+    document.body.classList.add('tool-unlocked');
+    try { sessionStorage.setItem('am777-tool-unlocked', '1'); } catch (e) {}
+    if (instant) { gate.classList.add('is-unlocked'); return; }
+    gate.classList.add('closing');
+    setTimeout(() => { gate.classList.add('is-unlocked'); }, 520);
+  }
+  function attempt() {
+    if (input.value.trim() === ACCESS_CODE) { err.style.display = 'none'; unlock(false); }
+    else { err.style.display = 'block'; input.value = ''; input.focus(); }
+  }
+  try { if (sessionStorage.getItem('am777-tool-unlocked') === '1') unlock(true); } catch (e) {}
+  document.getElementById('authSubmit').addEventListener('click', attempt);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') attempt(); });
+  input.focus();
+})();
+</script>
 <canvas id="networkCanvas" aria-hidden="true"></canvas>
 <header class="topbar"><div class="shell topbar-inner"><div class="brand"><span class="mark" role="img" aria-label="AM777 mark"><svg class="brand-mark-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="20" y1="8" x2="9" y2="30" class="bm-line"/><line x1="20" y1="8" x2="31" y2="30" class="bm-line"/><line x1="14" y1="21" x2="26" y2="21" class="bm-line"/><circle cx="14" cy="21" r="1.3" class="bm-node-soft"/><circle cx="26" cy="21" r="1.3" class="bm-node-soft"/><circle cx="9" cy="30" r="1.9" class="bm-node"/><circle cx="31" cy="30" r="1.9" class="bm-node"/><circle cx="20" cy="8" r="2.6" class="bm-node-core"/></svg></span><div><strong>AM777 Offline Agent Knowledge Tool</strong><span>Products · Pricing · Quote Reference</span></div></div><nav class="nav"><button data-tab="configure" class="active">Configure</button><button data-tab="catalog">Products</button><button data-tab="industries">Industries</button><button data-tab="commission">Commission</button></nav><button class="theme-toggle" id="themeToggle" type="button" role="switch" aria-checked="false" aria-label="Switch to light theme"><span class="theme-toggle-track"><svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1110 3.2 7 7 0 0020 14.5z"/></svg><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.5 4.5l1.7 1.7M17.8 17.8l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.5 19.5l1.7-1.7M17.8 6.2l1.7-1.7"/></svg><span class="theme-toggle-thumb"></span></span></button></div></header>
 
 <main class="shell">
 <div class="quickstats">
-  <div class="qs"><span>POS</span><strong>₱9,777 one-time</strong></div>
+  <div class="qs"><span>Base System</span><strong>from ₱9,777 one-time</strong></div>
   <div class="qs"><span>Cloud 6mo</span><strong>₱12,777</strong></div>
   <div class="qs"><span>Cloud 12mo</span><strong>₱15,777</strong></div>
   <div class="qs"><span>Cloud included</span><strong>2 admins · 3 devices · 1 branch</strong></div>
