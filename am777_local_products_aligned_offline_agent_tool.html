@@ -52,7 +52,16 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{width:min
 .qs strong{font-size:12px;font-weight:700;color:var(--text)}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 20px}.tab{border-color:var(--line);background:rgba(255,255,255,.02);border-radius:999px}.view{display:none}.view.active{display:block}
 .layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:16px;align-items:start}.panel{padding:18px}.panel.sticky{position:sticky;top:88px}.panel h2{margin:0 0 4px;font-size:22px;letter-spacing:-.03em}.panel h3{margin:0 0 4px;font-size:16px}.sub{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
-.step{padding:17px 0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}.stephead{display:flex;gap:10px;align-items:center;margin-bottom:12px}.num{width:26px;height:26px;flex:0 0 26px;border-radius:8px;display:grid;place-items:center;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11px;color:var(--text)}
+.step{padding:17px 0;border-bottom:1px solid var(--line);display:none}.step.active{display:block}.step:last-child{border-bottom:0}.stephead{display:flex;gap:10px;align-items:center;margin-bottom:12px}.num{width:26px;height:26px;flex:0 0 26px;border-radius:8px;display:grid;place-items:center;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11px;color:var(--text)}
+.wizard-progress{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:20px}
+.wizard-progress button{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:10px;padding:8px 4px;text-align:center;color:var(--muted);font-size:9.5px;font-weight:700;line-height:1.4}
+.wizard-progress button strong{display:block;font-size:12px;margin-bottom:2px;color:var(--text)}
+.wizard-progress button.active{border-color:var(--line2);background:rgba(127,169,233,.08);color:var(--accent)}
+.wizard-progress button.done{color:var(--text)}
+.wizard-progress button.done strong{color:var(--green)}
+.wizard-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px;padding-top:16px;border-top:1px solid var(--line)}
+.wizard-nav .btn{width:auto;padding:11px 20px}
+.wizard-nav #wizardBack:disabled{opacity:.4}
 .fieldgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}label{color:var(--muted);font-size:11.5px}
 input,select,textarea{width:100%;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:11px;padding:12px;outline:none}input:focus,select:focus,textarea:focus{border-color:rgba(127,169,233,.48)}
 textarea{min-height:80px;resize:vertical}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--muted);border-radius:999px;padding:8px 10px;font-size:11.5px}.chip.selected{color:var(--text);background:rgba(127,169,233,.10);border-color:rgba(127,169,233,.28)}
@@ -163,13 +172,6 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
   <div class="ladder-item"><strong>SCALE</strong><span>Business Management Systems, HR/operations combinations, multi-branch, and custom systems.</span></div>
 </div>
 
-<div class="tabs">
-  <button class="tab active" data-tab="configure">Quote Configurator</button>
-  <button class="tab" data-tab="catalog">Product Knowledge</button>
-  <button class="tab" data-tab="industries">Industry Guide</button>
-  <button class="tab" data-tab="commission">Private Commission</button>
-</div>
-
 <section id="configure" class="view active">
 <div class="layout">
   <div class="panel config-left">
@@ -182,7 +184,9 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
       <div class="chips" id="presetChips" style="margin-top:10px"></div>
     </div>
 
-    <div class="step">
+    <div class="wizard-progress" id="wizardProgress"></div>
+
+    <div class="step" data-page="1">
       <div class="stephead"><div class="num">1</div><div><h3>Customer context</h3><p class="sub">Only for the quote; this is not a CRM record.</p></div></div>
       <div class="fieldgrid">
         <div class="field"><label>Business Name</label><input id="customerName" placeholder="Optional" /></div>
@@ -218,7 +222,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
       </div>
     </div>
 
-    <div class="step">
+    <div class="step" data-page="2">
       <div class="stephead"><div class="num">2</div><div><h3>What needs improvement?</h3><p class="sub">Select the real needs. This guides recommendations.</p></div></div>
       <div class="chips" id="needsChips"></div>
       <div class="next-action" style="margin-top:12px">
@@ -232,7 +236,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
       </div>
     </div>
 
-    <div class="step">
+    <div class="step" data-page="3">
       <div class="stephead"><div class="num">3</div><div><h3>Users & connectivity</h3><p class="sub">Staff capacity is one-time and applies to the system itself. Cloud (below) is separate — it only adds admin/device/branch capacity when active.</p></div></div>
       <div class="fieldgrid">
         <div class="field"><label>Staff Users</label><input id="staffUsers" type="number" min="1" value="5" /></div>
@@ -243,7 +247,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
       <div class="helper">Staff/user capacity (one-time, any system): 5 included · +5 ₱777 · +10 ₱1,477 · +20 ₱2,777 · +50 ₱5,777 — lowest-cost combination is chosen automatically, up to 55 users total. Above that, Evaluation Required. Cloud capacity (only relevant with Cloud active): up to 3 connected devices · 2 owner/admin accounts · 1 branch included. Approved annual expansion: +1 owner/admin ₱1,277/year · +1 connected device ₱2,177/year · additional branch setup from ₱7,777 one-time · additional branch Cloud from ₱5,777/year. A 6-month Cloud customer exceeding included admin/device/branch capacity is flagged for AM777 approval rather than an invented price.</div>
     </div>
 
-    <div class="step">
+    <div class="step" data-page="4">
       <div class="stephead"><div class="num">4</div><div><h3>Cloud & support</h3><p class="sub">Optional. Add Cloud only if the business needs remote/online access to this system — a fully offline system does not require it.</p></div></div>
       <div class="segment" id="cloudSegment">
         <button data-cloud="none" class="selected">No Cloud</button>
@@ -253,10 +257,16 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
       <div class="chips" style="margin-top:10px"><button id="careToggle" class="chip">Add AM777 Care · ₱777/month</button></div>
     </div>
 
-    <div class="step">
+    <div class="step" data-page="5">
       <div class="stephead"><div class="num">5</div><div><h3>Recommended systems</h3><p class="sub">Only industry-relevant systems show first. Click Details for full product knowledge.</p></div></div>
       <div class="toggle-row"><span class="mini" id="addonModeText">Showing recommended systems</span><button id="toggleAllAddons">Show all systems</button></div>
       <div id="addonGrid" class="addon-grid"></div>
+    </div>
+
+    <div class="wizard-nav">
+      <button id="wizardBack" class="btn">Back</button>
+      <span class="mini" id="wizardStepLabel"></span>
+      <button id="wizardNext" class="btn primary">Next</button>
     </div>
   </div>
 
@@ -300,6 +310,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
     <div class="eyebrow">Product Knowledge</div><h2>AM777 local systems catalog</h2>
     <p class="sub">Search any system. Click View Details to review what it solves, inclusions, best fit, limitations, billing, delivery, and upgrade path.</p>
     <div class="catalog-tools"><input id="catalogSearch" placeholder="Search POS, HR, booking, inventory, automation..." /></div>
+    <div class="toggle-row" style="margin-top:12px"><span class="mini" id="catalogModeText">Showing recommended systems</span><button id="toggleCatalogAll">Show all systems</button></div>
     <div class="chips" id="catalogCategoryChips" style="margin-bottom:14px"></div>
     <div id="catalogGrid"></div>
   </div>
@@ -681,7 +692,8 @@ const SYSTEM_TYPE_TO_PRODUCT={pos:'pos',booking:'booking',inventory:'inventory',
 const SETUP_LABELS={none:'No System Yet',manual:'Manual / Paper',sheets:'Excel / Google Sheets',am777:'Existing AM777 System',thirdparty:'Existing Third-Party Software',multiple:'Multiple Disconnected Tools'};
 const INTERNAL={agentRate:.20,expenseRate:.05};
 
-const state={cloud:'none',care:false,needs:new Set(),addons:new Set(),showAll:false,coreIncluded:true,coreId:null,catalogCategory:'all'};
+const state={cloud:'none',care:false,needs:new Set(),addons:new Set(),showAll:false,coreIncluded:true,coreId:null,catalogCategory:'all',catalogShowAll:false,wizardStep:1};
+const WIZARD_STEPS=[{n:1,label:'Customer'},{n:2,label:'Needs'},{n:3,label:'Capacity'},{n:4,label:'Cloud'},{n:5,label:'Systems'}];
 const $=id=>document.getElementById(id);
 const peso=v=>new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',maximumFractionDigits:0}).format(v||0);
 function lineAmountLabel(a){if(typeof a==='string')return a;if(a===null)return 'Assessment / Custom Quote';return a?peso(a):'Included / owned';}
@@ -698,7 +710,10 @@ function init(){
  $('toggleAllAddons').onclick=()=>{state.showAll=!state.showAll;renderAddons();};
  $('coreDetails').onclick=()=>{if(state.coreId)openDetails(state.coreId);};
  $('coreToggle').onclick=()=>{state.coreIncluded=!state.coreIncluded;render();};
- ['businessType','currentSetup','currentSystemType'].forEach(id=>$(id).addEventListener('input',()=>{syncCoreDefault();renderExisting();renderAddons();render();}));
+ ['businessType','currentSetup','currentSystemType'].forEach(id=>$(id).addEventListener('input',()=>{syncCoreDefault();renderExisting();renderAddons();renderCatalog();render();}));
+ $('toggleCatalogAll').onclick=()=>{state.catalogShowAll=!state.catalogShowAll;renderCatalog();};
+ $('wizardNext').onclick=()=>{if(state.wizardStep<WIZARD_STEPS.length)goToWizardStep(state.wizardStep+1);else document.querySelector('.panel.sticky').scrollIntoView({block:'start',behavior:'smooth'});};
+ $('wizardBack').onclick=()=>goToWizardStep(state.wizardStep-1);
  ['staffUsers','adminUsers','devices','branches','integrationTier','existingSystemName','existingAccess','customerName','quoteLanguage'].forEach(id=>$(id).addEventListener('input',()=>{renderExisting();render();}));
  $('generateQuote').onclick=()=>{$('quoteOutput').textContent=generateQuote();};
  $('copyQuote').onclick=async()=>{const t=generateQuote();$('quoteOutput').textContent=t;try{await navigator.clipboard.writeText(t);$('copyQuote').textContent='Copied';setTimeout(()=>$('copyQuote').textContent='Copy Quote',1000)}catch(e){}};
@@ -707,9 +722,22 @@ function init(){
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
  $('catalogSearch').addEventListener('input',renderCatalog);
  $('closeModal').onclick=closeModal;$('detailModal').onclick=e=>{if(e.target===$('detailModal'))closeModal();};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
- syncCoreDefault();renderNeeds();renderCloud();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();renderStaffCapacityRef();render();initCommissionCalculator();
+ syncCoreDefault();renderNeeds();renderCloud();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();renderStaffCapacityRef();render();initCommissionCalculator();goToWizardStep(1,false);
 }
-function switchTab(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:document.querySelector('.tabs').offsetTop-78,behavior:'smooth'});}
+function switchTab(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));if(id==='catalog')renderCatalog();window.scrollTo({top:0,behavior:'smooth'});}
+function goToWizardStep(n,scroll){
+ state.wizardStep=Math.max(1,Math.min(WIZARD_STEPS.length,n));
+ document.querySelectorAll('.step[data-page]').forEach(s=>s.classList.toggle('active',+s.dataset.page===state.wizardStep));
+ $('wizardBack').disabled=state.wizardStep===1;
+ $('wizardNext').textContent=state.wizardStep===WIZARD_STEPS.length?'Done — Review Quote':'Next';
+ $('wizardStepLabel').textContent=`Step ${state.wizardStep} of ${WIZARD_STEPS.length}: ${WIZARD_STEPS[state.wizardStep-1].label}`;
+ renderWizardProgress();
+ if(scroll!==false)document.querySelector('.config-left').scrollIntoView({block:'start',behavior:'smooth'});
+}
+function renderWizardProgress(){
+ $('wizardProgress').innerHTML=WIZARD_STEPS.map(s=>`<button data-page-jump="${s.n}" class="${s.n===state.wizardStep?'active':''} ${s.n<state.wizardStep?'done':''}"><strong>${s.n}</strong>${s.label}</button>`).join('');
+ document.querySelectorAll('[data-page-jump]').forEach(b=>b.onclick=()=>goToWizardStep(+b.dataset.pageJump));
+}
 function renderNeeds(){document.querySelectorAll('[data-need]').forEach(b=>b.classList.toggle('selected',state.needs.has(b.dataset.need)));}
 function renderCloud(){document.querySelectorAll('[data-cloud]').forEach(b=>b.classList.toggle('selected',b.dataset.cloud===state.cloud));}
 function renderExisting(){
@@ -982,7 +1010,12 @@ function renderStaffCapacityRef(){
 }
 function renderCatalog(){
  const s=($('catalogSearch').value||'').toLowerCase(),cat=state.catalogCategory;
- const matches=CATALOG_IDS.filter(id=>{const p=P[id],txt=`${p.name} ${p.category} ${p.solves} ${p.customer}`.toLowerCase();return(cat==='all'||p.category===cat)&&(!s||txt.includes(s));});
+ const biz=$('businessType').value,bizLabel=INDUSTRIES[biz]?.label||'this business';
+ const fitsBusiness=id=>{const ind=P[id].industries;return !ind||ind.includes(biz);};
+ const base=state.catalogShowAll?CATALOG_IDS:CATALOG_IDS.filter(fitsBusiness);
+ $('catalogModeText').textContent=state.catalogShowAll?'Showing all approved systems':`Showing systems tailored to ${bizLabel}`;
+ $('toggleCatalogAll').textContent=state.catalogShowAll?'Show recommended only':'Show all systems';
+ const matches=base.filter(id=>{const p=P[id],txt=`${p.name} ${p.category} ${p.solves} ${p.customer}`.toLowerCase();return(cat==='all'||p.category===cat)&&(!s||txt.includes(s));});
  const cardHtml=id=>{const p=P[id];const priceLabel=p.price==null?'Request Assessment':`${peso(p.price)}${p.billing.includes('Starting')||p.assessment?'+':''}`;return `<div class="card"><span class="tag">${p.category}</span><h3>${p.name}</h3><div class="p">${priceLabel}</div><p>${p.solves}</p><div class="card-actions"><button data-detail="${id}">View Details</button><button data-add-catalog="${id}" ${ADDON_IDS.includes(id)?'':'disabled'}>${ADDON_IDS.includes(id)?(state.addons.has(id)?'Remove from Quote':'Add to Quote'):'Reference'}</button></div></div>`;};
  if(!matches.length){$('catalogGrid').innerHTML='<p class="mini">No matching systems.</p>';}
  else if(cat!=='all'){$('catalogGrid').innerHTML=`<div class="catalog">${matches.map(cardHtml).join('')}</div>`;}
@@ -1156,7 +1189,7 @@ function applyPreset(id){
  document.querySelectorAll('[data-preset]').forEach(b=>b.classList.toggle('selected',b.dataset.preset===id));
  renderNeeds();renderCloud();renderExisting();renderAddons();render();
 }
-function reset(){localStorage.removeItem('am777_offline_quote_draft');document.querySelectorAll('[data-preset]').forEach(b=>b.classList.remove('selected'));$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.care=false;state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('careToggle').classList.remove('selected');$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderExisting();renderAddons();render();}
+function reset(){localStorage.removeItem('am777_offline_quote_draft');document.querySelectorAll('[data-preset]').forEach(b=>b.classList.remove('selected'));$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.care=false;state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('careToggle').classList.remove('selected');$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderExisting();renderAddons();renderCatalog();render();goToWizardStep(1,false);}
 document.addEventListener('DOMContentLoaded',init);
 </script>
 <script>
