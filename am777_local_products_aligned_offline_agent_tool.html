@@ -461,21 +461,21 @@ const P = {
     limits:['CRM and advanced automation are separate'],
     customer:'Collect customer inquiries in one clear form.',
     upgrades:['CRM','Automated follow-up']},
-  ordering:{id:'ordering',name:'Online Ordering',category:'Website & Customer',price:7777,billing:'Starting',delivery:[5,12],industries:['restaurant','retail','ecommerce','wholesale'],requires:'landing',
+  ordering:{id:'ordering',name:'Online Ordering',category:'Website & Customer',price:7777,billing:'Starting',delivery:[5,12],industries:['restaurant','retail','ecommerce','wholesale'],requires:'landing',requiresCloud:true,
     solves:'Lets customers submit orders online and gives the business a structured order flow.',
     inclusions:['Order capture','Customer details','Order status basics','Optional inventory/POS connection after assessment'],
     best:['Food, retail, e-commerce, wholesale'],
     limits:['Payment gateway, delivery platforms, and POS integration may require separate scope'],
     customer:'Receive customer orders online in a cleaner process.',
     upgrades:['Delivery tracking','POS integration','Automated notifications']},
-  booking:{id:'booking',name:'Booking / Appointment System',category:'Website & Customer',price:5777,billing:'Starting',delivery:[5,10],industries:['clinic','salon','automotive','hotel','rental','services'],
+  booking:{id:'booking',name:'Booking / Appointment System',category:'Website & Customer',price:5777,billing:'Starting',delivery:[5,10],industries:['clinic','salon','automotive','hotel','rental','services'],requiresCloud:true,
     solves:'Organizes customer appointments and service schedules.',
     inclusions:['Booking capture','Customer details','Date/time request','Basic confirmation/reminder options'],
     best:['Clinic / dental','Salon / wellness','Repair / service','Rental / hospitality'],
     limits:['Complex calendars, payments, and third-party integrations may change scope'],
     customer:'Let customers request appointments and keep the schedule organized.',
     upgrades:['CRM','Notifications','Payments / custom integrations']},
-  messaging:{id:'messaging',name:'Messenger / WhatsApp Connection',category:'Website & Customer',price:2777,billing:'Starting',delivery:[2,5],industries:['retail','restaurant','services','realestate','clinic','salon','automotive','logistics'],requires:'crm',
+  messaging:{id:'messaging',name:'Messenger / WhatsApp Connection',category:'Website & Customer',price:2777,billing:'Starting',delivery:[2,5],industries:['retail','restaurant','services','realestate','clinic','salon','automotive','logistics'],requires:'crm',requiresCloud:true,
     solves:'Connects the customer-facing website or workflow to an approved messaging contact path.',
     inclusions:['Messaging/contact connection','Basic customer handoff'],
     best:['Businesses using Messenger or WhatsApp for inquiries'],
@@ -489,7 +489,7 @@ const P = {
     limits:['Complex membership tiers and external loyalty integrations are separate'],
     customer:'Reward repeat customers with a simple loyalty system.',
     upgrades:['CRM','Customer portal']},
-  delivery:{id:'delivery',name:'Delivery / Order Tracking',category:'Website & Customer',price:7777,billing:'Starting',delivery:[7,14],industries:['restaurant','ecommerce','wholesale','logistics'],requires:'ordering',
+  delivery:{id:'delivery',name:'Delivery / Order Tracking',category:'Website & Customer',price:7777,billing:'Starting',delivery:[7,14],industries:['restaurant','ecommerce','wholesale','logistics'],requires:'ordering',requiresCloud:true,
     solves:'Tracks order/delivery status inside an approved business workflow.',
     inclusions:['Order/delivery status','Basic tracking workflow','Internal visibility'],
     best:['Food delivery','E-commerce','Distribution','Logistics'],
@@ -559,21 +559,21 @@ const P = {
     limits:['Multiple warehouses / branches require assessment'],
     customer:'Manage larger stock operations beyond a basic store inventory.',
     upgrades:['Multi-branch business system']},
-  finance:{id:'finance',name:'Financial Dashboard',category:'Finance & Reporting',price:9777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','construction','wholesale','services'],requires:'cash',
+  finance:{id:'finance',name:'Financial Dashboard',category:'Finance & Reporting',price:9777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','construction','wholesale','services'],requires:'cash',requiresCloud:true,
     solves:'Summarizes approved sales, expense, and business figures into a management view.',
     inclusions:['Dashboard','Selected financial summaries','Date filters / reports as scoped'],
     best:['Owners who need faster visibility into operations'],
     limits:['Not a replacement for regulated accounting unless specifically scoped'],
     customer:'See important business numbers in one management view.',
     upgrades:['Advanced analytics']},
-  analytics:{id:'analytics',name:'Advanced Analytics',category:'Finance & Reporting',price:7777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','wholesale','manufacturing','services'],requires:'finance',
+  analytics:{id:'analytics',name:'Advanced Analytics',category:'Finance & Reporting',price:7777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','wholesale','manufacturing','services'],requires:'finance',requiresCloud:true,
     solves:'Provides deeper reporting and trend visibility using available business data.',
     inclusions:['Custom business metrics','Trend reports','Selected charts / comparisons'],
     best:['Businesses with enough reliable data to analyze'],
     limits:['Quality depends on available data'],
     customer:'Understand what is selling, changing, or underperforming.',
     upgrades:['Custom reporting']},
-  notifications:{id:'notifications',name:'Automated Notifications',category:'Automation & AI',price:3777,billing:'Starting',delivery:[2,5],industries:['retail','restaurant','clinic','salon','services','logistics'],requires:'crm',
+  notifications:{id:'notifications',name:'Automated Notifications',category:'Automation & AI',price:3777,billing:'Starting',delivery:[2,5],industries:['retail','restaurant','clinic','salon','services','logistics'],requires:'crm',requiresCloud:true,
     solves:'Alerts staff or customers when approved business events occur.',
     inclusions:['Trigger definition','Approved notification path','Basic testing'],
     best:['Bookings','Orders','Low stock','Internal alerts'],
@@ -587,21 +587,21 @@ const P = {
     limits:['Platform access and messaging rules may affect implementation'],
     customer:'Automatically remind the team or customer when a follow-up is due.',
     upgrades:['CRM','Workflow automation']},
-  workflow:{id:'workflow',name:'Workflow Automation',category:'Automation & AI',price:5777,billing:'Starting',delivery:[5,12],industries:['retail','restaurant','services','construction','wholesale','logistics'],requires:'crm',
+  workflow:{id:'workflow',name:'Workflow Automation',category:'Automation & AI',price:5777,billing:'Starting',delivery:[5,12],industries:['retail','restaurant','services','construction','wholesale','logistics'],requires:'crm',requiresCloud:true,
     solves:'Connects repetitive business steps so information moves with less manual work.',
     inclusions:['Approved trigger','Action flow','Basic error handling/testing'],
     best:['Forms → records → alerts','Orders → inventory → notification','Booking → confirmation → reminder'],
     limits:['Complex multi-platform workflows require assessment'],
     customer:'Reduce repetitive manual steps by connecting the business workflow.',
     upgrades:['Platform integration','Custom automation']},
-  platform:{id:'platform',name:'Platform Connection',category:'Automation & AI',price:5777,billing:'Starting',delivery:[5,12],industries:['retail','restaurant','services','ecommerce','wholesale'],assessment:true,requires:'landing',
+  platform:{id:'platform',name:'Platform Connection',category:'Automation & AI',price:5777,billing:'Starting',delivery:[5,12],industries:['retail','restaurant','services','ecommerce','wholesale'],assessment:true,requires:'landing',requiresCloud:true,
     solves:'Connects an approved external platform to an AM777 workflow.',
     inclusions:['Compatibility check','One supported platform connection','Testing'],
     best:['Businesses already using external tools'],
     limits:['Requires supported access/API/export','Third-party fees are separate'],
     customer:'Connect a supported platform to the system after compatibility is checked.',
     upgrades:['Multi-platform integration']},
-  ai:{id:'ai',name:'AI Customer Assistant',category:'Automation & AI',price:7777,billing:'Starting',delivery:[7,14],industries:['services','clinic','realestate','retail','restaurant'],assessment:true,requires:'messaging',
+  ai:{id:'ai',name:'AI Customer Assistant',category:'Automation & AI',price:7777,billing:'Starting',delivery:[7,14],industries:['services','clinic','realestate','retail','restaurant'],assessment:true,requires:'messaging',requiresCloud:true,
     solves:'Handles approved repetitive customer questions or routing using business-specific knowledge.',
     inclusions:['Business knowledge setup','Approved FAQ/inquiry handling','Escalation/routing as scoped'],
     best:['Businesses with repeated customer questions'],
@@ -821,11 +821,17 @@ function isProductInQuote(id){
  if(state.coreIncluded&&(state.coreId||recommendCoreId())===id)return true;
  return state.addons.has(id);
 }
+function unmetRequirements(p){
+ const missing=[];
+ if(p.requires&&P[p.requires]&&!isProductInQuote(p.requires))missing.push(P[p.requires].name);
+ if(p.requiresCloud&&state.cloud==='none')missing.push('Cloud Access');
+ return missing;
+}
 function toggleAddon(id){
  if(state.addons.has(id)){state.addons.delete(id);return;}
- const req=P[id].requires;
- if(req&&P[req]&&!isProductInQuote(req)){
-   alert(`${P[id].name} requires ${P[req].name}, which isn't in this quote yet. Add ${P[req].name} first, then ${P[id].name} can be added.`);
+ const p=P[id],missing=unmetRequirements(p);
+ if(missing.length){
+   alert(`${p.name} requires ${missing.join(' and ')}, which isn't in this quote yet. Add ${missing.join(' and ')} first, then ${p.name} can be added.`);
    return;
  }
  state.addons.add(id);
@@ -838,10 +844,10 @@ function renderAddons(){
  const rec=new Set(recommendedIds());let ids=state.showAll?ADDON_IDS:recommendedIds();
  $('addonModeText').textContent=state.showAll?'Showing all approved systems':'Showing recommended systems';
  $('toggleAllAddons').textContent=state.showAll?'Show recommended only':'Show all systems';
- $('addonGrid').innerHTML=ids.map(id=>{const p=P[id];const missingReq=p.requires&&!state.addons.has(id)&&!isProductInQuote(p.requires);return `<div class="addon ${rec.has(id)?'recommended':''} ${state.addons.has(id)?'selected':''}">
+ $('addonGrid').innerHTML=ids.map(id=>{const p=P[id];const missing=state.addons.has(id)?[]:unmetRequirements(p);return `<div class="addon ${rec.has(id)?'recommended':''} ${state.addons.has(id)?'selected':''}">
   <div class="addon-top"><div><strong>${p.name}</strong><br><small>${p.category}${rec.has(id)?' · Recommended':''}</small></div><strong>${peso(p.price)}+</strong></div>
-  ${missingReq?`<div class="mini" style="color:var(--red);margin-top:6px">Requires ${P[p.requires].name} — not in quote yet</div>`:''}
-  <div class="addon-actions"><button data-detail="${id}">Details</button><button data-add="${id}" ${missingReq?'disabled':''}>${state.addons.has(id)?'Remove':'Add'}</button></div></div>`}).join('');
+  ${missing.length?`<div class="mini" style="color:var(--red);margin-top:6px">Requires ${missing.join(' and ')} — not in quote yet</div>`:''}
+  <div class="addon-actions"><button data-detail="${id}">Details</button><button data-add="${id}" ${missing.length?'disabled':''}>${state.addons.has(id)?'Remove':'Add'}</button></div></div>`}).join('');
  document.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>openDetails(b.dataset.detail));
  document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{toggleAddon(b.dataset.add);renderAddons();render();});
 }
@@ -923,6 +929,12 @@ function compute(){
  }else if(admins>2||devices>1||branches>1){assessment=true;if(branches>1)approval=true;}
 
  state.addons.forEach(id=>{if(id===coreId&&state.coreIncluded)return;const p=P[id];initial+=p.price;lines.push([`${p.name} (starting)`,p.price]);minD=Math.max(minD,p.delivery[0]);maxD=Math.max(maxD,p.delivery[1]);if(p.assessment)assessment=true;});
+ if(state.cloud==='none'){
+   const cloudGated=[];
+   if(state.coreIncluded&&core.requiresCloud)cloudGated.push(core.name);
+   state.addons.forEach(id=>{if(P[id].requiresCloud)cloudGated.push(P[id].name);});
+   if(cloudGated.length){approval=true;lines.push([`Cloud Access required for: ${[...new Set(cloudGated)].join(', ')}`,null]);}
+ }
  if(state.careMode==='monthly'){care=P.care.price;initial+=care;lines.push([`${P.care.name} — first month`,care]);}
  else if(state.careMode==='annual'){care=P.care.price*12;initial+=care;lines.push([`${P.care.name} — 12 months prepaid (18 months coverage, 6 free)`,care]);}
  if(state.addons.size>=5||state.needs.has('everything')||branches>1)approval=true;
@@ -1099,7 +1111,7 @@ function openDetails(id){const p=P[id];$('modalCategory').textContent=p.category
  const modalPrice=p.price==null?'Request Assessment':`${peso(p.price)}${p.billing.includes('Starting')||p.assessment?'+':''}`;
  const deliveryLabel=p.delivery?`${p.delivery[0]}–${p.delivery[1]} business days`:'Delivery after assessment';
  $('modalBody').innerHTML=`<div class="detail-grid">
- <div class="detail-block"><h3>Price & Billing</h3><div class="detail-price">${modalPrice}</div><div class="pillrow"><span class="pill">${p.billing}</span><span class="pill">${deliveryLabel}</span>${p.assessment?'<span class="pill">Assessment required</span>':''}${p.requires?`<span class="pill">Requires: ${P[p.requires]?.name||p.requires}</span>`:''}</div></div>
+ <div class="detail-block"><h3>Price & Billing</h3><div class="detail-price">${modalPrice}</div><div class="pillrow"><span class="pill">${p.billing}</span><span class="pill">${deliveryLabel}</span>${p.assessment?'<span class="pill">Assessment required</span>':''}${p.requires?`<span class="pill">Requires: ${P[p.requires]?.name||p.requires}</span>`:''}${p.requiresCloud?'<span class="pill">Requires: Cloud Access</span>':''}</div></div>
  <div class="detail-block"><h3>What it solves</h3><p>${p.solves}</p></div>
  <div class="detail-block full"><h3>What to Expect</h3><p>Before the final build, AM777 shares a reference/demo version of this system so the customer can review the layout, flow, and features first. The final version is completed and delivered within the estimated timeframe above only after that reference is reviewed and approved.</p></div>
  <div class="detail-block full"><h3>Included</h3>${list(p.inclusions)}</div>
