@@ -28,6 +28,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{width:min
 .hero-card,.panel{border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01)),var(--panel);box-shadow:0 14px 42px rgba(0,0,0,.17)}
 .hero-card{padding:18px;box-shadow:var(--shadow)}.statrow{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}.statrow:last-child{border-bottom:0}.statrow span{color:var(--muted);font-size:12px}.statrow strong{text-align:right;font-size:12px}
 .notice{border:1px solid rgba(127,169,233,.24);background:rgba(127,169,233,.055);color:#ced9e8;border-radius:14px;padding:13px 15px;font-size:12.5px;line-height:1.6;margin-bottom:22px}
+.notice.warn{border-color:rgba(229,164,164,.35);background:rgba(229,164,164,.08);color:var(--red);margin-bottom:0}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 20px}.tab{border-color:var(--line);background:rgba(255,255,255,.02);border-radius:999px}.view{display:none}.view.active{display:block}
 .layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:16px;align-items:start}.panel{padding:18px}.panel.sticky{position:sticky;top:88px}.panel h2{margin:0 0 4px;font-size:22px;letter-spacing:-.03em}.panel h3{margin:0 0 4px;font-size:16px}.sub{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
 .step{padding:17px 0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}.stephead{display:flex;gap:10px;align-items:center;margin-bottom:12px}.num{width:26px;height:26px;flex:0 0 26px;border-radius:8px;display:grid;place-items:center;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11px;color:#d8e4f5}
@@ -48,6 +49,7 @@ textarea{min-height:80px;resize:vertical}.chips{display:flex;gap:8px;flex-wrap:w
 .catalog-tools{display:grid;grid-template-columns:1fr 220px;gap:10px;margin:14px 0}.catalog{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:15px;background:var(--panel);padding:15px}.card h3{font-size:15px;margin:0}.card .p{font-size:21px;font-weight:750;letter-spacing:-.035em;margin:10px 0 7px}.card p{color:var(--muted);font-size:11.5px;line-height:1.5;margin:0}.tag{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:5px 8px;color:#c5d4e7;font-size:9.5px;margin-bottom:9px}.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.card-actions button{border:1px solid var(--line);background:#091522;color:#c9d4e0;border-radius:9px;padding:8px;font-size:10.5px}
 .industrygrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.industry{border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.018);padding:13px}.industry strong{display:block;font-size:12.5px;margin-bottom:6px}.industry span{color:var(--muted);font-size:10.8px;line-height:1.5}
 .calcgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}.bigresult{margin-top:13px;border:1px solid rgba(127,169,233,.22);background:rgba(127,169,233,.06);border-radius:14px;padding:16px}.bigresult span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.bigresult strong{display:block;font-size:34px;letter-spacing:-.05em;margin-top:5px}.rules{display:grid;gap:8px;margin-top:12px}.rule{border-bottom:1px solid var(--line);padding:8px 0;color:#cbd5df;font-size:11.5px;line-height:1.5}.rule:last-child{border-bottom:0}.hidden{display:none!important}
+.commission-out{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}.commission-out .box{flex:1;min-width:170px;border:1px solid rgba(127,169,233,.22);background:rgba(127,169,233,.06);border-radius:14px;padding:14px}.commission-out .box span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.commission-out .box b{display:block;font-size:22px;letter-spacing:-.03em;margin-top:6px;font-weight:760}
 .modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(2,7,13,.74);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.open{display:flex}.modal{width:min(900px,100%);max-height:88vh;overflow:auto;border:1px solid var(--line2);border-radius:20px;background:linear-gradient(180deg,#101e2e,#0b1623);box-shadow:0 30px 100px rgba(0,0,0,.55)}.modal-head{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:18px;border-bottom:1px solid var(--line);background:rgba(13,25,39,.96);backdrop-filter:blur(12px)}.modal-head h2{margin:4px 0 0;font-size:24px;letter-spacing:-.035em}.close{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font-size:18px}.modal-body{padding:18px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.detail-block{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);padding:14px}.detail-block.full{grid-column:1/-1}.detail-block h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#c5d4e7}.detail-block p{margin:0;color:#cbd5df;font-size:12.5px;line-height:1.6}.detail-list{margin:0;padding-left:17px;color:#cbd5df;font-size:12.5px;line-height:1.7}.detail-price{font-size:31px;font-weight:780;letter-spacing:-.045em}.pillrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.pill{border:1px solid var(--line);border-radius:999px;padding:6px 8px;color:#b8c5d4;font-size:10px;background:rgba(255,255,255,.025)}
 
 .product-ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:0 0 22px}
@@ -226,19 +228,24 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
 
 <section id="commission" class="view">
   <div class="calcgrid">
-    <div class="panel"><div class="eyebrow">Private Agent Tool</div><h2>Commission estimate</h2><p class="sub">The agent enters only the collected sale amount. This shows a straight 20% reference — no hidden expense allowance is assumed or applied.</p>
+    <div class="panel"><div class="eyebrow">Private Agent Tool</div><h2>Commission estimate</h2><p class="sub">Follows the current Configurator quote automatically — no manual entry. Expense is deducted per selected item before commission is calculated.</p>
       <div class="fieldgrid" style="margin-top:14px">
-        <div class="field"><label>Collected Customer Payment</label><input id="commPayment" type="number" min="0" placeholder="e.g. 25554" /></div>
-        <div class="field"><label>Commission Policy</label><input value="20% of collected payment (reference)" readonly /></div>
+        <div class="field"><label>Quoted Customer Payment (One-Time)</label><input id="commQuotedOneTime" value="₱0" readonly /></div>
+        <div class="field"><label>Quoted Customer Payment (Recurring)</label><input id="commQuotedRecurring" value="₱0" readonly /></div>
       </div>
-      <div class="actions" style="margin-top:10px"><button id="useCurrentQuote" class="btn">Use Current Quote Total</button></div>
-      <div class="bigresult"><span>Your Estimated Commission (20%)</span><strong id="commResult">₱0.00</strong></div>
-      <div class="helper">This is a reference estimate, not the final approved figure — the SOT defines commission as 20% of the approved commissionable net amount after approved project/tool/system expense allowance and adjustments, and this offline tool has no approved allowance formula to apply. Because it is a standalone HTML file, a technical user can inspect its source code; true secrecy requires server-side calculation in a future connected version.</div>
+      <div class="commission-out">
+        <div class="box"><span>Estimated One-Time Commission</span><b id="commOneTimeOut">₱0</b></div>
+        <div class="box"><span>Estimated Recurring Commission</span><b id="commRecurringOut">₱0</b></div>
+      </div>
+      <div id="commPendingNote" class="notice warn" style="display:none;margin-top:12px">Commission pending expense verification.</div>
+      <div class="notice" style="margin-top:12px">Final commission subject to AM777 confirmation.</div>
+      <div class="helper">Commissionable Net = Quoted Total − Total Applicable Expenses (5% of each selected item). Commission = Commissionable Net × 20%. This is never 20% of the gross quoted amount. Because it is a standalone HTML file, a technical user can inspect its source code; true secrecy requires server-side calculation in a future connected version.</div>
     </div>
     <div class="panel"><div class="eyebrow">Commission Rules</div><h2>Agent reference</h2><div class="rules">
-      <div class="rule">Commission applies to successfully collected customer payments.</div>
-      <div class="rule">This offline estimate is a straight 20% reference — it does not know or apply any expense allowance; treat it as a starting estimate, not the final approved figure.</div>
-      <div class="rule">Renewals are not guaranteed; any renewal commission applies only when the customer actually renews and pays. No fixed renewal percentage is set.</div>
+      <div class="rule">Commission is calculated from the exact system, plans, integrations, capacity bundles, and add-ons currently selected in the Configurator — change the quote and commission recalculates automatically.</div>
+      <div class="rule">Company expenses, margins, and profit are never shown — only your estimated commission.</div>
+      <div class="rule">If any selected item has no valid quoted price (e.g. Complex Integration), commission is not calculated until AM777 confirms that item's price.</div>
+      <div class="rule">Renewals are not guaranteed; any renewal commission applies only when the customer actually renews and pays.</div>
       <div class="rule">Custom scope, discounts, multi-branch complexity, and integrations require AM777 confirmation before commitment.</div>
     </div></div>
   </div>
@@ -553,7 +560,7 @@ const NEEDS=[['sales','Sales / POS'],['stocks','Stocks'],['customers','Customers
 const NEED_TO_PRODUCT={everything:'management',branches:'management',sales:'pos',stocks:'inventory',customers:'crm',employees:'hr',orders:'ordering',booking:'booking',expenses:'cash',reports:'analytics',automation:'workflow',online:'landing'};
 const SYSTEM_TYPE_TO_PRODUCT={pos:'pos',booking:'booking',inventory:'inventory',crm:'crm',hr:'hr',accounting:'finance',ordering:'ordering',website:'landing',logistics:'workflow',project:'workflow',erp:'management',other:null};
 const SETUP_LABELS={none:'No System Yet',manual:'Manual / Paper',sheets:'Excel / Google Sheets',am777:'Existing AM777 System',thirdparty:'Existing Third-Party Software',multiple:'Multiple Disconnected Tools'};
-const INTERNAL={agentRate:.20};
+const INTERNAL={agentRate:.20,expenseRate:.05};
 
 const state={cloud:'none',care:false,needs:new Set(),addons:new Set(),showAll:false,coreIncluded:true,coreId:null};
 const $=id=>document.getElementById(id);
@@ -578,7 +585,6 @@ function init(){
  $('saveDraft').onclick=saveDraft;$('loadDraft').onclick=loadDraft;$('resetConfig').onclick=reset;
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
  $('catalogSearch').addEventListener('input',renderCatalog);$('catalogCategory').addEventListener('change',renderCatalog);
- $('commPayment').addEventListener('input',calcCommission);$('useCurrentQuote').onclick=()=>{$('commPayment').value=compute().initial;calcCommission();};
  $('closeModal').onclick=closeModal;$('detailModal').onclick=e=>{if(e.target===$('detailModal'))closeModal();};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
  syncCoreDefault();renderNeeds();renderCloud();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();render();
 }
@@ -691,6 +697,7 @@ function render(){
  if(q.status==='approval'){note='<strong>AM777 APPROVAL REQUIRED.</strong> Do not present this estimate as a final committed price.';next='Send the configuration to AM777 for price/scope approval before committing to the customer.'}
  if(state.cloud==='6m'&&q.status==='approval'&&((+$('staffUsers').value>10)||(+$('adminUsers').value>2))){next='The 6-month Cloud plan exceeds included capacity. AM777 must confirm the add-on pricing before final quote.'}
  $('assessmentNote').innerHTML=note;$('nextAction').textContent=next;
+ renderCommissionPanel();
 }
 
 function recurringText(q,lang){const parts=[];if(q.cloudRenewal)parts.push(`${peso(q.cloudRenewal)} / ${state.cloud==='6m'?'6':'12'} ${lang==='tl'?'buwan':'months'} Cloud`);if(q.capacityRenewal)parts.push(`${peso(q.capacityRenewal)} / ${lang==='tl'?'taon':'year'} extra capacity`);if(q.care)parts.push(`${peso(q.care)} / ${lang==='tl'?'buwan':'month'} AM777 Care`);return parts.length?parts.join(' + '):(lang==='tl'?'Wala':'None');}
@@ -723,7 +730,60 @@ function openDetails(id){const p=P[id];$('modalCategory').textContent=p.category
 function closeModal(){$('detailModal').classList.remove('open');}
 
 function renderIndustries(){$('industryGrid').innerHTML=Object.entries(INDUSTRIES).map(([k,v])=>`<div class="industry"><strong>${v.label}</strong><span><b>Core:</b> ${P[v.core]?.name||'Assessment'}<br>${v.products.map(id=>P[id]?.name).filter(Boolean).join(' · ')}</span></div>`).join('');}
-function calcCommission(){const collected=Math.max(0,+$('commPayment').value||0),commission=collected*INTERNAL.agentRate;$('commResult').textContent=new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',minimumFractionDigits:2}).format(commission);}
+/* ===== Quote-to-commission: mirrors compute()'s exact selected-item logic, read-only, never alters the customer quote ===== */
+function collectCommissionItems(){
+ const setup=$('currentSetup').value,staff=+$('staffUsers').value||1,admins=+$('adminUsers').value||1,devices=+$('devices').value||1,branches=+$('branches').value||1;
+ const coreId=state.coreId||recommendCoreId(),core=P[coreId];
+ const items=[];let hasUnknownPricing=false;
+
+ if(['thirdparty','multiple'].includes(setup)){
+   const i=P[$('integrationTier').value];
+   if(i.price==null)hasUnknownPricing=true;else items.push({label:i.name,amount:i.price,recurring:false});
+ }
+ if(state.coreIncluded){
+   if(core.price==null)hasUnknownPricing=true;else items.push({label:core.name,amount:core.price,recurring:false});
+ }
+ if(state.cloud==='6m')items.push({label:P.cloud6.name,amount:P.cloud6.price,recurring:true});
+ if(state.cloud==='12m')items.push({label:P.cloud12.name,amount:P.cloud12.price,recurring:true});
+
+ if(state.cloud==='12m'){
+   const extraStaff=Math.max(0,staff-10),extraAdmins=Math.max(0,admins-2),extraDevices=Math.max(0,devices-3),extraBranches=Math.max(0,branches-1);
+   const sp=cheapestStaff(extraStaff);if(sp.amount)items.push({label:`Extra staff capacity (${sp.label})`,amount:sp.amount,recurring:true});
+   if(extraAdmins)items.push({label:`${extraAdmins}× +1 Owner/Admin`,amount:extraAdmins*CAPACITY.admin1.price,recurring:true});
+   if(extraDevices)items.push({label:`${extraDevices}× +1 Connected Device`,amount:extraDevices*CAPACITY.device1.price,recurring:true});
+   if(extraBranches)items.push({label:`${extraBranches}× additional branch Cloud`,amount:extraBranches*CAPACITY.branchCloud.price,recurring:true});
+   // Additional branch SETUP is an explicit range (₱7,777–₱12,777+), never totaled into the quote — excluded from commission for the same reason.
+ }
+ // 6-month Cloud exceeding capacity: compute() charges nothing for it (AM777 approval required, no invented price) — nothing to add here either.
+
+ state.addons.forEach(id=>{if(id===coreId&&state.coreIncluded)return;const p=P[id];if(p.price==null)hasUnknownPricing=true;else items.push({label:p.name,amount:p.price,recurring:false});});
+ if(state.care)items.push({label:P.care.name,amount:P.care.price,recurring:true});
+
+ return {items,hasUnknownPricing};
+}
+
+function computeCommission(){
+ const {items,hasUnknownPricing}=collectCommissionItems();
+ let quotedOneTime=0,quotedRecurring=0;
+ items.forEach(it=>{if(it.recurring)quotedRecurring+=it.amount;else quotedOneTime+=it.amount;});
+ if(hasUnknownPricing)return{quotedOneTime,quotedRecurring,pending:true};
+ const expOneTime=quotedOneTime*INTERNAL.expenseRate,expRecurring=quotedRecurring*INTERNAL.expenseRate;
+ const oneTimeNet=Math.max(quotedOneTime-expOneTime,0),recurringNet=Math.max(quotedRecurring-expRecurring,0);
+ return{
+   quotedOneTime,quotedRecurring,pending:false,
+   oneTimeCommission:Math.round(oneTimeNet*INTERNAL.agentRate),
+   recurringCommission:Math.round(recurringNet*INTERNAL.agentRate)
+ };
+}
+
+function renderCommissionPanel(){
+ const c=computeCommission();
+ $('commQuotedOneTime').value=peso(c.quotedOneTime);
+ $('commQuotedRecurring').value=peso(c.quotedRecurring);
+ $('commPendingNote').style.display=c.pending?'block':'none';
+ $('commOneTimeOut').textContent=c.pending?'—':peso(c.oneTimeCommission);
+ $('commRecurringOut').textContent=c.pending?'—':peso(c.recurringCommission);
+}
 function saveDraft(){const data={customerName:$('customerName').value,businessType:$('businessType').value,quoteLanguage:$('quoteLanguage').value,currentSetup:$('currentSetup').value,currentSystemType:$('currentSystemType').value,existingSystemName:$('existingSystemName').value,existingAccess:$('existingAccess').value,integrationTier:$('integrationTier').value,staffUsers:$('staffUsers').value,adminUsers:$('adminUsers').value,devices:$('devices').value,branches:$('branches').value,cloud:state.cloud,care:state.care,needs:[...state.needs],addons:[...state.addons],coreIncluded:state.coreIncluded};localStorage.setItem('am777_offline_quote_draft',JSON.stringify(data));$('saveDraft').textContent='Saved';setTimeout(()=>$('saveDraft').textContent='Save Offline Draft',1000);}
 function loadDraft(){try{const d=JSON.parse(localStorage.getItem('am777_offline_quote_draft')||'null');if(!d)return alert('No offline draft saved.');['customerName','businessType','quoteLanguage','currentSetup','currentSystemType','existingSystemName','existingAccess','integrationTier','staffUsers','adminUsers','devices','branches'].forEach(id=>{if(d[id]!=null)$(id).value=d[id];});state.cloud=d.cloud||'none';state.care=!!d.care;state.needs=new Set(d.needs||[]);state.addons=new Set(d.addons||[]);syncCoreDefault();if(typeof d.coreIncluded==='boolean')state.coreIncluded=d.coreIncluded;$('careToggle').classList.toggle('selected',state.care);renderNeeds();renderCloud();renderExisting();renderAddons();render();}catch(e){alert('Could not load the saved draft.');}}
 function reset(){localStorage.removeItem('am777_offline_quote_draft');$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.care=false;state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('careToggle').classList.remove('selected');$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderExisting();renderAddons();render();}
