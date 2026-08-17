@@ -7,16 +7,19 @@
 <title>AM777 Offline Agent Knowledge Tool</title>
 <style>
 :root{
-  --bg:#07101b;--panel:#0d1927;--panel2:#111f30;--text:#f5f8fc;--muted:#96a6b9;
-  --line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.16);--accent:#dbe8fb;--accent2:#7fa9e9;
+  --bg:#020203;--panel:rgba(4,5,7,.94);--panel2:rgba(0,0,0,.9);--text:#f3f5fa;--muted:#a9b2c7;
+  --line:rgba(243,245,250,.07);--line2:rgba(139,196,255,.2);--accent:#8bc4ff;--accent2:#459dfb;
   --green:#9adbb9;--amber:#e8ca88;--red:#e5a4a4;--shadow:0 22px 70px rgba(0,0,0,.28);
   --r:18px;--rs:12px;--max:1380px
 }
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);
-background:radial-gradient(circle at 88% 0%,rgba(58,103,171,.18),transparent 28%),radial-gradient(circle at 4% 24%,rgba(34,70,117,.12),transparent 25%),var(--bg)}
+body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);position:relative;
+background:radial-gradient(ellipse 950px 520px at 50% -10%,rgba(69,157,251,.08),transparent 62%),var(--bg)}
 button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{width:min(var(--max),calc(100% - 28px));margin:0 auto}
-.topbar{position:sticky;top:0;z-index:50;background:rgba(7,16,27,.84);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+#networkCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.6}
+@media(prefers-reduced-motion:reduce){#networkCanvas{opacity:.4}}
+.topbar,main,footer{position:relative;z-index:1}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(2,3,4,.86);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
 .topbar-inner{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .brand{display:flex;align-items:center;gap:11px}.mark{width:38px;height:38px;border-radius:12px;border:1px solid var(--line2);display:grid;place-items:center;font-weight:900;font-size:12px;letter-spacing:.08em;background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02))}
 .brand strong{display:block;font-size:14px}.brand span{display:block;color:var(--muted);font-size:10.5px;margin-top:2px}
@@ -29,6 +32,10 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{width:min
 .hero-card{padding:18px;box-shadow:var(--shadow)}.statrow{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}.statrow:last-child{border-bottom:0}.statrow span{color:var(--muted);font-size:12px}.statrow strong{text-align:right;font-size:12px}
 .notice{border:1px solid rgba(127,169,233,.24);background:rgba(127,169,233,.055);color:#ced9e8;border-radius:14px;padding:13px 15px;font-size:12.5px;line-height:1.6;margin-bottom:22px}
 .notice.warn{border-color:rgba(229,164,164,.35);background:rgba(229,164,164,.08);color:var(--red);margin-bottom:0}
+.quickstats{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 16px}
+.qs{border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02);padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.qs span{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.qs strong{font-size:12px;font-weight:700;color:var(--text)}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 20px}.tab{border-color:var(--line);background:rgba(255,255,255,.02);border-radius:999px}.view{display:none}.view.active{display:block}
 .layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:16px;align-items:start}.panel{padding:18px}.panel.sticky{position:sticky;top:88px}.panel h2{margin:0 0 4px;font-size:22px;letter-spacing:-.03em}.panel h3{margin:0 0 4px;font-size:16px}.sub{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
 .step{padding:17px 0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}.stephead{display:flex;gap:10px;align-items:center;margin-bottom:12px}.num{width:26px;height:26px;flex:0 0 26px;border-radius:8px;display:grid;place-items:center;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11px;color:#d8e4f5}
@@ -50,6 +57,20 @@ textarea{min-height:80px;resize:vertical}.chips{display:flex;gap:8px;flex-wrap:w
 .industrygrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.industry{border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.018);padding:13px}.industry strong{display:block;font-size:12.5px;margin-bottom:6px}.industry span{color:var(--muted);font-size:10.8px;line-height:1.5}
 .calcgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}.bigresult{margin-top:13px;border:1px solid rgba(127,169,233,.22);background:rgba(127,169,233,.06);border-radius:14px;padding:16px}.bigresult span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.bigresult strong{display:block;font-size:34px;letter-spacing:-.05em;margin-top:5px}.rules{display:grid;gap:8px;margin-top:12px}.rule{border-bottom:1px solid var(--line);padding:8px 0;color:#cbd5df;font-size:11.5px;line-height:1.5}.rule:last-child{border-bottom:0}.hidden{display:none!important}
 .commission-out{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}.commission-out .box{flex:1;min-width:170px;border:1px solid rgba(127,169,233,.22);background:rgba(127,169,233,.06);border-radius:14px;padding:14px}.commission-out .box span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.commission-out .box b{display:block;font-size:22px;letter-spacing:-.03em;margin-top:6px;font-weight:760}
+.sold-item{border:1px solid var(--line);border-radius:12px;padding:12px 13px;background:rgba(255,255,255,.02)}
+.sold-item-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.sold-item-top strong{font-size:13px}
+.sold-item .mini{margin-top:5px}
+.sold-item-commission{margin-top:6px;font-size:13px;font-weight:750;color:var(--accent2)}
+.sold-item-commission.pending{color:var(--amber);font-weight:700;font-size:11.5px}
+.sold-remove{width:26px;height:26px;flex-shrink:0;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);font-size:14px;line-height:1}
+.sold-remove:hover{color:var(--red);border-color:rgba(229,164,164,.35)}
+.comm-totalbox{margin-top:14px;border-top:1px solid var(--line2);padding-top:14px;display:grid;gap:8px}
+.comm-totalrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:12px;color:var(--muted)}
+.comm-totalrow strong{font-size:15px;color:var(--text);font-weight:700}
+.comm-grandtotal{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:4px;padding-top:10px;border-top:1px solid var(--line)}
+.comm-grandtotal span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.comm-grandtotal strong{font-size:26px;letter-spacing:-.04em;color:var(--accent)}
 .modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(2,7,13,.74);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.open{display:flex}.modal{width:min(900px,100%);max-height:88vh;overflow:auto;border:1px solid var(--line2);border-radius:20px;background:linear-gradient(180deg,#101e2e,#0b1623);box-shadow:0 30px 100px rgba(0,0,0,.55)}.modal-head{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:18px;border-bottom:1px solid var(--line);background:rgba(13,25,39,.96);backdrop-filter:blur(12px)}.modal-head h2{margin:4px 0 0;font-size:24px;letter-spacing:-.035em}.close{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font-size:18px}.modal-body{padding:18px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.detail-block{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);padding:14px}.detail-block.full{grid-column:1/-1}.detail-block h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#c5d4e7}.detail-block p{margin:0;color:#cbd5df;font-size:12.5px;line-height:1.6}.detail-list{margin:0;padding-left:17px;color:#cbd5df;font-size:12.5px;line-height:1.7}.detail-price{font-size:31px;font-weight:780;letter-spacing:-.045em}.pillrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.pill{border:1px solid var(--line);border-radius:999px;padding:6px 8px;color:#b8c5d4;font-size:10px;background:rgba(255,255,255,.025)}
 
 .product-ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:0 0 22px}
@@ -66,22 +87,18 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
 </style>
 </head>
 <body>
+<canvas id="networkCanvas" aria-hidden="true"></canvas>
 <header class="topbar"><div class="shell topbar-inner"><div class="brand"><div class="mark">A7</div><div><strong>AM777 Offline Agent Knowledge Tool</strong><span>Products · Pricing · Quote Reference</span></div></div><nav class="nav"><button data-tab="configure" class="active">Configure</button><button data-tab="catalog">Products</button><button data-tab="industries">Industries</button><button data-tab="commission">Commission</button></nav></div></header>
 
 <main class="shell">
-<section class="hero">
-  <div><div class="eyebrow">Offline Knowledge Base</div><h1>One aligned local product reference your agents can use anywhere.</h1>
-  <p>No login, no CRM, no internet required. Agents can learn the approved AM777 local products, match them to different industries, configure a customer estimate, size connected users/devices/branches, and calculate their own conservative commission estimate.</p></div>
-  <aside class="hero-card">
-    <div class="statrow"><span>General business systems</span><strong>From ₱2,777+</strong></div>
-    <div class="statrow"><span>Offline POS option</span><strong>₱9,777 one-time</strong></div>
-    <div class="statrow"><span>Cloud 6 months</span><strong>₱12,777</strong></div>
-    <div class="statrow"><span>Cloud 12 months</span><strong>₱15,777 · Best Value</strong></div>
-    <div class="statrow"><span>Cloud included</span><strong>10 staff · 2 admins · 3 devices · 1 branch</strong></div>
-    <div class="statrow"><span>Support</span><strong>AM777 Care from ₱777/month</strong></div>
-    <div class="statrow"><span>Standard downpayment</span><strong>50% before work begins</strong></div>
-  </aside>
-</section>
+<div class="quickstats">
+  <div class="qs"><span>POS</span><strong>₱9,777 one-time</strong></div>
+  <div class="qs"><span>Cloud 6mo</span><strong>₱12,777</strong></div>
+  <div class="qs"><span>Cloud 12mo</span><strong>₱15,777</strong></div>
+  <div class="qs"><span>Cloud included</span><strong>10 staff · 2 admins · 3 devices · 1 branch</strong></div>
+  <div class="qs"><span>Care</span><strong>from ₱777/mo</strong></div>
+  <div class="qs"><span>Downpayment</span><strong>50% before work begins</strong></div>
+</div>
 
 <div class="notice"><strong>Offline-use rule:</strong> this file contains the approved product/pricing knowledge needed by the agent. Existing software / system integration is always assessment-first. POS is only one product option—not the universal starting point. Complex scope, multi-branch setups, 6-month plans that exceed included Cloud capacity, regulatory claims, and custom integrations must be confirmed by AM777 before the agent presents a final price. <strong>Standard payment term:</strong> 50% downpayment on any product before work begins, balance due on delivery.</div>
 
@@ -228,23 +245,38 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
 
 <section id="commission" class="view">
   <div class="calcgrid">
-    <div class="panel"><div class="eyebrow">Private Agent Tool</div><h2>Commission estimate</h2><p class="sub">Follows the current Configurator quote automatically — no manual entry. Expense is deducted per selected item before commission is calculated.</p>
-      <div class="fieldgrid" style="margin-top:14px">
-        <div class="field"><label>Quoted Customer Payment (One-Time)</label><input id="commQuotedOneTime" value="₱0" readonly /></div>
-        <div class="field"><label>Quoted Customer Payment (Recurring)</label><input id="commQuotedRecurring" value="₱0" readonly /></div>
+    <div class="panel">
+      <div class="eyebrow">Private Agent Tool</div><h2>Commission Calculator</h2>
+      <p class="sub">Add exactly what you sold. Commission calculates automatically — no manual entry, no manual math.</p>
+      <div class="actions" style="margin-top:12px;grid-template-columns:auto">
+        <button id="addSoldBtn" class="btn primary" type="button">+ Add Sold System</button>
       </div>
-      <div class="commission-out">
-        <div class="box"><span>Estimated One-Time Commission</span><b id="commOneTimeOut">₱0</b></div>
-        <div class="box"><span>Estimated Recurring Commission</span><b id="commRecurringOut">₱0</b></div>
+
+      <div id="soldPickerBox" class="hidden" style="margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:14px;background:rgba(255,255,255,.015)">
+        <div class="fieldgrid">
+          <div class="field full"><label>What was sold?</label><select id="soldPicker"></select></div>
+        </div>
+        <div id="capacitySubform" class="fieldgrid hidden" style="margin-top:10px">
+          <div class="field"><label>Extra Staff Users</label><input id="soldStaff" type="number" min="0" value="0" /></div>
+          <div class="field"><label>Extra Owner/Admin</label><input id="soldAdmin" type="number" min="0" value="0" /></div>
+          <div class="field"><label>Extra Connected Devices</label><input id="soldDevice" type="number" min="0" value="0" /></div>
+          <div class="field"><label>Extra Branches (Cloud)</label><input id="soldBranch" type="number" min="0" value="0" /></div>
+        </div>
+        <div class="actions" style="margin-top:10px">
+          <button id="confirmAddSold" class="btn primary" type="button">Add</button>
+          <button id="cancelAddSold" class="btn" type="button">Cancel</button>
+        </div>
       </div>
-      <div id="commPendingNote" class="notice warn" style="display:none;margin-top:12px">Commission pending expense verification.</div>
-      <div class="notice" style="margin-top:12px">Final commission subject to AM777 confirmation.</div>
-      <div class="helper">Commissionable Net = Quoted Total − Total Applicable Expenses (5% of each selected item). Commission = Commissionable Net × 20%. This is never 20% of the gross quoted amount. Because it is a standalone HTML file, a technical user can inspect its source code; true secrecy requires server-side calculation in a future connected version.</div>
+
+      <div id="soldItemsList" style="margin-top:16px;display:grid;gap:8px"></div>
+      <div id="commSubtotals"></div>
+      <div class="notice" style="margin-top:14px">Final commission subject to AM777 confirmation.</div>
+      <div class="helper">Uses the same approved product/pricing source as the Configurator and Products tabs — nothing here is a separate price list.</div>
     </div>
     <div class="panel"><div class="eyebrow">Commission Rules</div><h2>Agent reference</h2><div class="rules">
-      <div class="rule">Commission is calculated from the exact system, plans, integrations, capacity bundles, and add-ons currently selected in the Configurator — change the quote and commission recalculates automatically.</div>
+      <div class="rule">Commission follows exactly what you mark as sold — add or remove an item and totals recalculate immediately.</div>
       <div class="rule">Company expenses, margins, and profit are never shown — only your estimated commission.</div>
-      <div class="rule">If any selected item has no valid quoted price (e.g. Complex Integration), commission is not calculated until AM777 confirms that item's price.</div>
+      <div class="rule">If a sold item has no confirmed price (e.g. Complex Integration), it shows Pending and is excluded from totals until AM777 confirms the price.</div>
       <div class="rule">Renewals are not guaranteed; any renewal commission applies only when the customer actually renews and pays.</div>
       <div class="rule">Custom scope, discounts, multi-branch complexity, and integrations require AM777 confirmation before commitment.</div>
     </div></div>
@@ -586,7 +618,7 @@ function init(){
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
  $('catalogSearch').addEventListener('input',renderCatalog);$('catalogCategory').addEventListener('change',renderCatalog);
  $('closeModal').onclick=closeModal;$('detailModal').onclick=e=>{if(e.target===$('detailModal'))closeModal();};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
- syncCoreDefault();renderNeeds();renderCloud();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();render();
+ syncCoreDefault();renderNeeds();renderCloud();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();render();initCommissionCalculator();
 }
 function switchTab(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:document.querySelector('.tabs').offsetTop-78,behavior:'smooth'});}
 function renderNeeds(){document.querySelectorAll('[data-need]').forEach(b=>b.classList.toggle('selected',state.needs.has(b.dataset.need)));}
@@ -697,7 +729,6 @@ function render(){
  if(q.status==='approval'){note='<strong>AM777 APPROVAL REQUIRED.</strong> Do not present this estimate as a final committed price.';next='Send the configuration to AM777 for price/scope approval before committing to the customer.'}
  if(state.cloud==='6m'&&q.status==='approval'&&((+$('staffUsers').value>10)||(+$('adminUsers').value>2))){next='The 6-month Cloud plan exceeds included capacity. AM777 must confirm the add-on pricing before final quote.'}
  $('assessmentNote').innerHTML=note;$('nextAction').textContent=next;
- renderCommissionPanel();
 }
 
 function recurringText(q,lang){const parts=[];if(q.cloudRenewal)parts.push(`${peso(q.cloudRenewal)} / ${state.cloud==='6m'?'6':'12'} ${lang==='tl'?'buwan':'months'} Cloud`);if(q.capacityRenewal)parts.push(`${peso(q.capacityRenewal)} / ${lang==='tl'?'taon':'year'} extra capacity`);if(q.care)parts.push(`${peso(q.care)} / ${lang==='tl'?'buwan':'month'} AM777 Care`);return parts.length?parts.join(' + '):(lang==='tl'?'Wala':'None');}
@@ -730,64 +761,147 @@ function openDetails(id){const p=P[id];$('modalCategory').textContent=p.category
 function closeModal(){$('detailModal').classList.remove('open');}
 
 function renderIndustries(){$('industryGrid').innerHTML=Object.entries(INDUSTRIES).map(([k,v])=>`<div class="industry"><strong>${v.label}</strong><span><b>Core:</b> ${P[v.core]?.name||'Assessment'}<br>${v.products.map(id=>P[id]?.name).filter(Boolean).join(' · ')}</span></div>`).join('');}
-/* ===== Quote-to-commission: mirrors compute()'s exact selected-item logic, read-only, never alters the customer quote ===== */
-function collectCommissionItems(){
- const setup=$('currentSetup').value,staff=+$('staffUsers').value||1,admins=+$('adminUsers').value||1,devices=+$('devices').value||1,branches=+$('branches').value||1;
- const coreId=state.coreId||recommendCoreId(),core=P[coreId];
- const items=[];let hasUnknownPricing=false;
+/* ===== Commission Calculator: independent snippet-based sold-items list =====
+   Reuses the same P/CAPACITY pricing data and cheapestStaff() bundle engine as
+   the Configurator — no second price list. Fully independent of Configurator
+   state per the snippet-UX spec: the agent adds exactly what was sold. */
+const RECURRING_CATALOG_IDS=['cloud6','cloud12','care'];
+let soldItems=[];let soldSeq=0;
 
- if(['thirdparty','multiple'].includes(setup)){
-   const i=P[$('integrationTier').value];
-   if(i.price==null)hasUnknownPricing=true;else items.push({label:i.name,amount:i.price,recurring:false});
- }
- if(state.coreIncluded){
-   if(core.price==null)hasUnknownPricing=true;else items.push({label:core.name,amount:core.price,recurring:false});
- }
- if(state.cloud==='6m')items.push({label:P.cloud6.name,amount:P.cloud6.price,recurring:true});
- if(state.cloud==='12m')items.push({label:P.cloud12.name,amount:P.cloud12.price,recurring:true});
-
- if(state.cloud==='12m'){
-   const extraStaff=Math.max(0,staff-10),extraAdmins=Math.max(0,admins-2),extraDevices=Math.max(0,devices-3),extraBranches=Math.max(0,branches-1);
-   const sp=cheapestStaff(extraStaff);if(sp.amount)items.push({label:`Extra staff capacity (${sp.label})`,amount:sp.amount,recurring:true});
-   if(extraAdmins)items.push({label:`${extraAdmins}× +1 Owner/Admin`,amount:extraAdmins*CAPACITY.admin1.price,recurring:true});
-   if(extraDevices)items.push({label:`${extraDevices}× +1 Connected Device`,amount:extraDevices*CAPACITY.device1.price,recurring:true});
-   if(extraBranches)items.push({label:`${extraBranches}× additional branch Cloud`,amount:extraBranches*CAPACITY.branchCloud.price,recurring:true});
-   // Additional branch SETUP is an explicit range (₱7,777–₱12,777+), never totaled into the quote — excluded from commission for the same reason.
- }
- // 6-month Cloud exceeding capacity: compute() charges nothing for it (AM777 approval required, no invented price) — nothing to add here either.
-
- state.addons.forEach(id=>{if(id===coreId&&state.coreIncluded)return;const p=P[id];if(p.price==null)hasUnknownPricing=true;else items.push({label:p.name,amount:p.price,recurring:false});});
- if(state.care)items.push({label:P.care.name,amount:P.care.price,recurring:true});
-
- return {items,hasUnknownPricing};
+function commissionForAmount(amount){
+ const expense=amount*INTERNAL.expenseRate; // 5% — internal only, never shown to the agent
+ const net=Math.max(amount-expense,0);
+ return Math.round(net*INTERNAL.agentRate); // 20% of net
 }
 
-function computeCommission(){
- const {items,hasUnknownPricing}=collectCommissionItems();
- let quotedOneTime=0,quotedRecurring=0;
- items.forEach(it=>{if(it.recurring)quotedRecurring+=it.amount;else quotedOneTime+=it.amount;});
- if(hasUnknownPricing)return{quotedOneTime,quotedRecurring,pending:true};
- const expOneTime=quotedOneTime*INTERNAL.expenseRate,expRecurring=quotedRecurring*INTERNAL.expenseRate;
- const oneTimeNet=Math.max(quotedOneTime-expOneTime,0),recurringNet=Math.max(quotedRecurring-expRecurring,0);
- return{
-   quotedOneTime,quotedRecurring,pending:false,
-   oneTimeCommission:Math.round(oneTimeNet*INTERNAL.agentRate),
-   recurringCommission:Math.round(recurringNet*INTERNAL.agentRate)
+function populateSoldPicker(){
+ const groups={};
+ CATALOG_IDS.forEach(id=>{const p=P[id];(groups[p.category]=groups[p.category]||[]).push(id);});
+ let html='';
+ Object.entries(groups).forEach(([cat,ids])=>{
+   html+=`<optgroup label="${cat}">`+ids.map(id=>{const p=P[id];return `<option value="${id}">${p.name} — ${p.price==null?'Pending price':peso(p.price)}</option>`;}).join('')+'</optgroup>';
+ });
+ html+=`<optgroup label="Capacity Bundle"><option value="__capacity">Capacity Bundle (staff / admin / device / branch)</option></optgroup>`;
+ $('soldPicker').innerHTML=html;
+}
+function toggleCapacitySubform(){$('capacitySubform').classList.toggle('hidden',$('soldPicker').value!=='__capacity');}
+
+function addSoldItem(item){soldItems.push(Object.assign({uid:soldSeq++},item));renderSoldItems();}
+function removeSoldItem(uid){soldItems=soldItems.filter(i=>i.uid!==uid);renderSoldItems();}
+
+function renderSoldItems(){
+ $('soldItemsList').innerHTML=soldItems.map(it=>`
+   <div class="sold-item">
+     <div class="sold-item-top"><strong>${it.label}</strong><button class="sold-remove" data-remove="${it.uid}" type="button" aria-label="Remove ${it.label}">×</button></div>
+     <div class="mini">Sold Price: ${it.amount==null?'Pending':peso(it.amount)}${it.billing?' · '+it.billing:''}</div>
+     <div class="sold-item-commission${it.amount==null?' pending':''}">${it.amount==null?'Commission: Pending':'Commission: '+peso(commissionForAmount(it.amount))}</div>
+   </div>`).join('') || '<div class="mini" style="color:var(--muted)">No sold items yet. Click + Add Sold System to begin.</div>';
+ document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>removeSoldItem(+b.dataset.remove));
+ renderCommSubtotals();
+}
+
+function renderCommSubtotals(){
+ const resolved=soldItems.filter(i=>i.amount!=null);
+ const oneTimeItems=resolved.filter(i=>!i.recurring),recurringItems=resolved.filter(i=>i.recurring);
+ const oneTime=oneTimeItems.reduce((s,i)=>s+commissionForAmount(i.amount),0);
+ const recurring=recurringItems.reduce((s,i)=>s+commissionForAmount(i.amount),0);
+ let html='';
+ if(!soldItems.length){$('commSubtotals').innerHTML='';return;}
+ html+='<div class="comm-totalbox">';
+ if(oneTimeItems.length)html+=`<div class="comm-totalrow"><span>One-Time Commission</span><strong>${peso(oneTime)}</strong></div>`;
+ if(recurringItems.length)html+=`<div class="comm-totalrow"><span>Recurring Commission</span><strong>${peso(recurring)}</strong></div>`;
+ html+=`<div class="comm-grandtotal"><span>Total Commission</span><strong>${peso(oneTime+recurring)}</strong></div>`;
+ html+='</div>';
+ $('commSubtotals').innerHTML=html;
+}
+
+function initCommissionCalculator(){
+ $('addSoldBtn').onclick=()=>{populateSoldPicker();toggleCapacitySubform();$('soldPickerBox').classList.remove('hidden');};
+ $('cancelAddSold').onclick=()=>{$('soldPickerBox').classList.add('hidden');};
+ $('soldPicker').addEventListener('change',toggleCapacitySubform);
+ $('confirmAddSold').onclick=()=>{
+   const val=$('soldPicker').value;
+   if(val==='__capacity'){
+     const staff=Math.max(0,+$('soldStaff').value||0),admin=Math.max(0,+$('soldAdmin').value||0),device=Math.max(0,+$('soldDevice').value||0),branch=Math.max(0,+$('soldBranch').value||0);
+     const sp=cheapestStaff(staff); // same minimum-cost bundle engine as the Configurator — never a different capacity price
+     if(sp.amount)addSoldItem({label:`Staff capacity (${sp.label})`,amount:sp.amount,billing:CAPACITY.staff10.billing,recurring:true});
+     if(admin)addSoldItem({label:`${admin}× +1 Owner/Admin`,amount:admin*CAPACITY.admin1.price,billing:CAPACITY.admin1.billing,recurring:true});
+     if(device)addSoldItem({label:`${device}× +1 Connected Device`,amount:device*CAPACITY.device1.price,billing:CAPACITY.device1.billing,recurring:true});
+     if(branch)addSoldItem({label:`${branch}× Additional Branch Cloud`,amount:branch*CAPACITY.branchCloud.price,billing:CAPACITY.branchCloud.billing,recurring:true});
+     $('soldStaff').value=0;$('soldAdmin').value=0;$('soldDevice').value=0;$('soldBranch').value=0;
+   }else{
+     const p=P[val];
+     addSoldItem({label:p.name,amount:p.price,billing:p.billing,recurring:RECURRING_CATALOG_IDS.includes(val)});
+   }
+   $('soldPickerBox').classList.add('hidden');
  };
-}
-
-function renderCommissionPanel(){
- const c=computeCommission();
- $('commQuotedOneTime').value=peso(c.quotedOneTime);
- $('commQuotedRecurring').value=peso(c.quotedRecurring);
- $('commPendingNote').style.display=c.pending?'block':'none';
- $('commOneTimeOut').textContent=c.pending?'—':peso(c.oneTimeCommission);
- $('commRecurringOut').textContent=c.pending?'—':peso(c.recurringCommission);
+ renderSoldItems();
 }
 function saveDraft(){const data={customerName:$('customerName').value,businessType:$('businessType').value,quoteLanguage:$('quoteLanguage').value,currentSetup:$('currentSetup').value,currentSystemType:$('currentSystemType').value,existingSystemName:$('existingSystemName').value,existingAccess:$('existingAccess').value,integrationTier:$('integrationTier').value,staffUsers:$('staffUsers').value,adminUsers:$('adminUsers').value,devices:$('devices').value,branches:$('branches').value,cloud:state.cloud,care:state.care,needs:[...state.needs],addons:[...state.addons],coreIncluded:state.coreIncluded};localStorage.setItem('am777_offline_quote_draft',JSON.stringify(data));$('saveDraft').textContent='Saved';setTimeout(()=>$('saveDraft').textContent='Save Offline Draft',1000);}
 function loadDraft(){try{const d=JSON.parse(localStorage.getItem('am777_offline_quote_draft')||'null');if(!d)return alert('No offline draft saved.');['customerName','businessType','quoteLanguage','currentSetup','currentSystemType','existingSystemName','existingAccess','integrationTier','staffUsers','adminUsers','devices','branches'].forEach(id=>{if(d[id]!=null)$(id).value=d[id];});state.cloud=d.cloud||'none';state.care=!!d.care;state.needs=new Set(d.needs||[]);state.addons=new Set(d.addons||[]);syncCoreDefault();if(typeof d.coreIncluded==='boolean')state.coreIncluded=d.coreIncluded;$('careToggle').classList.toggle('selected',state.care);renderNeeds();renderCloud();renderExisting();renderAddons();render();}catch(e){alert('Could not load the saved draft.');}}
 function reset(){localStorage.removeItem('am777_offline_quote_draft');$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.care=false;state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('careToggle').classList.remove('selected');$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderExisting();renderAddons();render();}
 document.addEventListener('DOMContentLoaded',init);
+</script>
+<script>
+(() => {
+  const canvas = document.getElementById('networkCanvas');
+  const ctx = canvas.getContext('2d', { alpha: true });
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let width = 0, height = 0, dpr = 1, nodes = [];
+  const HUES = { blue: { core: '174,219,255', mid: '139,196,255' }, violet: { core: '213,196,255', mid: '169,139,255' }, white: { core: '255,255,255', mid: '255,255,255' } };
+
+  function density() { if (width < 560) return 22; if (width < 1100) return 32; return 44; }
+  function makeNode() {
+    const depth = 0.4 + Math.random() * 0.65;
+    const speed = reduceMotion ? 0 : (0.035 + Math.random() * 0.07) * depth;
+    const angle = Math.random() * Math.PI * 2;
+    const hueRoll = Math.random();
+    return { x: Math.random() * width, y: Math.random() * height, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+      r: (0.8 + Math.random() * 1.1) * (0.55 + depth * 0.7), depth, hue: hueRoll > 0.86 ? 'violet' : hueRoll > 0.42 ? 'blue' : 'white' };
+  }
+  function resize() {
+    width = window.innerWidth; height = window.innerHeight; dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+    canvas.style.width = width + 'px'; canvas.style.height = height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = density();
+    if (nodes.length !== count) nodes = Array.from({ length: count }, makeNode);
+    draw();
+  }
+  function updateNode(n) {
+    if (reduceMotion) return;
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < -10) n.x = width + 10; if (n.x > width + 10) n.x = -10;
+    if (n.y < -10) n.y = height + 10; if (n.y > height + 10) n.y = -10;
+  }
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    const linkDistance = width < 700 ? 100 : 130;
+    for (let i = 0; i < nodes.length; i++) {
+      updateNode(nodes[i]);
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, distSq = dx * dx + dy * dy;
+        if (distSq < linkDistance * linkDistance) {
+          const dist = Math.sqrt(distSq), depthAvg = (a.depth + b.depth) / 2, alpha = Math.pow(1 - dist / linkDistance, 1.5) * 0.35 * depthAvg;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = `rgba(${HUES[a.hue].mid},${alpha})`; ctx.lineWidth = 0.6 + depthAvg * 0.25; ctx.stroke();
+        }
+      }
+    }
+    for (const n of nodes) {
+      const hue = HUES[n.hue];
+      const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 5);
+      glow.addColorStop(0, `rgba(${hue.core},${0.5 + n.depth * 0.28})`); glow.addColorStop(1, `rgba(${hue.mid},0)`);
+      ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(n.x, n.y, n.r * 5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = `rgba(${hue.core},${0.68 + n.depth * 0.28})`; ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+  let skip = false;
+  function loop() { skip = !skip; if (!skip) draw(); requestAnimationFrame(loop); }
+  window.addEventListener('resize', resize, { passive: true });
+  resize();
+  if (!reduceMotion) loop();
+})();
 </script>
 </body>
 </html>
