@@ -67,7 +67,7 @@ textarea{min-height:80px;resize:vertical}.chips{display:flex;gap:8px;flex-wrap:w
 .quote-output{margin-top:14px;border:1px solid var(--line);background:var(--panel2);border-radius:14px;padding:14px;white-space:pre-wrap;color:var(--text);font-size:11.5px;line-height:1.6}
 .addon-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.addon{border:1px solid var(--line);border-radius:12px;padding:11px;background:rgba(255,255,255,.02)}.addon.recommended{box-shadow:inset 0 0 0 1px rgba(127,169,233,.12)}.addon.selected{border-color:rgba(127,169,233,.30);background:rgba(127,169,233,.055)}.addon-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.addon strong{font-size:12px}.addon small{color:var(--muted);font-size:10px}.addon-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}.addon button{border:1px solid var(--line);background:var(--panel2);color:var(--muted);border-radius:9px;padding:8px;font-size:10.5px}
 .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.toggle-row button{border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--muted);border-radius:10px;padding:8px 10px;font-size:10.5px}
-.catalog-tools{display:grid;grid-template-columns:1fr 220px;gap:10px;margin:14px 0}.catalog{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:15px;background:var(--panel);padding:15px}.card h3{font-size:15px;margin:0}.card .p{font-size:21px;font-weight:750;letter-spacing:-.035em;margin:10px 0 7px}.card p{color:var(--muted);font-size:11.5px;line-height:1.5;margin:0}.tag{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:5px 8px;color:var(--text);font-size:9.5px;margin-bottom:9px}.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.card-actions button{border:1px solid var(--line);background:var(--panel2);color:var(--muted);border-radius:9px;padding:8px;font-size:10.5px}
+.catalog-tools{display:grid;grid-template-columns:1fr;gap:10px;margin:14px 0 0}.catalog{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.catalog-section{margin-bottom:20px}.catalog-section:last-child{margin-bottom:0}.catalog-section-title{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:0 0 10px;padding-bottom:7px;border-bottom:1px solid var(--line)}.card{border:1px solid var(--line);border-radius:15px;background:var(--panel);padding:15px}.card h3{font-size:15px;margin:0}.card .p{font-size:21px;font-weight:750;letter-spacing:-.035em;margin:10px 0 7px}.card p{color:var(--muted);font-size:11.5px;line-height:1.5;margin:0}.tag{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:5px 8px;color:var(--text);font-size:9.5px;margin-bottom:9px}.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.card-actions button{border:1px solid var(--line);background:var(--panel2);color:var(--muted);border-radius:9px;padding:8px;font-size:10.5px}
 .industrygrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.industry{border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.018);padding:13px}.industry strong{display:block;font-size:12.5px;margin-bottom:6px}.industry span{color:var(--muted);font-size:10.8px;line-height:1.5}
 .calcgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}.bigresult{margin-top:13px;border:1px solid rgba(127,169,233,.22);background:rgba(127,169,233,.06);border-radius:14px;padding:16px}.bigresult span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.bigresult strong{display:block;font-size:34px;letter-spacing:-.05em;margin-top:5px}.rules{display:grid;gap:8px;margin-top:12px}.rule{border-bottom:1px solid var(--line);padding:8px 0;color:var(--muted);font-size:11.5px;line-height:1.5}.rule:last-child{border-bottom:0}.hidden{display:none!important}
 .commission-out{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}.commission-out .box{flex:1;min-width:170px;border:1px solid rgba(127,169,233,.22);background:rgba(127,169,233,.06);border-radius:14px;padding:14px}.commission-out .box span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.commission-out .box b{display:block;font-size:22px;letter-spacing:-.03em;margin-top:6px;font-weight:760}
@@ -244,7 +244,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
     </div>
 
     <div class="step">
-      <div class="stephead"><div class="num">4</div><div><h3>Cloud & support</h3><p class="sub">Offline POS does not require Cloud.</p></div></div>
+      <div class="stephead"><div class="num">4</div><div><h3>Cloud & support</h3><p class="sub">Optional. Add Cloud only if the business needs remote/online access to this system — a fully offline system does not require it.</p></div></div>
       <div class="segment" id="cloudSegment">
         <button data-cloud="none" class="selected">No Cloud</button>
         <button data-cloud="6m">6 Months · ₱12,777</button>
@@ -299,8 +299,9 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
   <div class="panel">
     <div class="eyebrow">Product Knowledge</div><h2>AM777 local systems catalog</h2>
     <p class="sub">Search any system. Click View Details to review what it solves, inclusions, best fit, limitations, billing, delivery, and upgrade path.</p>
-    <div class="catalog-tools"><input id="catalogSearch" placeholder="Search POS, HR, booking, inventory, automation..." /><select id="catalogCategory"><option value="all">All categories</option></select></div>
-    <div id="catalogGrid" class="catalog"></div>
+    <div class="catalog-tools"><input id="catalogSearch" placeholder="Search POS, HR, booking, inventory, automation..." /></div>
+    <div class="chips" id="catalogCategoryChips" style="margin-bottom:14px"></div>
+    <div id="catalogGrid"></div>
   </div>
 </section>
 
@@ -381,35 +382,35 @@ const P = {
     limits:['Additional branches and complex integrations require assessment'],
     customer:'Best-value annual Cloud access for remote monitoring, backup, and connected records.',
     upgrades:['Extra users / devices','Additional branch assessment','Website / automation integrations']},
-  integrationBasic:{id:'integrationBasic',name:'Basic Existing Software Integration',category:'Integration',price:4777,billing:'Starting reference',delivery:[2,10],assessment:true,
+  integrationBasic:{id:'integrationBasic',name:'Basic Existing Software Integration',category:'Existing System Integration',price:4777,billing:'Starting reference',delivery:[2,10],assessment:true,
     solves:'Connects supported existing business software to one simple external workflow after compatibility is confirmed.',
     inclusions:['Compatibility assessment','One simple supported connection','Basic import/export, form, notification, or data handoff depending on system access','Initial testing'],
     best:['Businesses that already use software and do not want to replace it'],
     limits:['Not a guaranteed price before assessment','Existing software must allow a supported connection method','Closed or restricted systems may not be integrable'],
     customer:'We first check your current software, then confirm what can be connected and the exact price.',
     upgrades:['Standard integration','Two-way integration','Multi-platform integration']},
-  integrationStandard:{id:'integrationStandard',name:'Standard Integration',category:'Integration',price:9777,billing:'Starting reference',delivery:[5,15],assessment:true,
+  integrationStandard:{id:'integrationStandard',name:'Standard Integration',category:'Existing System Integration',price:9777,billing:'Starting reference',delivery:[5,15],assessment:true,
     solves:'Connects existing supported business software to a broader website, order, customer, reporting, or workflow use case.',
     inclusions:['Compatibility assessment','Broader approved connection','Basic workflow/data mapping','Testing and handoff'],
     best:['Businesses with existing software needing website, order, report, customer, or workflow connections'],
     limits:['Final scope depends on API/export/admin access'],
     customer:'Keep your current software if it can connect; AM777 confirms compatibility first.',
     upgrades:['Two-way integration','Multi-platform integration']},
-  integrationTwo:{id:'integrationTwo',name:'Two-Way Integration',category:'Integration',price:14777,billing:'Starting reference',delivery:[10,20],assessment:true,
+  integrationTwo:{id:'integrationTwo',name:'Two-Way Integration',category:'Existing System Integration',price:14777,billing:'Starting reference',delivery:[10,20],assessment:true,
     solves:'Moves supported data in both directions between existing business software and another system.',
     inclusions:['Assessment','Two-way supported data flow','Error handling / testing','Approved field/status mapping'],
     best:['Businesses needing orders, stock, customer, or status updates in both systems'],
     limits:['Requires supported read/write access from the existing software'],
     customer:'Data can update both ways only when your current software supports it.',
     upgrades:['Multi-platform integration']},
-  integrationMulti:{id:'integrationMulti',name:'Multi-Platform Integration',category:'Integration',price:24777,billing:'Starting reference',delivery:[15,30],assessment:true,
+  integrationMulti:{id:'integrationMulti',name:'Multi-Platform Integration',category:'Existing System Integration',price:24777,billing:'Starting reference',delivery:[15,30],assessment:true,
     solves:'Connects several supported business tools into one approved workflow.',
     inclusions:['Technical assessment','Multiple platform connections','Workflow/data mapping','Testing'],
     best:['Businesses connecting POS + website + CRM/accounting/delivery/other approved tools'],
     limits:['Third-party fees are separate','Final scope requires assessment'],
     customer:'We connect the tools your business already uses when those systems allow integration.',
     upgrades:['Custom business management system']},
-  integrationComplex:{id:'integrationComplex',name:'Complex Integration',category:'Integration',price:null,billing:'Assessment / Custom Quote',delivery:null,assessment:true,
+  integrationComplex:{id:'integrationComplex',name:'Complex Integration',category:'Existing System Integration',price:null,billing:'Assessment / Custom Quote',delivery:null,assessment:true,
     solves:'Covers integration scope beyond the standard tiers — unusual access methods, heavy custom mapping, or multiple complex systems together.',
     inclusions:['Full technical assessment','Custom scope definition','Price and delivery confirmed after review'],
     best:['Businesses whose existing setup does not fit Basic, Standard, Two-Way, or Multi-Platform integration'],
@@ -465,140 +466,140 @@ const P = {
     limits:['GPS, third-party courier APIs, or live maps may require separate assessment'],
     customer:'Track where an order is in the delivery process.',
     upgrades:['Notifications','Platform integration']},
-  inventory:{id:'inventory',name:'Advanced Inventory / Expiry',category:'Operations',price:3777,billing:'Starting',delivery:[4,8],industries:['retail','pharmacy','wholesale','restaurant'],
+  inventory:{id:'inventory',name:'Advanced Inventory / Expiry',category:'Inventory & Purchasing',price:3777,billing:'Starting',delivery:[4,8],industries:['retail','pharmacy','wholesale','restaurant'],
     solves:'Adds deeper stock visibility beyond basic POS inventory.',
     inclusions:['Expiry monitoring','Low-stock awareness','Stock movement visibility','Advanced stock fields'],
     best:['Grocery / mini mart','Pharmacy','Wholesale','Food businesses'],
     limits:['Warehouse/multi-location inventory is separate'],
     customer:'See what is running low and what is nearing expiry.',
     upgrades:['Supplier & purchasing','Warehouse management']},
-  cash:{id:'cash',name:'Expenses & Cash Monitoring',category:'Operations',price:3777,billing:'Starting',delivery:[3,7],industries:['retail','restaurant','services','construction','logistics'],
+  cash:{id:'cash',name:'Expenses & Cash Monitoring',category:'Finance & Reporting',price:3777,billing:'Starting',delivery:[3,7],industries:['retail','restaurant','services','construction','logistics'],
     solves:'Organizes business expenses and basic cash movement.',
     inclusions:['Expense records','Categories','Basic cash monitoring','Reports'],
     best:['Most local SMEs'],
     limits:['Full accounting/compliance is separate'],
     customer:'See what money came in, what went out, and where it was spent.',
     upgrades:['Financial dashboard']},
-  purchasing:{id:'purchasing',name:'Supplier & Purchasing',category:'Operations',price:4777,billing:'Starting',delivery:[5,10],industries:['retail','restaurant','wholesale','manufacturing','construction'],
+  purchasing:{id:'purchasing',name:'Supplier & Purchasing',category:'Inventory & Purchasing',price:4777,billing:'Starting',delivery:[5,10],industries:['retail','restaurant','wholesale','manufacturing','construction'],
     solves:'Tracks suppliers, purchases, deliveries, and stock-in activity.',
     inclusions:['Supplier records','Purchasing records','Receiving / stock-in workflow'],
     best:['Retail','Restaurant','Wholesale','Manufacturing','Construction'],
     limits:['Complex procurement approval chains may require custom scope'],
     customer:'Keep supplier and restocking records organized.',
     upgrades:['Warehouse','Procurement workflow']},
-  attendance:{id:'attendance',name:'Employee Attendance',category:'Operations',price:4777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','construction','manufacturing','hotel','services'],
+  attendance:{id:'attendance',name:'Employee Attendance',category:'Staff & HR',price:4777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','construction','manufacturing','hotel','services'],
     solves:'Organizes time-in/time-out and employee attendance records.',
     inclusions:['Employee records','Attendance logs','Basic time-in/time-out'],
     best:['Businesses with multiple staff'],
     limits:['Payroll and full HR are separate'],
     customer:'Track employee attendance in one system.',
     upgrades:['HR Management','Payroll']},
-  hr:{id:'hr',name:'HR Management',category:'Operations',price:9777,billing:'Starting',delivery:[10,20],industries:['retail','restaurant','construction','manufacturing','hotel','services'],
+  hr:{id:'hr',name:'HR Management',category:'Staff & HR',price:9777,billing:'Starting',delivery:[10,20],industries:['retail','restaurant','construction','manufacturing','hotel','services'],
     solves:'Organizes employee information and basic HR workflows.',
     inclusions:['Employee profiles','HR records','Basic schedule/attendance connections','Access controls as scoped'],
     best:['Growing SMEs with multiple employees'],
     limits:['Payroll and regulated compliance claims require separate scope/validation'],
     customer:'Keep employee records and HR information organized.',
     upgrades:['Payroll','Employee portal']},
-  payroll:{id:'payroll',name:'Payroll Module',category:'Operations',price:9777,billing:'Starting',delivery:[15,30],industries:['retail','restaurant','construction','manufacturing','hotel','services'],assessment:true,
+  payroll:{id:'payroll',name:'Payroll Module',category:'Staff & HR',price:9777,billing:'Starting',delivery:[15,30],industries:['retail','restaurant','construction','manufacturing','hotel','services'],assessment:true,
     solves:'Reduces manual payroll record handling and computation workflow.',
     inclusions:['Payroll records','Employee/payroll data connection','Attendance input connection where scoped'],
     best:['Businesses ready to digitize payroll workflow'],
     limits:['Do not promise government/statutory compliance unless specifically validated for the final build'],
     customer:'Reduce manual payroll work with a structured payroll system.',
     upgrades:['Full HR system','Custom compliance scope']},
-  crm:{id:'crm',name:'Customer / CRM System',category:'Operations',price:9777,billing:'Starting',delivery:[7,14],industries:['services','realestate','automotive','wholesale','construction'],
+  crm:{id:'crm',name:'Customer / CRM System',category:'Sales & CRM',price:9777,billing:'Starting',delivery:[7,14],industries:['services','realestate','automotive','wholesale','construction'],
     solves:'Keeps customer and sales follow-up information from getting lost across chats and spreadsheets.',
     inclusions:['Customer / lead records','Follow-up status','Basic sales stages','Customer history as scoped'],
     best:['Service businesses','Real estate','Automotive','Wholesale','Contractors'],
     limits:['This is a product module; the offline agent tool itself is not a CRM'],
     customer:'Keep customers and follow-ups organized in one place.',
     upgrades:['Automated follow-up','Inquiry integration']},
-  followup:{id:'followup',name:'Sales Follow-up System',category:'Operations',price:7777,billing:'Starting',delivery:[5,10],industries:['services','realestate','automotive','wholesale','construction'],
+  followup:{id:'followup',name:'Sales Follow-up System',category:'Sales & CRM',price:7777,billing:'Starting',delivery:[5,10],industries:['services','realestate','automotive','wholesale','construction'],
     solves:'Makes follow-up responsibilities and statuses visible.',
     inclusions:['Follow-up records','Status / due tracking','Customer connection'],
     best:['Businesses with recurring inquiries and quotations'],
     limits:['Messaging automation is separate'],
     customer:'Know who needs a follow-up and what happens next.',
     upgrades:['Automated follow-up','CRM']},
-  warehouse:{id:'warehouse',name:'Warehouse Management',category:'Operations',price:12777,billing:'Starting',delivery:[15,30],industries:['wholesale','manufacturing','retail'],assessment:true,
+  warehouse:{id:'warehouse',name:'Warehouse Management',category:'Inventory & Purchasing',price:12777,billing:'Starting',delivery:[15,30],industries:['wholesale','manufacturing','retail'],assessment:true,
     solves:'Adds deeper inventory control for warehouse-heavy operations.',
     inclusions:['Warehouse stock visibility','Receiving / movement workflow','Purchasing connection as scoped'],
     best:['Wholesale','Distribution','Manufacturing'],
     limits:['Multiple warehouses / branches require assessment'],
     customer:'Manage larger stock operations beyond a basic store inventory.',
     upgrades:['Multi-branch business system']},
-  finance:{id:'finance',name:'Financial Dashboard',category:'Operations',price:9777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','construction','wholesale','services'],
+  finance:{id:'finance',name:'Financial Dashboard',category:'Finance & Reporting',price:9777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','construction','wholesale','services'],
     solves:'Summarizes approved sales, expense, and business figures into a management view.',
     inclusions:['Dashboard','Selected financial summaries','Date filters / reports as scoped'],
     best:['Owners who need faster visibility into operations'],
     limits:['Not a replacement for regulated accounting unless specifically scoped'],
     customer:'See important business numbers in one management view.',
     upgrades:['Advanced analytics']},
-  analytics:{id:'analytics',name:'Advanced Analytics',category:'Operations',price:7777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','wholesale','manufacturing','services'],
+  analytics:{id:'analytics',name:'Advanced Analytics',category:'Finance & Reporting',price:7777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','wholesale','manufacturing','services'],
     solves:'Provides deeper reporting and trend visibility using available business data.',
     inclusions:['Custom business metrics','Trend reports','Selected charts / comparisons'],
     best:['Businesses with enough reliable data to analyze'],
     limits:['Quality depends on available data'],
     customer:'Understand what is selling, changing, or underperforming.',
     upgrades:['Custom reporting']},
-  notifications:{id:'notifications',name:'Automated Notifications',category:'Automation',price:3777,billing:'Starting',delivery:[2,5],industries:['retail','restaurant','clinic','salon','services','logistics'],
+  notifications:{id:'notifications',name:'Automated Notifications',category:'Automation & AI',price:3777,billing:'Starting',delivery:[2,5],industries:['retail','restaurant','clinic','salon','services','logistics'],
     solves:'Alerts staff or customers when approved business events occur.',
     inclusions:['Trigger definition','Approved notification path','Basic testing'],
     best:['Bookings','Orders','Low stock','Internal alerts'],
     limits:['Third-party messaging/API fees are separate'],
     customer:'Get automatic alerts when important business events happen.',
     upgrades:['Workflow automation']},
-  autoFollow:{id:'autoFollow',name:'Automated Follow-up',category:'Automation',price:4777,billing:'Starting',delivery:[3,7],industries:['services','realestate','clinic','automotive'],
+  autoFollow:{id:'autoFollow',name:'Automated Follow-up',category:'Automation & AI',price:4777,billing:'Starting',delivery:[3,7],industries:['services','realestate','clinic','automotive'],
     solves:'Reduces missed follow-ups by triggering an approved reminder or communication workflow.',
     inclusions:['Follow-up trigger','Customer/status connection','Approved notification/message path'],
     best:['Service sales','Real estate','Bookings','Repair/service'],
     limits:['Platform access and messaging rules may affect implementation'],
     customer:'Automatically remind the team or customer when a follow-up is due.',
     upgrades:['CRM','Workflow automation']},
-  workflow:{id:'workflow',name:'Workflow Automation',category:'Automation',price:5777,billing:'Starting',delivery:[5,12],industries:['retail','restaurant','services','construction','wholesale','logistics'],
+  workflow:{id:'workflow',name:'Workflow Automation',category:'Automation & AI',price:5777,billing:'Starting',delivery:[5,12],industries:['retail','restaurant','services','construction','wholesale','logistics'],
     solves:'Connects repetitive business steps so information moves with less manual work.',
     inclusions:['Approved trigger','Action flow','Basic error handling/testing'],
     best:['Forms → records → alerts','Orders → inventory → notification','Booking → confirmation → reminder'],
     limits:['Complex multi-platform workflows require assessment'],
     customer:'Reduce repetitive manual steps by connecting the business workflow.',
     upgrades:['Platform integration','Custom automation']},
-  platform:{id:'platform',name:'Platform Connection',category:'Automation',price:5777,billing:'Starting',delivery:[5,12],industries:['retail','restaurant','services','ecommerce','wholesale'],assessment:true,
+  platform:{id:'platform',name:'Platform Connection',category:'Automation & AI',price:5777,billing:'Starting',delivery:[5,12],industries:['retail','restaurant','services','ecommerce','wholesale'],assessment:true,
     solves:'Connects an approved external platform to an AM777 workflow.',
     inclusions:['Compatibility check','One supported platform connection','Testing'],
     best:['Businesses already using external tools'],
     limits:['Requires supported access/API/export','Third-party fees are separate'],
     customer:'Connect a supported platform to the system after compatibility is checked.',
     upgrades:['Multi-platform integration']},
-  ai:{id:'ai',name:'AI Customer Assistant',category:'Automation',price:7777,billing:'Starting',delivery:[7,14],industries:['services','clinic','realestate','retail','restaurant'],assessment:true,
+  ai:{id:'ai',name:'AI Customer Assistant',category:'Automation & AI',price:7777,billing:'Starting',delivery:[7,14],industries:['services','clinic','realestate','retail','restaurant'],assessment:true,
     solves:'Handles approved repetitive customer questions or routing using business-specific knowledge.',
     inclusions:['Business knowledge setup','Approved FAQ/inquiry handling','Escalation/routing as scoped'],
     best:['Businesses with repeated customer questions'],
     limits:['Usage/API costs may be separate','Final capabilities depend on connected channels'],
     customer:'Use AI to help answer common customer questions and route requests.',
     upgrades:['CRM / booking / automation integration']},
-  completeOps:{id:'completeOps',name:'POS + Business Operations',category:'Complete Systems',price:29777,billing:'Starting',delivery:[15,30],assessment:true,
+  completeOps:{id:'completeOps',name:'POS + Business Operations',category:'Complete Bundled Systems',price:29777,billing:'Starting',delivery:[15,30],assessment:true,
     solves:'Combines POS with several operational modules into one business workflow.',
     inclusions:['POS foundation','Selected operations modules','Reporting as scoped'],
     best:['Growing businesses that need more than a basic POS'],
     limits:['Final module list must be scoped'],
     customer:'Connect your POS with the other parts of daily operations.',
     upgrades:['Business Management System']},
-  management:{id:'management',name:'Business Management System',category:'Complete Systems',price:44777,billing:'Starting',delivery:[20,45],assessment:true,
+  management:{id:'management',name:'Business Management System',category:'Complete Bundled Systems',price:44777,billing:'Starting',delivery:[20,45],assessment:true,
     solves:'Connects several business functions into a broader management system.',
     inclusions:['Selected operations','Customers/employees/inventory options','Reports / workflow connections'],
     best:['Established SMEs with multiple operational bottlenecks'],
     limits:['Always requires scope confirmation'],
     customer:'Manage several parts of the business in one connected system.',
     upgrades:['POS + ERP + HR','Multi-branch custom system']},
-  posHr:{id:'posHr',name:'POS + HR + Operations',category:'Complete Systems',price:49777,billing:'Starting',delivery:[25,45],assessment:true,
+  posHr:{id:'posHr',name:'POS + HR + Operations',category:'Complete Bundled Systems',price:49777,billing:'Starting',delivery:[25,45],assessment:true,
     solves:'Connects store operations with employee/HR workflows.',
     inclusions:['POS','Selected operations','Employee/HR modules'],
     best:['Businesses with both retail/store and staff-management needs'],
     limits:['Payroll/compliance and branch complexity are separately assessed'],
     customer:'Connect daily store operations and employee management.',
     upgrades:['POS + ERP + HR']},
-  full:{id:'full',name:'POS + ERP + HR',category:'Complete Systems',price:69777,billing:'Starting',delivery:[30,60],assessment:true,
+  full:{id:'full',name:'POS + ERP + HR',category:'Complete Bundled Systems',price:69777,billing:'Starting',delivery:[30,60],assessment:true,
     solves:'Larger connected business operations platform combining sales, operations, and HR modules.',
     inclusions:['POS','Operations modules','HR modules','Reporting/workflows as scoped'],
     best:['Established businesses requiring several connected modules'],
@@ -648,6 +649,7 @@ const CAPACITY = {
 const INTEGRATION_IDS=['integrationBasic','integrationStandard','integrationTwo','integrationMulti','integrationComplex'];
 const ADDON_IDS=['landing','inquiry','ordering','booking','messaging','loyalty','delivery','inventory','cash','purchasing','attendance','hr','payroll','crm','followup','warehouse','finance','analytics','notifications','autoFollow','workflow','platform','ai'];
 const CATALOG_IDS=['pos','cloud6','cloud12',...INTEGRATION_IDS,...ADDON_IDS,'completeOps','management','posHr','full','customModules','care'];
+const CATEGORY_ORDER=['POS & Cloud','Existing System Integration','Website & Customer','Inventory & Purchasing','Finance & Reporting','Staff & HR','Sales & CRM','Automation & AI','Complete Bundled Systems','Assessment / Custom','Support'];
 const INDUSTRIES={
  retail:{label:'Retail / Mini Mart / Grocery',core:'pos',products:['inventory','purchasing','cash','attendance','loyalty','messaging']},
  restaurant:{label:'Restaurant / Café',core:'pos',products:['ordering','inventory','purchasing','attendance','delivery','messaging']},
@@ -679,7 +681,7 @@ const SYSTEM_TYPE_TO_PRODUCT={pos:'pos',booking:'booking',inventory:'inventory',
 const SETUP_LABELS={none:'No System Yet',manual:'Manual / Paper',sheets:'Excel / Google Sheets',am777:'Existing AM777 System',thirdparty:'Existing Third-Party Software',multiple:'Multiple Disconnected Tools'};
 const INTERNAL={agentRate:.20,expenseRate:.05};
 
-const state={cloud:'none',care:false,needs:new Set(),addons:new Set(),showAll:false,coreIncluded:true,coreId:null};
+const state={cloud:'none',care:false,needs:new Set(),addons:new Set(),showAll:false,coreIncluded:true,coreId:null,catalogCategory:'all'};
 const $=id=>document.getElementById(id);
 const peso=v=>new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',maximumFractionDigits:0}).format(v||0);
 function lineAmountLabel(a){if(typeof a==='string')return a;if(a===null)return 'Assessment / Custom Quote';return a?peso(a):'Included / owned';}
@@ -703,7 +705,7 @@ function init(){
  $('printQuote').onclick=()=>{$('quoteOutput').textContent=generateQuote();window.print();};
  $('saveDraft').onclick=saveDraft;$('loadDraft').onclick=loadDraft;$('resetConfig').onclick=reset;$('emailInvoice').onclick=openInvoicePreview;
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
- $('catalogSearch').addEventListener('input',renderCatalog);$('catalogCategory').addEventListener('change',renderCatalog);
+ $('catalogSearch').addEventListener('input',renderCatalog);
  $('closeModal').onclick=closeModal;$('detailModal').onclick=e=>{if(e.target===$('detailModal'))closeModal();};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
  syncCoreDefault();renderNeeds();renderCloud();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();renderStaffCapacityRef();render();initCommissionCalculator();
 }
@@ -963,14 +965,31 @@ function copyInvoicePlain(){
  });
 }
 
-function buildCatalogCategories(){const cats=[...new Set(CATALOG_IDS.map(id=>P[id].category))];$('catalogCategory').innerHTML='<option value="all">All categories</option>'+cats.map(c=>`<option value="${c}">${c}</option>`).join('');}
+function buildCatalogCategories(){
+ const cats=CATEGORY_ORDER.filter(c=>CATALOG_IDS.some(id=>P[id].category===c));
+ $('catalogCategoryChips').innerHTML=['<button class="chip selected" data-cat="all">All Categories</button>'].concat(cats.map(c=>`<button class="chip" data-cat="${c}">${c}</button>`)).join('');
+ document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{
+   state.catalogCategory=b.dataset.cat;
+   document.querySelectorAll('[data-cat]').forEach(x=>x.classList.toggle('selected',x.dataset.cat===state.catalogCategory));
+   renderCatalog();
+ });
+}
 function renderStaffCapacityRef(){
  const rows=[`<div class="statrow" style="grid-column:1/-1"><span>First ${STAFF_CAPACITY.included} staff/users</span><strong>Included with system</strong></div>`]
    .concat(STAFF_CAPACITY.bundles.map(b=>`<div class="statrow"><span>Additional +${b.qty}</span><strong>${peso(b.price)}</strong></div>`))
    .concat([`<div class="statrow" style="grid-column:1/-1"><span>Above ${STAFF_CAPACITY.included+STAFF_CAPACITY.maxBundleQty} supported users / complex deployment</span><strong>Evaluation Required</strong></div>`]);
  $('staffCapacityRef').innerHTML=rows.join('');
 }
-function renderCatalog(){const s=($('catalogSearch').value||'').toLowerCase(),cat=$('catalogCategory').value;$('catalogGrid').innerHTML=CATALOG_IDS.filter(id=>{const p=P[id],txt=`${p.name} ${p.category} ${p.solves} ${p.customer}`.toLowerCase();return(cat==='all'||p.category===cat)&&(!s||txt.includes(s));}).map(id=>{const p=P[id];const priceLabel=p.price==null?'Request Assessment':`${peso(p.price)}${p.billing.includes('Starting')||p.assessment?'+':''}`;return `<div class="card"><span class="tag">${p.category}</span><h3>${p.name}</h3><div class="p">${priceLabel}</div><p>${p.solves}</p><div class="card-actions"><button data-detail="${id}">View Details</button><button data-add-catalog="${id}" ${ADDON_IDS.includes(id)?'':'disabled'}>${ADDON_IDS.includes(id)?(state.addons.has(id)?'Remove from Quote':'Add to Quote'):'Reference'}</button></div></div>`}).join('');
+function renderCatalog(){
+ const s=($('catalogSearch').value||'').toLowerCase(),cat=state.catalogCategory;
+ const matches=CATALOG_IDS.filter(id=>{const p=P[id],txt=`${p.name} ${p.category} ${p.solves} ${p.customer}`.toLowerCase();return(cat==='all'||p.category===cat)&&(!s||txt.includes(s));});
+ const cardHtml=id=>{const p=P[id];const priceLabel=p.price==null?'Request Assessment':`${peso(p.price)}${p.billing.includes('Starting')||p.assessment?'+':''}`;return `<div class="card"><span class="tag">${p.category}</span><h3>${p.name}</h3><div class="p">${priceLabel}</div><p>${p.solves}</p><div class="card-actions"><button data-detail="${id}">View Details</button><button data-add-catalog="${id}" ${ADDON_IDS.includes(id)?'':'disabled'}>${ADDON_IDS.includes(id)?(state.addons.has(id)?'Remove from Quote':'Add to Quote'):'Reference'}</button></div></div>`;};
+ if(!matches.length){$('catalogGrid').innerHTML='<p class="mini">No matching systems.</p>';}
+ else if(cat!=='all'){$('catalogGrid').innerHTML=`<div class="catalog">${matches.map(cardHtml).join('')}</div>`;}
+ else{
+   const groups=CATEGORY_ORDER.filter(c=>matches.some(id=>P[id].category===c));
+   $('catalogGrid').innerHTML=groups.map(c=>`<div class="catalog-section"><h3 class="catalog-section-title">${c}</h3><div class="catalog">${matches.filter(id=>P[id].category===c).map(cardHtml).join('')}</div></div>`).join('');
+ }
  document.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>openDetails(b.dataset.detail));document.querySelectorAll('[data-add-catalog]').forEach(b=>{if(!b.disabled)b.onclick=()=>{const id=b.dataset.addCatalog;if(state.addons.has(id))state.addons.delete(id);else state.addons.add(id);renderCatalog();renderAddons();render();};});}
 
 function openDetails(id){const p=P[id];$('modalCategory').textContent=p.category;$('modalTitle').textContent=p.name;
