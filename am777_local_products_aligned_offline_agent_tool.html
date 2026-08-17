@@ -236,6 +236,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
     <div class="actions">
       <button id="generateQuote" class="btn primary">Generate Quote</button>
       <button id="copyQuote" class="btn">Copy Quote</button>
+      <button id="emailInvoice" class="btn primary">Email Invoice</button>
       <button id="saveDraft" class="btn">Save Offline Draft</button>
       <button id="loadDraft" class="btn">Load Draft</button>
       <button id="printQuote" class="btn">Print</button>
@@ -650,7 +651,7 @@ function init(){
  $('generateQuote').onclick=()=>{$('quoteOutput').textContent=generateQuote();};
  $('copyQuote').onclick=async()=>{const t=generateQuote();$('quoteOutput').textContent=t;try{await navigator.clipboard.writeText(t);$('copyQuote').textContent='Copied';setTimeout(()=>$('copyQuote').textContent='Copy Quote',1000)}catch(e){}};
  $('printQuote').onclick=()=>{$('quoteOutput').textContent=generateQuote();window.print();};
- $('saveDraft').onclick=saveDraft;$('loadDraft').onclick=loadDraft;$('resetConfig').onclick=reset;
+ $('saveDraft').onclick=saveDraft;$('loadDraft').onclick=loadDraft;$('resetConfig').onclick=reset;$('emailInvoice').onclick=openInvoicePreview;
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
  $('catalogSearch').addEventListener('input',renderCatalog);$('catalogCategory').addEventListener('change',renderCatalog);
  $('closeModal').onclick=closeModal;$('detailModal').onclick=e=>{if(e.target===$('detailModal'))closeModal();};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
@@ -810,6 +811,108 @@ function generateQuote(){
  if(lang==='tl')return `AM777 AUTOMATION SOLUTIONS\nESTIMATED CUSTOMER QUOTE\n\nBusiness: ${b}\nIndustry: ${industry}\nCurrent Setup: ${currentDetail}\nRecommended: ${q.recName}\n\n${items}\n\nESTIMATED INITIAL QUOTE: ${peso(q.initial)}${q.status!=='ready'?'+':''}${paymentLineTl}\nRENEWAL / RECURRING: ${recurringText(q,'tl')}\nESTIMATED DELIVERY: ${q.delivery[0]}–${q.delivery[1]} business days\n\nStatus: ${status}\n\nAng final scope at presyo ay kino-confirm base sa actual requirements. Existing software/system integration, complex setups, at multi-branch requirements ay kailangang ma-review muna bago maging final ang quotation. Standard na downpayment ay 50% bago magsimula ang trabaho.\n\nPowered by AM777 Automation Solutions`;
  return `AM777 AUTOMATION SOLUTIONS\nESTIMATED CUSTOMER QUOTE\n\nBusiness: ${b}\nIndustry: ${industry}\nCurrent Setup: ${currentDetail}\nRecommended: ${q.recName}\n\n${items}\n\nESTIMATED INITIAL QUOTE: ${peso(q.initial)}${q.status!=='ready'?'+':''}${paymentLineEn}\nRENEWAL / RECURRING: ${recurringText(q,'en')}\nESTIMATED DELIVERY: ${q.delivery[0]}–${q.delivery[1]} business days\n\nStatus: ${status}\n\nFinal scope and pricing are confirmed against the actual requirements. Existing software/system integrations, complex setups, and multi-branch requirements require review before a quotation is final. Standard downpayment is 50% before work begins.\n\nPowered by AM777 Automation Solutions`;
 }
+/* ===== Email-ready HTML invoice — same data as generateQuote(), styled with the AM777 brand
+   palette, fully inline (email clients strip external/embedded stylesheets), table-based for
+   maximum paste/render compatibility across webmail and desktop mail clients. ===== */
+function generateInvoiceHTML(){
+ const q=compute(),lang=$('quoteLanguage').value;
+ const b=$('customerName').value.trim()||(lang==='tl'?'Kliyente':'Customer');
+ const industry=INDUSTRIES[$('businessType').value].label;
+ const setup=SETUP_LABELS[$('currentSetup').value];
+ const sysType=$('currentSystemType').selectedOptions?.[0]?.textContent||'';
+ const currentDetail=['am777','thirdparty','multiple'].includes($('currentSetup').value)?`${setup} · ${sysType}${$('existingSystemName').value.trim()?` · ${$('existingSystemName').value.trim()}`:''}`:setup;
+ const statusMap={
+   ready:{label:lang==='tl'?'Handa nang I-quote':'Ready to Quote',bg:'#e6f7ee',fg:'#1f9d63'},
+   assess:{label:lang==='tl'?'Kailangan ng Assessment':'Needs Assessment',bg:'#fbf3e0',fg:'#a9750a'},
+   approval:{label:lang==='tl'?'Kailangan ng AM777 Approval':'AM777 Approval Required',bg:'#fbe9e9',fg:'#c23b3b'}
+ };
+ const st=statusMap[q.status];
+ const dp=q.initial>0?Math.round(q.initial*0.5):0,bal=q.initial>0?q.initial-dp:0;
+ const rows=q.lines.map(([l,a])=>`<tr><td style="padding:9px 0;border-bottom:1px solid #e2e6ec;color:#3a4250;font-size:13px;font-family:Arial,Helvetica,sans-serif">${l}</td><td style="padding:9px 0;border-bottom:1px solid #e2e6ec;text-align:right;font-weight:700;color:#0e1420;font-size:13px;white-space:nowrap;font-family:Arial,Helvetica,sans-serif">${lineAmountLabel(a)}</td></tr>`).join('');
+ const recur=recurringText(q,lang);
+ const L=lang==='tl'
+   ? {doc:'TINATANTIYANG QUOTATION',rec:'Rekomendado',ind:'Industriya',setup:'Kasalukuyang Setup',initial:'Tinatayang Simulang Quote',dp:'Downpayment (50%)',bal:'Balanse (sa delivery)',renew:'Renewal / Recurring',delivery:'Tinatayang Delivery',footer:'Ang final na saklaw at presyo ay kino-confirm base sa aktwal na requirements. Existing software/system integration, complex setups, at multi-branch requirements ay kailangang ma-review muna. Standard na downpayment ay 50% bago magsimula ang trabaho.'}
+   : {doc:'ESTIMATED QUOTATION',rec:'Recommended',ind:'Industry',setup:'Current Setup',initial:'Estimated Initial Quote',dp:'Downpayment (50%)',bal:'Balance (on delivery)',renew:'Renewal / Recurring',delivery:'Estimated Delivery',footer:'Final scope and pricing are confirmed against actual requirements. Existing software/system integrations, complex setups, and multi-branch requirements require review before a quotation is final. Standard downpayment is 50% before work begins.'};
+ return `<!doctype html><html><body style="margin:0;padding:24px 12px;background:#eef1f5;font-family:Arial,Helvetica,sans-serif">
+<table role="presentation" style="width:100%;max-width:620px;margin:0 auto;border-collapse:collapse;background:#ffffff;border-radius:10px;overflow:hidden;box-shadow:0 4px 24px rgba(10,20,40,.08)">
+<tr><td style="background:#0a0e16;padding:26px 30px">
+  <div style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:.02em;font-family:Arial,Helvetica,sans-serif">AM<span style="color:#8bc4ff">777</span></div>
+  <div style="font-size:10.5px;color:#9aa4b6;letter-spacing:.16em;text-transform:uppercase;margin-top:3px;font-family:Arial,Helvetica,sans-serif">Automation Solutions</div>
+</td></tr>
+<tr><td style="padding:26px 30px 4px">
+  <div style="font-size:11px;color:#8a94a6;text-transform:uppercase;letter-spacing:.1em;font-family:Arial,Helvetica,sans-serif">${L.doc}</div>
+  <div style="font-size:20px;font-weight:800;color:#0e1420;margin-top:5px;font-family:Arial,Helvetica,sans-serif">${b}</div>
+  <div style="font-size:12.5px;color:#5a6472;margin-top:8px;line-height:1.7;font-family:Arial,Helvetica,sans-serif">${L.ind}: ${industry}<br>${L.setup}: ${currentDetail}<br>${L.rec}: ${q.recName}</div>
+  <div style="margin-top:14px"><span style="display:inline-block;background:${st.bg};color:${st.fg};font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:6px 14px;font-family:Arial,Helvetica,sans-serif">${st.label}</span></div>
+</td></tr>
+<tr><td style="padding:6px 30px 0">
+  <table role="presentation" style="width:100%;border-collapse:collapse;margin-top:8px">${rows}</table>
+</td></tr>
+<tr><td style="padding:18px 30px 4px">
+  <table role="presentation" style="width:100%;border-collapse:collapse">
+    <tr><td style="padding:6px 0;color:#5a6472;font-size:12.5px;font-family:Arial,Helvetica,sans-serif">${L.initial}</td><td style="padding:6px 0;text-align:right;font-size:21px;font-weight:800;color:#0e1420;font-family:Arial,Helvetica,sans-serif">${peso(q.initial)}${q.status!=='ready'?'+':''}</td></tr>
+    ${q.initial>0?`<tr><td style="padding:4px 0;color:#5a6472;font-size:12px;font-family:Arial,Helvetica,sans-serif">${L.dp}</td><td style="padding:4px 0;text-align:right;font-size:13px;font-weight:700;color:#1d5fdb;font-family:Arial,Helvetica,sans-serif">${peso(dp)}</td></tr><tr><td style="padding:4px 0 12px;color:#5a6472;font-size:12px;font-family:Arial,Helvetica,sans-serif">${L.bal}</td><td style="padding:4px 0 12px;text-align:right;font-size:13px;font-weight:700;color:#0e1420;font-family:Arial,Helvetica,sans-serif">${peso(bal)}</td></tr>`:''}
+    ${(q.cloudRenewal||q.capacityRenewal||q.care)?`<tr><td style="padding:8px 0 4px;color:#5a6472;font-size:12px;border-top:1px solid #e2e6ec;font-family:Arial,Helvetica,sans-serif">${L.renew}</td><td style="padding:8px 0 4px;text-align:right;font-size:12.5px;font-weight:700;color:#0e1420;border-top:1px solid #e2e6ec;font-family:Arial,Helvetica,sans-serif">${recur}</td></tr>`:''}
+    <tr><td style="padding:4px 0;color:#5a6472;font-size:12px;font-family:Arial,Helvetica,sans-serif">${L.delivery}</td><td style="padding:4px 0;text-align:right;font-size:12.5px;font-weight:700;color:#0e1420;font-family:Arial,Helvetica,sans-serif">${q.delivery[0]}–${q.delivery[1]} business days</td></tr>
+  </table>
+</td></tr>
+<tr><td style="padding:16px 30px 28px">
+  <div style="font-size:10.5px;color:#8a94a6;line-height:1.7;border-top:1px solid #e2e6ec;padding-top:14px;font-family:Arial,Helvetica,sans-serif">${L.footer}</div>
+  <div style="font-size:10.5px;color:#b7bfca;margin-top:10px;font-family:Arial,Helvetica,sans-serif">Powered by AM777 Automation Solutions</div>
+</td></tr>
+</table>
+</body></html>`;
+}
+
+function openInvoicePreview(){
+ const html=generateInvoiceHTML();
+ $('modalCategory').textContent='Email-Ready Invoice';
+ $('modalTitle').textContent='Preview & Copy';
+ $('modalBody').innerHTML=`
+   <div id="invoicePreviewWrap" style="border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:14px;background:#fff"></div>
+   <div class="actions">
+     <button id="copyInvoiceBtn" class="btn primary" type="button">Copy as Email HTML</button>
+     <button id="copyInvoicePlainBtn" class="btn" type="button">Copy as Plain Text</button>
+   </div>
+   <div id="invoiceCopyStatus" class="mini" style="margin-top:8px"></div>
+   <div class="helper" style="margin-top:10px">Copy as Email HTML, then paste directly into your email compose window — the formatting carries over. If your mail client only accepts plain text, use Copy as Plain Text instead.</div>`;
+ const iframe=document.createElement('iframe');
+ iframe.style.cssText='width:100%;height:520px;border:0;display:block';
+ $('invoicePreviewWrap').appendChild(iframe);
+ iframe.srcdoc=html;
+ $('detailModal').classList.add('open');
+ $('copyInvoiceBtn').onclick=()=>copyInvoiceRich(html);
+ $('copyInvoicePlainBtn').onclick=copyInvoicePlain;
+}
+
+async function copyInvoiceRich(html){
+ const status=$('invoiceCopyStatus');
+ try{
+   const plain=generateQuote();
+   await navigator.clipboard.write([new ClipboardItem({
+     'text/html':new Blob([html],{type:'text/html'}),
+     'text/plain':new Blob([plain],{type:'text/plain'})
+   })]);
+   status.textContent='Copied — paste directly into your email compose window.';
+   status.style.color='var(--green)';
+ }catch(e){
+   status.textContent='Rich copy isn’t supported in this browser/context — use "Copy as Plain Text," or click inside the preview above, select all, and copy manually.';
+   status.style.color='var(--amber)';
+ }
+}
+
+function copyInvoicePlain(){
+ const status=$('invoiceCopyStatus');
+ const plain=generateQuote();
+ navigator.clipboard.writeText(plain).then(()=>{
+   status.textContent='Plain-text quote copied.';
+   status.style.color='var(--green)';
+ }).catch(()=>{
+   status.textContent='Copy failed — select the text manually.';
+   status.style.color='var(--red)';
+ });
+}
+
 function buildCatalogCategories(){const cats=[...new Set(CATALOG_IDS.map(id=>P[id].category))];$('catalogCategory').innerHTML='<option value="all">All categories</option>'+cats.map(c=>`<option value="${c}">${c}</option>`).join('');}
 function renderStaffCapacityRef(){
  const rows=[`<div class="statrow" style="grid-column:1/-1"><span>First ${STAFF_CAPACITY.included} staff/users</span><strong>Included with system</strong></div>`]
