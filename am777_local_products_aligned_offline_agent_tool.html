@@ -266,6 +266,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
         <button data-cloud="6m">6 Months · ₱12,777</button>
         <button data-cloud="12m">12 Months · ₱15,777</button>
       </div>
+      <div class="mini" id="careIncludedNote" style="margin-top:10px;color:var(--green)"></div>
       <div class="segment" id="careSegment" style="margin-top:10px">
         <button data-care="none" class="selected">No Care</button>
         <button data-care="monthly">Monthly · ₱777/mo</button>
@@ -400,14 +401,14 @@ const P = {
     upgrades:['Cloud access','Advanced inventory','Supplier & purchasing','Website / ordering','Employee attendance','Business operations modules']},
   cloud6:{id:'cloud6',name:'Cloud Access — 6 Months',category:'POS & Cloud',price:12777,billing:'6 months',delivery:[10,20],
     solves:'Adds online backup, remote owner access, and connected business records to an AM777 local system.',
-    inclusions:['Online backup','Remote owner access','Connected business records','Connected sales / inventory where included in the system','Remote reports where included','Data recovery support','Up to 10 staff users','2 owner/admin users','3 connected devices','1 branch'],
+    inclusions:['1 month free — 7 months coverage total for the price of 6','AM777 Care included for the full coverage period (no separate Care charge while active)','Online backup','Remote owner access','Connected business records','Connected sales / inventory where included in the system','Remote reports where included','Data recovery support','Up to 10 staff users','2 owner/admin users','3 connected devices','1 branch'],
     best:['Owners who want to check the business remotely','Businesses using multiple connected devices'],
     limits:['Extra capacity uses approved annual add-on pricing','If a 6-month plan exceeds included capacity, final add-on pricing requires AM777 approval'],
     customer:'Check your business from another connected device and keep important records backed up online.',
     upgrades:['12-month Cloud','Extra users / devices','Additional branch assessment']},
   cloud12:{id:'cloud12',name:'Cloud Access — 12 Months',category:'POS & Cloud',price:15777,billing:'12 months',delivery:[10,20],
     solves:'Annual Cloud access with the same connected-business capabilities at the preferred long-term term.',
-    inclusions:['Online backup','Remote owner access','Connected business records','Remote reports where included','Data recovery support','Up to 10 staff users','2 owner/admin users','3 connected devices','1 branch'],
+    inclusions:['6 months free — 18 months coverage total for the price of 12','AM777 Care included for the full coverage period (no separate Care charge while active)','Online backup','Remote owner access','Connected business records','Remote reports where included','Data recovery support','Up to 10 staff users','2 owner/admin users','3 connected devices','1 branch'],
     best:['Businesses planning to use connected access throughout the year'],
     limits:['Additional branches and complex integrations require assessment'],
     customer:'Best-value annual Cloud access for remote monitoring, backup, and connected records.',
@@ -657,6 +658,10 @@ const P = {
 
 /* Staff/user capacity — one-time, attached to the base system itself (not Cloud).
    Single source of truth for Configurator, Product Knowledge reference, and Commission. */
+const CLOUD_TERMS = {
+  '6m': { paidMonths: 6, freeMonths: 1, totalMonths: 7 },
+  '12m': { paidMonths: 12, freeMonths: 6, totalMonths: 18 }
+};
 const STAFF_CAPACITY = {
   included: 5,
   billing: 'One-time',
@@ -726,7 +731,7 @@ function init(){
  $('presetChips').innerHTML=PRESETS.map(p=>`<button class="chip" data-preset="${p.id}">${p.label}</button>`).join('');
  document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>applyPreset(b.dataset.preset));
  document.querySelectorAll('[data-need]').forEach(b=>b.onclick=()=>{const k=b.dataset.need;if(state.needs.has(k))state.needs.delete(k);else state.needs.add(k);if(k==='everything'&&state.needs.has(k))NEEDS.forEach(([n])=>state.needs.add(n));syncCoreDefault();renderNeeds();renderAddons();render();});
- document.querySelectorAll('[data-cloud]').forEach(b=>b.onclick=()=>{state.cloud=b.dataset.cloud;renderCloud();render();});
+ document.querySelectorAll('[data-cloud]').forEach(b=>b.onclick=()=>{state.cloud=b.dataset.cloud;renderCloud();renderCare();renderAddons();render();});
  document.querySelectorAll('[data-care]').forEach(b=>b.onclick=()=>{state.careMode=b.dataset.care;renderCare();render();});
  $('toggleAllAddons').onclick=()=>{state.showAll=!state.showAll;renderAddons();};
  $('coreDetails').onclick=()=>{if(state.coreId)openDetails(state.coreId);};
@@ -774,7 +779,13 @@ function renderWizardProgress(){
 }
 function renderNeeds(){document.querySelectorAll('[data-need]').forEach(b=>b.classList.toggle('selected',state.needs.has(b.dataset.need)));}
 function renderCloud(){document.querySelectorAll('[data-cloud]').forEach(b=>b.classList.toggle('selected',b.dataset.cloud===state.cloud));}
-function renderCare(){document.querySelectorAll('[data-care]').forEach(b=>b.classList.toggle('selected',b.dataset.care===state.careMode));}
+function renderCare(){
+ const cloudActive=state.cloud!=='none';
+ document.querySelectorAll('[data-care]').forEach(b=>b.classList.toggle('selected',b.dataset.care===state.careMode));
+ $('careSegment').classList.toggle('hidden',cloudActive);
+ $('careIncludedNote').classList.toggle('hidden',!cloudActive);
+ if(cloudActive){const term=CLOUD_TERMS[state.cloud];$('careIncludedNote').textContent=`AM777 Care is included with Cloud for the full ${term.totalMonths}-month coverage period — no separate charge.`;}
+}
 function renderExisting(){
  const setup=$('currentSetup').value;
  const hasSoftware=['am777','thirdparty','multiple'].includes(setup);
@@ -917,8 +928,8 @@ function compute(){
    assessment=true;
  }
 
- if(state.cloud==='6m'){initial+=P.cloud6.price;cloudRenewal=P.cloud6.price;lines.push([P.cloud6.name,P.cloud6.price]);minD=Math.max(minD,10);maxD=Math.max(maxD,20);}
- if(state.cloud==='12m'){initial+=P.cloud12.price;cloudRenewal=P.cloud12.price;lines.push([P.cloud12.name,P.cloud12.price]);minD=Math.max(minD,10);maxD=Math.max(maxD,20);}
+ if(state.cloud==='6m'){initial+=P.cloud6.price;cloudRenewal=P.cloud6.price;lines.push([P.cloud6.name,P.cloud6.price]);lines.push([`${CLOUD_TERMS['6m'].freeMonths} month free — ${CLOUD_TERMS['6m'].totalMonths} months coverage total`,'Included']);minD=Math.max(minD,10);maxD=Math.max(maxD,20);}
+ if(state.cloud==='12m'){initial+=P.cloud12.price;cloudRenewal=P.cloud12.price;lines.push([P.cloud12.name,P.cloud12.price]);lines.push([`${CLOUD_TERMS['12m'].freeMonths} months free — ${CLOUD_TERMS['12m'].totalMonths} months coverage total`,'Included']);minD=Math.max(minD,10);maxD=Math.max(maxD,20);}
 
  // Staff/user capacity: one-time, attached to the base system, independent of Cloud selection.
  const extraStaff=Math.max(0,staff-STAFF_CAPACITY.included);
@@ -945,7 +956,10 @@ function compute(){
    state.addons.forEach(id=>{if(P[id].requiresCloud)cloudGated.push(P[id].name);});
    if(cloudGated.length){approval=true;lines.push([`Cloud Access required for: ${[...new Set(cloudGated)].join(', ')}`,null]);}
  }
- if(state.careMode==='monthly'){care=P.care.price;initial+=care;lines.push([`${P.care.name} — first month`,care]);}
+ if(state.cloud!=='none'){
+   const term=CLOUD_TERMS[state.cloud];
+   lines.push([`${P.care.name} — included with Cloud (${term.totalMonths} months coverage)`,'Included with Cloud']);
+ }else if(state.careMode==='monthly'){care=P.care.price;initial+=care;lines.push([`${P.care.name} — first month`,care]);}
  else if(state.careMode==='annual'){care=P.care.price*12;initial+=care;lines.push([`${P.care.name} — 12 months prepaid (18 months coverage, 6 free)`,care]);}
  if(state.addons.size>=5||state.needs.has('everything')||branches>1)approval=true;
  if(coreId==='management'&&state.coreIncluded){initial=Math.max(initial,P.management.price);}
@@ -962,7 +976,7 @@ function render(){
  $('initialTotal').textContent=`${peso(q.initial)}${q.status!=='ready'?'+':''}`;
  if(q.initial>0){const dp=Math.round(q.initial*0.5);$('downpaymentTotal').textContent=`${peso(dp)}${q.status!=='ready'?'+':''}`;$('balanceTotal').textContent=`${peso(q.initial-dp)}${q.status!=='ready'?'+':''}`;}
  else{$('downpaymentTotal').textContent='—';$('balanceTotal').textContent='—';}
- const renew=[];if(q.cloudRenewal)renew.push(`${peso(q.cloudRenewal)} / ${state.cloud==='6m'?'6 months':'12 months'} Cloud`);if(q.capacityRenewal)renew.push(`${peso(q.capacityRenewal)} / year capacity`);
+ const renew=[];if(q.cloudRenewal)renew.push(`${peso(q.cloudRenewal)} / ${CLOUD_TERMS[state.cloud]?.totalMonths||''} months Cloud (Care included)`);if(q.capacityRenewal)renew.push(`${peso(q.capacityRenewal)} / year capacity`);
  $('renewalTotal').textContent=renew.length?renew.join(' + '):'None';$('careTotal').textContent=q.care?(state.careMode==='annual'?`${peso(q.care)} / 18 months (6 free)`:`${peso(q.care)} / month`):'None';$('deliveryEstimate').textContent=`${q.delivery[0]}–${q.delivery[1]} business days`;
  let note='',next='';if(q.status==='ready'){note='<strong>READY TO QUOTE.</strong> Standard approved configuration.';next='Generate the customer quote and explain the selected inclusions and renewal clearly.'}
  if(q.status==='assess'){note='<strong>NEEDS ASSESSMENT.</strong> Use this as a starting estimate only; do not promise final compatibility or scope.';next='Collect the current software/system name, type, access method, and target connection or improvement, then ask AM777 to confirm the final scope.'}
@@ -972,7 +986,7 @@ function render(){
  $('assessmentNote').innerHTML=note;$('nextAction').textContent=next;
 }
 
-function recurringText(q,lang){const parts=[];if(q.cloudRenewal)parts.push(`${peso(q.cloudRenewal)} / ${state.cloud==='6m'?'6':'12'} ${lang==='tl'?'buwan':'months'} Cloud`);if(q.capacityRenewal)parts.push(`${peso(q.capacityRenewal)} / ${lang==='tl'?'taon':'year'} extra capacity`);if(q.care)parts.push(state.careMode==='annual'?`${peso(q.care)} / 18 ${lang==='tl'?'buwan (6 libre)':'months (6 free)'} AM777 Care`:`${peso(q.care)} / ${lang==='tl'?'buwan':'month'} AM777 Care`);return parts.length?parts.join(' + '):(lang==='tl'?'Wala':'None');}
+function recurringText(q,lang){const parts=[];if(q.cloudRenewal)parts.push(`${peso(q.cloudRenewal)} / ${CLOUD_TERMS[state.cloud]?.totalMonths||''} ${lang==='tl'?'buwan (kasama ang Care)':'months (Care included)'} Cloud`);if(q.capacityRenewal)parts.push(`${peso(q.capacityRenewal)} / ${lang==='tl'?'taon':'year'} extra capacity`);if(!q.cloudRenewal&&q.care)parts.push(state.careMode==='annual'?`${peso(q.care)} / 18 ${lang==='tl'?'buwan (6 libre)':'months (6 free)'} AM777 Care`:`${peso(q.care)} / ${lang==='tl'?'buwan':'month'} AM777 Care`);return parts.length?parts.join(' + '):(lang==='tl'?'Wala':'None');}
 function generateQuote(){
  const q=compute(),lang=$('quoteLanguage').value,b=$('customerName').value.trim()||'Your Business',industry=INDUSTRIES[$('businessType').value].label,setup=SETUP_LABELS[$('currentSetup').value],sysType=$('currentSystemType').selectedOptions?.[0]?.textContent||'',items=q.lines.map(([l,a])=>`• ${l}: ${typeof a==='string'?a:a===null?'Assessment / Custom Quote':a?peso(a):'Already owned / included'}`).join('\n'),status=q.status==='ready'?'Standard configuration':q.status==='assess'?'Subject to AM777 assessment':'Subject to AM777 approval';
  const currentDetail=['am777','thirdparty','multiple'].includes($('currentSetup').value)?`${setup} · ${sysType}${$('existingSystemName').value.trim()?` · ${$('existingSystemName').value.trim()}`:''}`:setup;
