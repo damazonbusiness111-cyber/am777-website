@@ -10,12 +10,14 @@
   --bg:#020203;--panel:rgba(4,5,7,.94);--panel2:rgba(0,0,0,.9);--text:#f3f5fa;--muted:#a9b2c7;
   --line:rgba(243,245,250,.07);--line2:rgba(139,196,255,.2);--accent:#8bc4ff;--accent2:#459dfb;
   --green:#9adbb9;--amber:#e8ca88;--red:#e5a4a4;--shadow:0 22px 70px rgba(0,0,0,.28);
+  --tint:rgba(127,169,233,.10);--tint-border:rgba(127,169,233,.30);
   --r:18px;--rs:12px;--max:1380px
 }
 :root[data-theme="light"]{
   --bg:#f4f6fb;--panel:rgba(255,255,255,.92);--panel2:rgba(240,244,252,.85);--text:#0e1420;--muted:#4a5468;
   --line:rgba(15,25,45,.09);--line2:rgba(28,63,115,.22);--accent:#1c3f73;--accent2:#3563a8;
-  --green:#1f9d63;--amber:#a9750a;--red:#c23b3b;--shadow:0 22px 70px rgba(20,30,60,.1)
+  --green:#1f9d63;--amber:#a9750a;--red:#c23b3b;--shadow:0 22px 70px rgba(20,30,60,.1);
+  --tint:rgba(28,63,115,.13);--tint-border:rgba(28,63,115,.38)
 }
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);position:relative;transition:color .25s ease;
@@ -56,11 +58,11 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{width:min
 .biztype-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px}
 .biztype-card{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:12px;padding:13px 10px;text-align:center;color:var(--muted);font-size:11.5px;font-weight:700;line-height:1.35;transition:border-color .15s,background .15s,color .15s}
 .biztype-card:hover{border-color:var(--line2)}
-.biztype-card.selected{border-color:var(--line2);background:rgba(127,169,233,.1);color:var(--text);box-shadow:inset 0 0 0 1px rgba(127,169,233,.2)}
+.biztype-card.selected{border-color:var(--line2);background:var(--tint);color:var(--text);box-shadow:inset 0 0 0 1px var(--tint-border)}
 .wizard-progress{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:20px}
 .wizard-progress button{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:10px;padding:8px 4px;text-align:center;color:var(--muted);font-size:9.5px;font-weight:700;line-height:1.4}
 .wizard-progress button strong{display:block;font-size:12px;margin-bottom:2px;color:var(--text)}
-.wizard-progress button.active{border-color:var(--line2);background:rgba(127,169,233,.08);color:var(--accent)}
+.wizard-progress button.active{border-color:var(--line2);background:var(--tint);color:var(--accent)}
 .wizard-progress button.done{color:var(--text)}
 .wizard-progress button.done strong{color:var(--green)}
 .wizard-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px;padding-top:16px;border-top:1px solid var(--line)}
@@ -68,8 +70,8 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{width:min
 .wizard-nav #wizardBack:disabled{opacity:.4}
 .fieldgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}label{color:var(--muted);font-size:11.5px}
 input,select,textarea{width:100%;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:11px;padding:12px;outline:none}input:focus,select:focus,textarea:focus{border-color:rgba(127,169,233,.48)}
-textarea{min-height:80px;resize:vertical}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--muted);border-radius:999px;padding:8px 10px;font-size:11.5px}.chip.selected{color:var(--text);background:rgba(127,169,233,.10);border-color:rgba(127,169,233,.28)}
-.segment{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.segment button{border:1px solid var(--line);background:var(--panel2);color:var(--muted);border-radius:11px;padding:11px 8px}.segment button.selected{background:rgba(127,169,233,.10);border-color:rgba(127,169,233,.30);color:var(--text)}
+textarea{min-height:80px;resize:vertical}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--muted);border-radius:999px;padding:8px 10px;font-size:11.5px}.chip.selected{color:var(--text);background:var(--tint);border-color:var(--tint-border)}
+.segment{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.segment button{border:1px solid var(--line);background:var(--panel2);color:var(--muted);border-radius:11px;padding:11px 8px}.segment button.selected{background:var(--tint);border-color:var(--tint-border);color:var(--text)}
 .helper{font-size:10.5px;color:var(--muted);line-height:1.45;margin-top:6px}
 .rec-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.rec-top strong{font-size:16px}.price{font-size:28px;font-weight:760;letter-spacing:-.045em;margin:8px 0 4px}.mini{font-size:11px;color:var(--muted)}
 .status{display:inline-flex;border-radius:999px;padding:7px 9px;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line)}.status.ready{color:var(--green);border-color:rgba(154,219,185,.24);background:rgba(154,219,185,.055)}.status.assess{color:var(--amber);border-color:rgba(232,202,136,.25);background:rgba(232,202,136,.055)}.status.approval{color:var(--red);border-color:rgba(229,164,164,.25);background:rgba(229,164,164,.055)}
@@ -972,7 +974,7 @@ function compute(){
  if(coreId==='management'&&state.coreIncluded){initial=Math.max(initial,P.management.price);}
  if(initial===0)assessment=true;
  const status=approval?'approval':assessment?'assess':'ready';
- return {initial,cloudRenewal,capacityRenewal,care,lines,status,delivery:[minD,maxD],recName,recPrice,reason,coreId,setup};
+ return {initial,cloudRenewal,capacityRenewal,care,careBundled:state.cloud!=='none',lines,status,delivery:[minD,maxD],recName,recPrice,reason,coreId,setup};
 }
 function render(){
  const q=compute();
@@ -984,12 +986,14 @@ function render(){
  if(q.initial>0){const dp=Math.round(q.initial*0.5);$('downpaymentTotal').textContent=`${peso(dp)}${q.status!=='ready'?'+':''}`;$('balanceTotal').textContent=`${peso(q.initial-dp)}${q.status!=='ready'?'+':''}`;}
  else{$('downpaymentTotal').textContent='—';$('balanceTotal').textContent='—';}
  const renew=[];if(q.cloudRenewal)renew.push(`${peso(q.cloudRenewal)} / ${CLOUD_TERMS[state.cloud]?.totalMonths||''} months Cloud (Care included)`);if(q.capacityRenewal)renew.push(`${peso(q.capacityRenewal)} / year capacity`);
- $('renewalTotal').textContent=renew.length?renew.join(' + '):'None';$('careTotal').textContent=q.care?(state.careMode==='annual'?`${peso(q.care)} / 18 months (6 free)`:`${peso(q.care)} / month`):'None';$('deliveryEstimate').textContent=`${q.delivery[0]}–${q.delivery[1]} business days`;
+ $('renewalTotal').textContent=renew.length?renew.join(' + '):'None';$('careTotal').textContent=q.careBundled?`Included with Cloud (${CLOUD_TERMS[state.cloud].totalMonths} mo)`:q.care?(state.careMode==='annual'?`${peso(q.care)} / 18 months (6 free)`:`${peso(q.care)} / month`):'None';$('deliveryEstimate').textContent=`${q.delivery[0]}–${q.delivery[1]} business days`;
  let note='',next='';if(q.status==='ready'){note='<strong>READY TO QUOTE.</strong> Standard approved configuration.';next='Generate the customer quote and explain the selected inclusions and renewal clearly.'}
  if(q.status==='assess'){note='<strong>NEEDS ASSESSMENT.</strong> Use this as a starting estimate only; do not promise final compatibility or scope.';next='Collect the current software/system name, type, access method, and target connection or improvement, then ask AM777 to confirm the final scope.'}
  if(q.status==='approval'){note='<strong>AM777 APPROVAL REQUIRED.</strong> Do not present this estimate as a final committed price.';next='Send the configuration to AM777 for price/scope approval before committing to the customer.'}
  if(state.cloud==='6m'&&q.status==='approval'&&(+$('adminUsers').value>2)){next='The 6-month Cloud plan exceeds included admin/device capacity. AM777 must confirm the add-on pricing before final quote.'}
  if(+$('staffUsers').value-STAFF_CAPACITY.included>STAFF_CAPACITY.maxBundleQty){next='Staff capacity exceeds the supported bundle table (55 users). Send to AM777 for Evaluation before quoting.'}
+ const unresolvedLine=q.lines.find(l=>l[0].startsWith('Unresolved requirements'));
+ if(unresolvedLine){next=`${unresolvedLine[0].replace('Unresolved requirements: ','Add the missing item(s) to the quote first: ')}.`;}
  $('assessmentNote').innerHTML=note;$('nextAction').textContent=next;
 }
 
