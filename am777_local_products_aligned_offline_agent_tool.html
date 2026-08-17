@@ -266,7 +266,11 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
         <button data-cloud="6m">6 Months · ₱12,777</button>
         <button data-cloud="12m">12 Months · ₱15,777</button>
       </div>
-      <div class="chips" style="margin-top:10px"><button id="careToggle" class="chip">Add AM777 Care · ₱777/month</button></div>
+      <div class="segment" id="careSegment" style="margin-top:10px">
+        <button data-care="none" class="selected">No Care</button>
+        <button data-care="monthly">Monthly · ₱777/mo</button>
+        <button data-care="annual">Annual · ₱9,324 (18 months, 6 free)</button>
+      </div>
     </div>
 
     <div class="step" data-page="5">
@@ -707,7 +711,7 @@ const SYSTEM_TYPE_TO_PRODUCT={pos:'pos',booking:'booking',inventory:'inventory',
 const SETUP_LABELS={none:'No System Yet',manual:'Manual / Paper',sheets:'Excel / Google Sheets',am777:'Existing AM777 System',thirdparty:'Existing Third-Party Software',multiple:'Multiple Disconnected Tools'};
 const INTERNAL={agentRate:.20,expenseRate:.05};
 
-const state={cloud:'none',care:false,needs:new Set(),addons:new Set(),showAll:false,coreIncluded:true,coreId:null,catalogCategory:'all',catalogShowAll:false,wizardStep:1};
+const state={cloud:'none',careMode:'none',needs:new Set(),addons:new Set(),showAll:false,coreIncluded:true,coreId:null,catalogCategory:'all',catalogShowAll:false,wizardStep:1};
 const WIZARD_STEPS=[{n:1,label:'Customer'},{n:2,label:'Needs'},{n:3,label:'Capacity'},{n:4,label:'Cloud'},{n:5,label:'Systems'}];
 const $=id=>document.getElementById(id);
 const peso=v=>new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',maximumFractionDigits:0}).format(v||0);
@@ -723,7 +727,7 @@ function init(){
  document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>applyPreset(b.dataset.preset));
  document.querySelectorAll('[data-need]').forEach(b=>b.onclick=()=>{const k=b.dataset.need;if(state.needs.has(k))state.needs.delete(k);else state.needs.add(k);if(k==='everything'&&state.needs.has(k))NEEDS.forEach(([n])=>state.needs.add(n));syncCoreDefault();renderNeeds();renderAddons();render();});
  document.querySelectorAll('[data-cloud]').forEach(b=>b.onclick=()=>{state.cloud=b.dataset.cloud;renderCloud();render();});
- $('careToggle').onclick=()=>{state.care=!state.care;$('careToggle').classList.toggle('selected',state.care);render();};
+ document.querySelectorAll('[data-care]').forEach(b=>b.onclick=()=>{state.careMode=b.dataset.care;renderCare();render();});
  $('toggleAllAddons').onclick=()=>{state.showAll=!state.showAll;renderAddons();};
  $('coreDetails').onclick=()=>{if(state.coreId)openDetails(state.coreId);};
  $('coreToggle').onclick=()=>{state.coreIncluded=!state.coreIncluded;render();};
@@ -739,10 +743,21 @@ function init(){
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
  $('catalogSearch').addEventListener('input',renderCatalog);
  $('closeModal').onclick=closeModal;$('detailModal').onclick=e=>{if(e.target===$('detailModal'))closeModal();};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
- syncCoreDefault();renderNeeds();renderCloud();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();renderStaffCapacityRef();render();initCommissionCalculator();goToWizardStep(1,false);
+ syncCoreDefault();renderNeeds();renderCloud();renderCare();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();renderStaffCapacityRef();render();initCommissionCalculator();goToWizardStep(1,false);
 }
 function switchTab(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));if(id==='catalog')renderCatalog();window.scrollTo({top:0,behavior:'smooth'});}
+function existingSystemGapMessage(){
+ const setup=$('currentSetup').value;
+ if(!['am777','thirdparty','multiple'].includes(setup))return null;
+ const name=$('existingSystemName').value.trim(),access=$('existingAccess').value;
+ if(!name||access==='unknown')return 'Before continuing: ask the customer what their current system/platform is called, and how it can be accessed (API, export, database, or no access). This is required before quoting an upgrade or integration.';
+ return null;
+}
 function goToWizardStep(n,scroll){
+ if(state.wizardStep===1&&n>1){
+   const gap=existingSystemGapMessage();
+   if(gap){alert(gap);return;}
+ }
  state.wizardStep=Math.max(1,Math.min(WIZARD_STEPS.length,n));
  document.querySelectorAll('.step[data-page]').forEach(s=>s.classList.toggle('active',+s.dataset.page===state.wizardStep));
  $('wizardBack').disabled=state.wizardStep===1;
@@ -759,6 +774,7 @@ function renderWizardProgress(){
 }
 function renderNeeds(){document.querySelectorAll('[data-need]').forEach(b=>b.classList.toggle('selected',state.needs.has(b.dataset.need)));}
 function renderCloud(){document.querySelectorAll('[data-cloud]').forEach(b=>b.classList.toggle('selected',b.dataset.cloud===state.cloud));}
+function renderCare(){document.querySelectorAll('[data-care]').forEach(b=>b.classList.toggle('selected',b.dataset.care===state.careMode));}
 function renderExisting(){
  const setup=$('currentSetup').value;
  const hasSoftware=['am777','thirdparty','multiple'].includes(setup);
@@ -860,7 +876,7 @@ function cheapestStaff(extra){
 function compute(){
  const setup=$('currentSetup').value,staff=+$('staffUsers').value||1,admins=+$('adminUsers').value||1,devices=+$('devices').value||1,branches=+$('branches').value||1;
  const coreId=state.coreId||recommendCoreId(),core=P[coreId];
- let initial=0,cloudRenewal=0,capacityRenewal=0,care=state.care?P.care.price:0,lines=[],assessment=false,approval=false,minD=core.delivery?.[0]??3,maxD=core.delivery?.[1]??14,recName=core.name,recPrice=core.price,reason='';
+ let initial=0,cloudRenewal=0,capacityRenewal=0,care=0,lines=[],assessment=false,approval=false,minD=core.delivery?.[0]??3,maxD=core.delivery?.[1]??14,recName=core.name,recPrice=core.price,reason='';
 
  if(['thirdparty','multiple'].includes(setup)){
    const i=P[$('integrationTier').value];assessment=true;
@@ -907,7 +923,8 @@ function compute(){
  }else if(admins>2||devices>1||branches>1){assessment=true;if(branches>1)approval=true;}
 
  state.addons.forEach(id=>{if(id===coreId&&state.coreIncluded)return;const p=P[id];initial+=p.price;lines.push([`${p.name} (starting)`,p.price]);minD=Math.max(minD,p.delivery[0]);maxD=Math.max(maxD,p.delivery[1]);if(p.assessment)assessment=true;});
- if(state.care){initial+=P.care.price;lines.push([`${P.care.name} — first month`,P.care.price]);}
+ if(state.careMode==='monthly'){care=P.care.price;initial+=care;lines.push([`${P.care.name} — first month`,care]);}
+ else if(state.careMode==='annual'){care=P.care.price*12;initial+=care;lines.push([`${P.care.name} — 12 months prepaid (18 months coverage, 6 free)`,care]);}
  if(state.addons.size>=5||state.needs.has('everything')||branches>1)approval=true;
  if(coreId==='management'&&state.coreIncluded){initial=Math.max(initial,P.management.price);}
  if(initial===0)assessment=true;
@@ -924,7 +941,7 @@ function render(){
  if(q.initial>0){const dp=Math.round(q.initial*0.5);$('downpaymentTotal').textContent=`${peso(dp)}${q.status!=='ready'?'+':''}`;$('balanceTotal').textContent=`${peso(q.initial-dp)}${q.status!=='ready'?'+':''}`;}
  else{$('downpaymentTotal').textContent='—';$('balanceTotal').textContent='—';}
  const renew=[];if(q.cloudRenewal)renew.push(`${peso(q.cloudRenewal)} / ${state.cloud==='6m'?'6 months':'12 months'} Cloud`);if(q.capacityRenewal)renew.push(`${peso(q.capacityRenewal)} / year capacity`);
- $('renewalTotal').textContent=renew.length?renew.join(' + '):'None';$('careTotal').textContent=q.care?`${peso(q.care)} / month`:'None';$('deliveryEstimate').textContent=`${q.delivery[0]}–${q.delivery[1]} business days`;
+ $('renewalTotal').textContent=renew.length?renew.join(' + '):'None';$('careTotal').textContent=q.care?(state.careMode==='annual'?`${peso(q.care)} / 18 months (6 free)`:`${peso(q.care)} / month`):'None';$('deliveryEstimate').textContent=`${q.delivery[0]}–${q.delivery[1]} business days`;
  let note='',next='';if(q.status==='ready'){note='<strong>READY TO QUOTE.</strong> Standard approved configuration.';next='Generate the customer quote and explain the selected inclusions and renewal clearly.'}
  if(q.status==='assess'){note='<strong>NEEDS ASSESSMENT.</strong> Use this as a starting estimate only; do not promise final compatibility or scope.';next='Collect the current software/system name, type, access method, and target connection or improvement, then ask AM777 to confirm the final scope.'}
  if(q.status==='approval'){note='<strong>AM777 APPROVAL REQUIRED.</strong> Do not present this estimate as a final committed price.';next='Send the configuration to AM777 for price/scope approval before committing to the customer.'}
@@ -933,7 +950,7 @@ function render(){
  $('assessmentNote').innerHTML=note;$('nextAction').textContent=next;
 }
 
-function recurringText(q,lang){const parts=[];if(q.cloudRenewal)parts.push(`${peso(q.cloudRenewal)} / ${state.cloud==='6m'?'6':'12'} ${lang==='tl'?'buwan':'months'} Cloud`);if(q.capacityRenewal)parts.push(`${peso(q.capacityRenewal)} / ${lang==='tl'?'taon':'year'} extra capacity`);if(q.care)parts.push(`${peso(q.care)} / ${lang==='tl'?'buwan':'month'} AM777 Care`);return parts.length?parts.join(' + '):(lang==='tl'?'Wala':'None');}
+function recurringText(q,lang){const parts=[];if(q.cloudRenewal)parts.push(`${peso(q.cloudRenewal)} / ${state.cloud==='6m'?'6':'12'} ${lang==='tl'?'buwan':'months'} Cloud`);if(q.capacityRenewal)parts.push(`${peso(q.capacityRenewal)} / ${lang==='tl'?'taon':'year'} extra capacity`);if(q.care)parts.push(state.careMode==='annual'?`${peso(q.care)} / 18 ${lang==='tl'?'buwan (6 libre)':'months (6 free)'} AM777 Care`:`${peso(q.care)} / ${lang==='tl'?'buwan':'month'} AM777 Care`);return parts.length?parts.join(' + '):(lang==='tl'?'Wala':'None');}
 function generateQuote(){
  const q=compute(),lang=$('quoteLanguage').value,b=$('customerName').value.trim()||'Your Business',industry=INDUSTRIES[$('businessType').value].label,setup=SETUP_LABELS[$('currentSetup').value],sysType=$('currentSystemType').selectedOptions?.[0]?.textContent||'',items=q.lines.map(([l,a])=>`• ${l}: ${typeof a==='string'?a:a===null?'Assessment / Custom Quote':a?peso(a):'Already owned / included'}`).join('\n'),status=q.status==='ready'?'Standard configuration':q.status==='assess'?'Subject to AM777 assessment':'Subject to AM777 approval';
  const currentDetail=['am777','thirdparty','multiple'].includes($('currentSetup').value)?`${setup} · ${sysType}${$('existingSystemName').value.trim()?` · ${$('existingSystemName').value.trim()}`:''}`:setup;
@@ -1223,8 +1240,8 @@ function initCommissionCalculator(){
  };
  renderSoldItems();
 }
-function saveDraft(){const data={customerName:$('customerName').value,businessType:$('businessType').value,quoteLanguage:$('quoteLanguage').value,currentSetup:$('currentSetup').value,currentSystemType:$('currentSystemType').value,existingSystemName:$('existingSystemName').value,existingAccess:$('existingAccess').value,integrationTier:$('integrationTier').value,staffUsers:$('staffUsers').value,adminUsers:$('adminUsers').value,devices:$('devices').value,branches:$('branches').value,cloud:state.cloud,care:state.care,needs:[...state.needs],addons:[...state.addons],coreIncluded:state.coreIncluded};localStorage.setItem('am777_offline_quote_draft',JSON.stringify(data));$('saveDraft').textContent='Saved';setTimeout(()=>$('saveDraft').textContent='Save Offline Draft',1000);}
-function loadDraft(){try{const d=JSON.parse(localStorage.getItem('am777_offline_quote_draft')||'null');if(!d)return alert('No offline draft saved.');['customerName','businessType','quoteLanguage','currentSetup','currentSystemType','existingSystemName','existingAccess','integrationTier','staffUsers','adminUsers','devices','branches'].forEach(id=>{if(d[id]!=null)$(id).value=d[id];});state.cloud=d.cloud||'none';state.care=!!d.care;state.needs=new Set(d.needs||[]);state.addons=new Set(d.addons||[]);syncCoreDefault();if(typeof d.coreIncluded==='boolean')state.coreIncluded=d.coreIncluded;$('careToggle').classList.toggle('selected',state.care);renderNeeds();renderCloud();renderExisting();renderAddons();renderBusinessTypeGrid();renderCurrentSetupChips();render();}catch(e){alert('Could not load the saved draft.');}}
+function saveDraft(){const data={customerName:$('customerName').value,businessType:$('businessType').value,quoteLanguage:$('quoteLanguage').value,currentSetup:$('currentSetup').value,currentSystemType:$('currentSystemType').value,existingSystemName:$('existingSystemName').value,existingAccess:$('existingAccess').value,integrationTier:$('integrationTier').value,staffUsers:$('staffUsers').value,adminUsers:$('adminUsers').value,devices:$('devices').value,branches:$('branches').value,cloud:state.cloud,careMode:state.careMode,needs:[...state.needs],addons:[...state.addons],coreIncluded:state.coreIncluded};localStorage.setItem('am777_offline_quote_draft',JSON.stringify(data));$('saveDraft').textContent='Saved';setTimeout(()=>$('saveDraft').textContent='Save Offline Draft',1000);}
+function loadDraft(){try{const d=JSON.parse(localStorage.getItem('am777_offline_quote_draft')||'null');if(!d)return alert('No offline draft saved.');['customerName','businessType','quoteLanguage','currentSetup','currentSystemType','existingSystemName','existingAccess','integrationTier','staffUsers','adminUsers','devices','branches'].forEach(id=>{if(d[id]!=null)$(id).value=d[id];});state.cloud=d.cloud||'none';state.careMode=d.careMode||(d.care?'monthly':'none');state.needs=new Set(d.needs||[]);state.addons=new Set(d.addons||[]);syncCoreDefault();if(typeof d.coreIncluded==='boolean')state.coreIncluded=d.coreIncluded;renderNeeds();renderCloud();renderCare();renderExisting();renderAddons();renderBusinessTypeGrid();renderCurrentSetupChips();render();}catch(e){alert('Could not load the saved draft.');}}
 function applyPreset(id){
  const p=PRESETS.find(x=>x.id===id);if(!p)return;
  $('businessType').value=p.businessType;
@@ -1236,13 +1253,12 @@ function applyPreset(id){
  $('adminUsers').value=1;
  $('devices').value=1;
  $('branches').value=p.branches;
- state.cloud=p.cloud;state.care=p.care;state.needs=new Set(p.needs);state.addons.clear();
+ state.cloud=p.cloud;state.careMode=p.care?'monthly':'none';state.needs=new Set(p.needs);state.addons.clear();
  syncCoreDefault();
- $('careToggle').classList.toggle('selected',state.care);
  document.querySelectorAll('[data-preset]').forEach(b=>b.classList.toggle('selected',b.dataset.preset===id));
- renderNeeds();renderCloud();renderExisting();renderAddons();renderBusinessTypeGrid();renderCurrentSetupChips();render();
+ renderNeeds();renderCloud();renderCare();renderExisting();renderAddons();renderBusinessTypeGrid();renderCurrentSetupChips();render();
 }
-function reset(){localStorage.removeItem('am777_offline_quote_draft');document.querySelectorAll('[data-preset]').forEach(b=>b.classList.remove('selected'));$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.care=false;state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('careToggle').classList.remove('selected');$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderExisting();renderAddons();renderCatalog();renderBusinessTypeGrid();renderCurrentSetupChips();render();goToWizardStep(1,false);}
+function reset(){localStorage.removeItem('am777_offline_quote_draft');document.querySelectorAll('[data-preset]').forEach(b=>b.classList.remove('selected'));$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.careMode='none';state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderCare();renderExisting();renderAddons();renderCatalog();renderBusinessTypeGrid();renderCurrentSetupChips();render();goToWizardStep(1,false);}
 document.addEventListener('DOMContentLoaded',init);
 </script>
 <script>
