@@ -55,6 +55,8 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{width:min
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 20px}.tab{border-color:var(--line);background:rgba(255,255,255,.02);border-radius:999px}.view{display:none}.view.active{display:block}
 .layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:16px;align-items:start}.panel{padding:18px}.panel.sticky{position:sticky;top:88px}.panel h2{margin:0 0 4px;font-size:22px;letter-spacing:-.03em}.panel h3{margin:0 0 4px;font-size:16px}.sub{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
 .step{padding:17px 0;border-bottom:1px solid var(--line);display:none}.step.active{display:block}.step:last-child{border-bottom:0}.stephead{display:flex;gap:10px;align-items:center;margin-bottom:12px}.num{width:26px;height:26px;flex:0 0 26px;border-radius:8px;display:grid;place-items:center;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11px;color:var(--text)}
+.ffstep{padding:14px 0;border-bottom:1px solid var(--line)}.ffstep:last-child{border-bottom:0}
+.ffview{display:none}.ffview.active{display:block}
 .biztype-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px}
 .biztype-card{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:12px;padding:13px 10px;text-align:center;color:var(--muted);font-size:11.5px;font-weight:700;line-height:1.35;transition:border-color .15s,background .15s,color .15s}
 .biztype-card:hover{border-color:var(--line2)}
@@ -154,7 +156,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
 })();
 </script>
 <canvas id="networkCanvas" aria-hidden="true"></canvas>
-<header class="topbar"><div class="shell topbar-inner"><div class="brand"><span class="mark" role="img" aria-label="AM777 mark"><svg class="brand-mark-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6 7 32" class="bm-bold"/><path d="M20 6 33 32" class="bm-bold"/><path d="M13 20 27 20" class="bm-bold"/><path d="M16 20 16 32" class="bm-thin"/><path d="M24 20 24 32" class="bm-thin"/><circle cx="33" cy="32" r="1.7" class="bm-glow"/></svg></span><div><strong>AM777 Offline Agent Knowledge Tool</strong><span>Products · Pricing · Quote Reference</span></div></div><nav class="nav"><button data-tab="configure" class="active">Configure</button><button data-tab="catalog">Products</button><button data-tab="industries">Industries</button><button data-tab="commission">Commission</button></nav><button class="theme-toggle" id="themeToggle" type="button" role="switch" aria-checked="false" aria-label="Switch to light theme"><span class="theme-toggle-track"><svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1110 3.2 7 7 0 0020 14.5z"/></svg><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.5 4.5l1.7 1.7M17.8 17.8l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.5 19.5l1.7-1.7M17.8 6.2l1.7-1.7"/></svg><span class="theme-toggle-thumb"></span></span></button></div></header>
+<header class="topbar"><div class="shell topbar-inner"><div class="brand"><span class="mark" role="img" aria-label="AM777 mark"><svg class="brand-mark-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6 7 32" class="bm-bold"/><path d="M20 6 33 32" class="bm-bold"/><path d="M13 20 27 20" class="bm-bold"/><path d="M16 20 16 32" class="bm-thin"/><path d="M24 20 24 32" class="bm-thin"/><circle cx="33" cy="32" r="1.7" class="bm-glow"/></svg></span><div><strong>AM777 Offline Agent Knowledge Tool</strong><span>Products · Pricing · Quote Reference</span></div></div><nav class="nav"><button data-tab="configure" class="active">Configure</button><button data-tab="catalog">Products</button><button data-tab="industries">Industries</button><button data-tab="fastfix">Fast Fix</button><button data-tab="commission">Commission</button></nav><button class="theme-toggle" id="themeToggle" type="button" role="switch" aria-checked="false" aria-label="Switch to light theme"><span class="theme-toggle-track"><svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1110 3.2 7 7 0 0020 14.5z"/></svg><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.5 4.5l1.7 1.7M17.8 17.8l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.5 19.5l1.7-1.7M17.8 6.2l1.7-1.7"/></svg><span class="theme-toggle-thumb"></span></span></button></div></header>
 
 <main class="shell">
 <section id="configure" class="view active">
@@ -340,6 +342,98 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
 
 <section id="industries" class="view">
   <div class="panel"><div class="eyebrow">Industry Guide</div><h2>Recommended starting systems</h2><p class="sub">Use these as knowledge cues, not forced bundles.</p><div id="industryGrid" class="industrygrid" style="margin-top:14px"></div></div>
+</section>
+
+<section id="fastfix" class="view">
+  <div class="panel">
+    <div class="eyebrow">Revenue-Sprint Campaign</div>
+    <h2>AM777 Fast Fix</h2>
+    <p class="sub">One small business problem. One defined area. One completed cleanup, organization, correction, or basic setup.</p>
+    <div class="quickstats" style="margin-top:14px">
+      <div class="qs"><span>Consultation</span><strong>₱777 one-time</strong></div>
+      <div class="qs"><span>Fast Fix Package</span><strong>₱1,377 one-time</strong></div>
+      <div class="qs"><span>Package Savings</span><strong>SAVE ₱177</strong></div>
+      <div class="qs"><span>Agent Commission</span><strong>₱377 flat</strong></div>
+    </div>
+    <div class="notice" style="margin-top:14px">Fast Fix is a bounded micro-service — not unlimited cleanup, not a full system build. Do not stack multiple ₱777 tasks to underprice a larger project; escalate to a NEW quote instead. If the customer later buys a larger AM777 product, that is a new sale under the normal approved commission rules.</div>
+  </div>
+
+  <div class="chips" id="ffSubTabs" style="margin:14px 0">
+    <button class="chip selected" data-ffsub="autoquote">Auto-Quote</button>
+    <button class="chip" data-ffsub="google">Google Business</button>
+    <button class="chip" data-ffsub="facebook">Facebook Page</button>
+    <button class="chip" data-ffsub="whatsapp">WhatsApp Business</button>
+    <button class="chip" data-ffsub="data">Data / Spreadsheet</button>
+  </div>
+
+  <div id="ffAutoQuote" class="ffview active">
+    <div class="layout">
+      <div class="panel config-left">
+        <h2>Fast Fix Auto-Quote</h2>
+        <p class="sub">Answer honestly — the outcome is generated automatically, the agent does not choose it manually.</p>
+
+        <div class="ffstep">
+          <div class="stephead"><div class="num">A</div><div><h3>What needs fixing?</h3></div></div>
+          <div class="chips" id="ffIssue"></div>
+        </div>
+        <div class="ffstep">
+          <div class="stephead"><div class="num">B</div><div><h3>Platform / Data Source</h3></div></div>
+          <div class="chips" id="ffPlatform"></div>
+        </div>
+        <div class="ffstep">
+          <div class="stephead"><div class="num">C</div><div><h3>Number of primary issues</h3></div></div>
+          <div class="chips" id="ffIssueCount"></div>
+        </div>
+        <div class="ffstep">
+          <div class="stephead"><div class="num">D</div><div><h3>Number of platforms</h3></div></div>
+          <div class="chips" id="ffPlatformCount"></div>
+        </div>
+        <div class="ffstep">
+          <div class="stephead"><div class="num">E</div><div><h3>Data / Content Size</h3><p class="sub">Fast Fix is intended for a small, bounded amount of work.</p></div></div>
+          <div class="chips" id="ffDataSize"></div>
+        </div>
+        <div class="ffstep">
+          <div class="stephead"><div class="num">F</div><div><h3>Desired Final Result</h3></div></div>
+          <div class="field"><input id="ffDesiredResult" placeholder="e.g. Remove obvious duplicate customer rows and organize the columns." /></div>
+        </div>
+        <div class="ffstep">
+          <div class="stephead"><div class="num">G</div><div><h3>Does the work require any of these?</h3></div></div>
+          <div class="chips" id="ffDisqualifiers"></div>
+        </div>
+        <div class="ffstep">
+          <div class="stephead"><div class="num">H</div><div><h3>Access Readiness</h3></div></div>
+          <div class="chips" id="ffAccess"></div>
+        </div>
+      </div>
+
+      <aside class="panel sticky">
+        <div class="eyebrow">Automatic Result</div>
+        <div id="ffResult"><div class="mini">Fill out the form to get an automatic recommendation.</div></div>
+        <div id="ffAgentSummary" class="hidden" style="margin-top:14px;border:1px dashed var(--red);border-radius:12px;padding:12px">
+          <div class="eyebrow" style="color:var(--red)">Agent Only — Not Customer Facing</div>
+          <div class="totalrow"><span>Customer Price</span><strong>₱1,377</strong></div>
+          <div class="totalrow"><span>Agent Commission</span><strong id="ffAgentCommissionValue">₱377</strong></div>
+          <div class="mini">Commission eligible after successful payment + accepted Fast Fix scope.</div>
+        </div>
+        <div id="ffCustomerQuoteBox" class="hidden" style="margin-top:14px">
+          <div class="actions" style="grid-template-columns:auto"><button id="ffCopyQuote" class="btn primary" type="button">Copy Customer Quote</button></div>
+          <div id="ffCustomerQuoteOutput" class="quote-output" style="margin-top:10px"></div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <div class="eyebrow">Safe Access Reference</div><h2>How AM777 Gets Access</h2>
+      <div id="ffSafeAccessGrid" class="detail-grid" style="margin-top:12px"></div>
+      <div class="notice" style="margin-top:12px;border-color:rgba(194,59,59,.3)"><strong>Never request or retain:</strong> <span id="ffNeverRequest"></span></div>
+      <div class="helper" style="margin-top:10px"><strong>Backup rule:</strong> Before deletion, overwrite, bulk edit, or major reorganization — back up first when the platform allows it. If no backup/export is possible, disclose that limitation, minimize destructive edits, and never delete ambiguous information without flagging it for customer review. Obvious duplicates can be cleaned; ambiguous duplicates must be flagged, not guessed. Never merge records based only on similar names, and never invent missing values.</div>
+    </div>
+  </div>
+
+  <div id="ffGoogle" class="ffview"></div>
+  <div id="ffFacebook" class="ffview"></div>
+  <div id="ffWhatsapp" class="ffview"></div>
+  <div id="ffData" class="ffview"></div>
 </section>
 
 <section id="commission" class="view">
@@ -654,7 +748,21 @@ const P = {
     best:['Clients who want ongoing minor support'],
     limits:['Does not include new major features, modules, redesigns, or complex integrations'],
     customer:'Optional monthly support for minor system fixes and assistance.',
-    upgrades:['New features quoted separately']}
+    upgrades:['New features quoted separately']},
+  consultation:{id:'consultation',name:'AM777 Consultation',category:'Fast Fix Campaign',price:777,billing:'One-time',delivery:[1,3],
+    solves:'Identifies the business bottleneck, inspects the current platform/data/workflow, and confirms whether a micro task is sufficient.',
+    inclusions:['Bottleneck identification','Current platform/data/workflow inspection','Confirmation of the right next step'],
+    best:['Businesses unsure exactly what needs fixing'],
+    limits:['Does not include the fix itself unless upgraded to Fast Fix or a scoped product'],
+    customer:'AM777 will review the current setup, identify the bottleneck, and confirm the right next step.',
+    upgrades:['AM777 Fast Fix','Relevant AM777 product']},
+  fastfix:{id:'fastfix',name:'AM777 Fast Fix',category:'Fast Fix Campaign',price:1377,billing:'One-time',delivery:[1,5],
+    solves:'One small business problem, one defined area — one completed cleanup, organization, correction, or basic setup.',
+    inclusions:['AM777 Consultation','Scope Confirmation','One Scoped Cleanup / Organization / Basic Setup','Completion of the agreed deliverable'],
+    best:['Businesses with one clear, bounded micro problem on one platform'],
+    limits:['Not unlimited cleanup','Not full digital transformation','Not custom software, full website, full CRM, full POS, large automation, large migration, or a multi-platform project'],
+    customer:'Consultation plus one scoped cleanup, organization, correction, or basic setup task — completed in one Fast Fix package.',
+    upgrades:['Relevant full AM777 product if a larger need is discovered']}
 };
 
 
@@ -718,6 +826,82 @@ const SYSTEM_TYPE_TO_PRODUCT={pos:'pos',booking:'booking',inventory:'inventory',
 const SETUP_LABELS={none:'No System Yet',manual:'Manual / Paper',sheets:'Excel / Google Sheets',am777:'Existing AM777 System',thirdparty:'Existing Third-Party Software',multiple:'Multiple Disconnected Tools'};
 const INTERNAL={agentRate:.20,expenseRate:.05};
 
+/* ===== AM777 FAST FIX — revenue-sprint micro-cleanup campaign =====
+   Fixed commercial source of truth. Flat pricing/commission — does NOT use
+   the standard 20%-of-95%-net formula and is never wired into the general
+   Commission Calculator. Self-contained: does not touch Configurator state,
+   ADDON_IDS, CATALOG_IDS, or the dependency (requires/requiresCloud) engine. */
+const FASTFIX = {
+  consultationPrice: 777,
+  packagePrice: 1377,
+  regularValue: 1554,
+  discount: 177,
+  commission: 377
+};
+const FASTFIX_CAMPAIGNS = {
+  google:{
+    name:'AM777 GOOGLE BUSINESS FAST FIX',label:'Google Business',
+    solves:'Cleans and organizes one clearly scoped part of a Google Business Profile so customers see accurate, organized information.',
+    idealCustomer:['Salon','Clinic / dental','Auto repair','Café / restaurant','Contractor / home service','Local retail','Service businesses'],
+    signs:['Wrong/incomplete opening hours','Wrong phone/contact details','Incomplete business description','Missing or weak service information','Wrong/missing categories','Outdated photos','Missing website/booking/contact link','Inconsistent business information','Unfinished profile organization'],
+    included:['Clean profile information','Organize services','Correct contact details','Organize categories','Clean business description','Improve basic CTA/contact path','Organize existing photos/information'],
+    excluded:['Google verification','Reinstatement','#1 ranking','Guaranteed Maps placement','Guaranteed calls/leads','Guaranteed approval by Google'],
+    access:'Invite AM777 as an appropriate Business Profile manager/editor where supported.',
+    accessWarning:'Do not ask for the customer’s Google password.',
+    positioning:'AM777 can review and clean one clearly scoped part of your Google Business Profile so customers see more accurate and organized business information.'
+  },
+  facebook:{
+    name:'AM777 FACEBOOK PAGE FAST FIX',label:'Facebook Page',
+    solves:'Cleans and organizes one clearly scoped part of a Facebook Business Page.',
+    idealCustomer:['Local retail','Service businesses','Café / restaurant','Salon','Clinic','Home service / contractor'],
+    signs:['Incorrect About information','Business category cleanup needed','Phone/address/hours cleanup needed','Missing CTA button','Contact path unclear','Service/menu disorganized','Profile/cover placement cleanup','Obvious page clutter','Incomplete business information'],
+    included:['Incorrect About information fix','Business category cleanup','Phone/address/hours cleanup','CTA button setup','Contact path correction','Service/menu organization','Profile/cover placement cleanup','Obvious page clutter cleanup','Incomplete business information fix'],
+    excluded:['Monthly posting','Social media management','Advertising campaign management','Content calendar','Full branding redesign','Follower growth guarantee','Lead guarantee'],
+    access:'Facebook/Meta Page access invite with the lowest sufficient permission.',
+    accessWarning:'Never request the customer’s personal Facebook password.',
+    positioning:'May outdated or magulong business information sa Facebook Page? AM777 Fast Fix can clean one clearly scoped area for ₱1,377.'
+  },
+  whatsapp:{
+    name:'AM777 WHATSAPP BUSINESS FAST FIX',label:'WhatsApp Business',
+    solves:'Sets up or cleans the basic WhatsApp Business profile and customer-response tools.',
+    idealCustomer:['Retail','Restaurant','Services','Clinic','Salon','Any business fielding customer chats'],
+    signs:['No/incomplete business profile','Missing description','Missing business hours','Missing address/contact details','No greeting message','No away message','No quick replies','Disorganized product/service catalog','No click-to-chat link'],
+    included:['Business profile setup','Description','Business hours','Address/contact details','Greeting message','Away message','Basic quick replies','Simple product/service catalog organization','Click-to-chat/contact link','Basic labels/organization where supported'],
+    excluded:['Custom WhatsApp API integration','Advanced chatbot','AI agent','Bulk automation','Complex CRM integration','Unsupported messaging automation'],
+    access:'Customer-controlled setup, screen share, or approved collaborator/business access where supported.',
+    accessWarning:'Do not collect the customer’s permanent login credentials.',
+    positioning:'AM777 can organize and set up the basic WhatsApp Business information and customer-response tools in one scoped Fast Fix.'
+  },
+  data:{
+    name:'AM777 DATA CLEANUP FAST FIX',label:'Data / Spreadsheet',
+    solves:'Cleans and organizes one small, clearly scoped dataset — spreadsheet, customer list, product list, or tracker.',
+    idealCustomer:['Any business with messy spreadsheets, customer lists, or product records'],
+    signs:['Obvious duplicate rows','Inconsistent labels/categories','Inconsistent formatting','Disorganized columns','Disorganized tabs','Messy customer lists','Messy product/service lists','Cluttered tracker','Records out of order'],
+    included:['Remove obvious duplicate rows','Standardize labels/categories','Fix simple inconsistent formatting','Organize columns','Organize tabs','Clean customer lists','Clean product/service lists','Simplify one tracker','Reorder existing records','Basic CSV/Excel cleanup','Organize one small dataset'],
+    excluded:['Huge data migration','Thousands of ambiguous records requiring manual investigation','Complex financial reconciliation','Advanced BI/dashboard build','Custom scripts unless separately assessed','Cross-platform database migration','Large data enrichment/research'],
+    access:'File copy/export — original file → untouched backup → working copy → cleaned output → change summary.',
+    accessWarning:'Never work on the only copy if a recoverable copy can be made.',
+    positioning:'May magulong Excel, Google Sheet, customer list, or product records? AM777 can clean and organize one scoped dataset under Fast Fix.'
+  }
+};
+const SAFE_ACCESS_STEPS=[
+  {title:'1. File Copy / Export — Safest',body:'Preferred for spreadsheets, customer lists, product lists, CSV/XLSX, data cleanup. Workflow: Original → Backup → Working Copy → Cleaned Output. Never work on the only copy if a recoverable copy can be made.'},
+  {title:'2. Platform Collaborator Invite',body:'Preferred for live platforms. Customer invites a dedicated AM777 work account with the LOWEST permission required (Editor, Collaborator, Content Manager, Limited Manager). Do not request the customer’s permanent master password.'},
+  {title:'3. Screen Share / Customer-Controlled Session',body:'Use when collaborator access is unavailable. Customer remains logged in and controls sensitive authentication.'},
+  {title:'4. Temporary Restricted Account',body:'Only when necessary. Must have minimum permissions, no billing/payment access unless absolutely necessary, no ownership transfer, no recovery/security access. Revoke after delivery.'}
+];
+const NEVER_REQUEST=['Permanent master passwords','OTPs for later use','2FA recovery codes','Banking credentials','Payment credentials','Personal email passwords','Account recovery credentials'];
+const FF_ISSUE_OPTIONS=[['sheet','Data / Spreadsheet Cleanup'],['google','Google Business Profile Cleanup'],['facebook','Facebook Business Page Cleanup'],['whatsapp','WhatsApp Business Setup / Cleanup'],['booking','Booking / Platform Cleanup'],['info','Business Information Organization'],['form','Basic Form / Tracker Setup'],['workflow','Simple Workflow Cleanup'],['other','Other']];
+const FF_PLATFORM_OPTIONS=[['google','Google Business Profile'],['facebook','Facebook Page'],['whatsapp','WhatsApp Business'],['sheets','Google Sheets'],['excel','Microsoft Excel'],['csv','CSV'],['forms','Google Forms'],['booking','Booking Platform'],['website','Existing Website / Platform'],['other','Other']];
+const FF_ISSUECOUNT_OPTIONS=[['1','1 clear issue'],['few','2–3 related issues'],['multiple','Multiple unrelated issues']];
+const FF_PLATFORMCOUNT_OPTIONS=[['1','1 platform'],['2','2 platforms'],['3plus','3+ platforms']];
+const FF_DATASIZE_OPTIONS=[['small','Small'],['medium','Medium'],['large','Large / Unclear']];
+const FF_DISQUALIFIER_OPTIONS=[['coding','Custom coding'],['api','API integration'],['automation','Automation'],['multiplatform','Multi-platform connection'],['migration','Large data migration'],['redesign','Full redesign'],['newsystem','New complete system'],['multibranch','Multi-branch'],['formulas','Complex formulas / advanced dashboard'],['none','None of these']];
+const FF_ACCESS_OPTIONS=[['export','File/export ready'],['collaborator','Can invite AM777 as collaborator/editor'],['screenshare','Can do screen-share/customer-controlled access'],['tempaccount','Can create temporary restricted account'],['unsure','Not sure how to give access']];
+const FF_HARD_DISQUALIFIERS=['coding','api','automation','multiplatform','migration','redesign','newsystem','multibranch','formulas'];
+const FF_ESCALATION_MAP={booking:'booking',workflow:'workflow',newsystem:'management',multiplatform:'integrationMulti',api:'integrationMulti',automation:'workflow',multibranch:'management'};
+const fastfixState={issue:null,platform:null,issueCount:null,platformCount:null,dataSize:null,desiredResult:'',disqualifiers:new Set(),access:null};
+
 const state={cloud:'none',careMode:'none',needs:new Set(),addons:new Set(),showAll:false,coreIncluded:true,coreId:null,catalogCategory:'all',catalogShowAll:false,wizardStep:1};
 const WIZARD_STEPS=[{n:1,label:'Customer'},{n:2,label:'Needs'},{n:3,label:'Capacity'},{n:4,label:'Cloud'},{n:5,label:'Systems'}];
 const $=id=>document.getElementById(id);
@@ -750,7 +934,7 @@ function init(){
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
  $('catalogSearch').addEventListener('input',renderCatalog);
  $('closeModal').onclick=closeModal;$('detailModal').onclick=e=>{if(e.target===$('detailModal'))closeModal();};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
- syncCoreDefault();renderNeeds();renderCloud();renderCare();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();renderStaffCapacityRef();render();initCommissionCalculator();goToWizardStep(1,false);
+ syncCoreDefault();renderNeeds();renderCloud();renderCare();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();renderStaffCapacityRef();render();initCommissionCalculator();initFastFix();goToWizardStep(1,false);
 }
 function switchTab(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));if(id==='catalog')renderCatalog();window.scrollTo({top:0,behavior:'smooth'});}
 function existingSystemGapMessage(){
@@ -1306,6 +1490,133 @@ function applyPreset(id){
  renderNeeds();renderCloud();renderCare();renderExisting();renderAddons();renderBusinessTypeGrid();renderCurrentSetupChips();render();
 }
 function reset(){localStorage.removeItem('am777_offline_quote_draft');document.querySelectorAll('[data-preset]').forEach(b=>b.classList.remove('selected'));$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.careMode='none';state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderCare();renderExisting();renderAddons();renderCatalog();renderBusinessTypeGrid();renderCurrentSetupChips();render();goToWizardStep(1,false);}
+/* ===== AM777 FAST FIX — auto-quote logic, campaign content, safe-access reference =====
+   Independent of Configurator state/addons/dependency engine. Flat ₱377 commission is
+   never routed through the standard commission formula or the general Commission Calculator. */
+const FF_SUBVIEW_IDS={autoquote:'ffAutoQuote',google:'ffGoogle',facebook:'ffFacebook',whatsapp:'ffWhatsapp',data:'ffData'};
+function switchFFSub(id){
+ Object.entries(FF_SUBVIEW_IDS).forEach(([k,elId])=>$(elId).classList.toggle('active',k===id));
+ document.querySelectorAll('[data-ffsub]').forEach(b=>b.classList.toggle('selected',b.dataset.ffsub===id));
+}
+function fastfixDecision(){
+ const s=fastfixState;
+ const hasHardDisqualifier=[...s.disqualifiers].some(d=>FF_HARD_DISQUALIFIERS.includes(d));
+ if(hasHardDisqualifier)return 'assessment';
+ if(s.platformCount==='3plus')return 'assessment';
+ if(s.issueCount==='multiple')return 'assessment';
+ if(s.dataSize==='large')return 'assessment';
+ const started=s.issue||s.platform||s.issueCount||s.platformCount||s.dataSize||s.desiredResult.trim();
+ if(!started)return null;
+ const fastFixEligible=s.issue&&s.platform&&s.issueCount==='1'&&s.platformCount==='1'&&(s.dataSize==='small'||s.dataSize==='medium')&&s.desiredResult.trim().length>0;
+ if(fastFixEligible)return 'fastfix';
+ return 'consultation';
+}
+function ffSuggestedProduct(){
+ for(const d of FF_HARD_DISQUALIFIERS){if(fastfixState.disqualifiers.has(d)&&FF_ESCALATION_MAP[d]&&P[FF_ESCALATION_MAP[d]])return P[FF_ESCALATION_MAP[d]];}
+ if(fastfixState.issue==='booking')return P.booking;
+ if(fastfixState.issue==='workflow')return P.workflow;
+ return null;
+}
+function generateFastFixQuote(){
+ const s=fastfixState;
+ const issueLabel=FF_ISSUE_OPTIONS.find(o=>o[0]===s.issue)?.[1]||'';
+ const platformLabel=FF_PLATFORM_OPTIONS.find(o=>o[0]===s.platform)?.[1]||'';
+ const accessGiven=s.access&&s.access!=='unsure';
+ const accessNote=!accessGiven?`\n\nRecommended Access Method:\n${SAFE_ACCESS_STEPS[0].title} — ${SAFE_ACCESS_STEPS[0].body}`:'';
+ return `AM777 FAST FIX\n\nPlatform:\n${platformLabel}\n\nApproved Scope:\n${issueLabel}\n\nExpected Result:\n${s.desiredResult.trim()}\n\nIncludes:\n- AM777 Consultation\n- Scope Confirmation\n- One Scoped Cleanup / Organization / Basic Setup\n- Completion of Agreed Deliverable\n\nRegular Starting Value:\n${peso(FASTFIX.regularValue)}\n\nFast Fix Discount:\n-${peso(FASTFIX.discount)}\n\nPACKAGE TOTAL:\n${peso(FASTFIX.packagePrice)}\n\nBilling:\nOne-Time\n\nFast Fix Guarantee:\nOnce AM777 confirms the request fits the Fast Fix scope, AM777 completes the agreed cleanup, organization, correction, or basic setup deliverable within the approved scope.${accessNote}`;
+}
+function renderFastFixResult(){
+ const decision=fastfixDecision();
+ const box=$('ffResult');
+ if(!decision){
+   box.innerHTML='<div class="mini">Fill out the form to get an automatic recommendation.</div>';
+   $('ffAgentSummary').classList.add('hidden');$('ffCustomerQuoteBox').classList.add('hidden');
+   return;
+ }
+ if(decision==='fastfix'){
+   const s=fastfixState;
+   const issueLabel=FF_ISSUE_OPTIONS.find(o=>o[0]===s.issue)?.[1]||'';
+   const platformLabel=FF_PLATFORM_OPTIONS.find(o=>o[0]===s.platform)?.[1]||'';
+   const accessLabel=(s.access&&s.access!=='unsure')?FF_ACCESS_OPTIONS.find(o=>o[0]===s.access)?.[1]:`Not yet confirmed — recommend ${SAFE_ACCESS_STEPS[0].title.replace('1. ','')}`;
+   box.innerHTML=`<div class="notice" style="border-color:rgba(31,157,99,.35)"><strong>READY FOR FAST FIX</strong></div>
+     <div class="bigresult"><span>AM777 Fast Fix</span><strong>${peso(FASTFIX.packagePrice)}</strong></div>
+     <div class="rules">
+       <div class="rule">Platform: ${platformLabel}</div>
+       <div class="rule">Issue: ${issueLabel}</div>
+       <div class="rule">Desired Result: ${s.desiredResult.trim()}</div>
+       <div class="rule">Recommended Access: ${accessLabel}</div>
+       <div class="rule">Scope Boundary: one scoped cleanup / organization / correction / basic setup only.</div>
+     </div>`;
+   $('ffAgentSummary').classList.remove('hidden');
+   $('ffAgentCommissionValue').textContent=peso(FASTFIX.commission);
+   $('ffCustomerQuoteBox').classList.remove('hidden');
+   $('ffCustomerQuoteOutput').textContent=generateFastFixQuote();
+ }else if(decision==='consultation'){
+   box.innerHTML=`<div class="notice"><strong>START WITH AM777 CONSULTATION</strong></div>
+     <div class="bigresult"><span>AM777 Consultation</span><strong>${peso(FASTFIX.consultationPrice)}</strong></div>
+     <p class="mini">AM777 will review the current setup, identify the bottleneck, and confirm the right next step. Do not automatically promise Fast Fix.</p>`;
+   $('ffAgentSummary').classList.add('hidden');$('ffCustomerQuoteBox').classList.add('hidden');
+ }else{
+   const suggestion=ffSuggestedProduct();
+   box.innerHTML=`<div class="notice" style="border-color:rgba(194,59,59,.35)"><strong>NEEDS AM777 ASSESSMENT</strong></div>
+     <p class="mini">This scope is larger than one Fast Fix micro deliverable. Do not present a guessed price.</p>
+     ${suggestion?`<div class="rule">Closest matching AM777 product: <strong>${suggestion.name}</strong> — ${suggestion.price==null?'Assessment / Custom Quote':peso(suggestion.price)+'+'}</div>`:''}`;
+   $('ffAgentSummary').classList.add('hidden');$('ffCustomerQuoteBox').classList.add('hidden');
+ }
+}
+function ffSingleSelect(containerId,options,stateKey){
+ $(containerId).innerHTML=options.map(([k,l])=>`<button type="button" class="chip ${fastfixState[stateKey]===k?'selected':''}" data-ff="${stateKey}" data-val="${k}">${l}</button>`).join('');
+}
+function renderFastFixForm(){
+ if($('ffDesiredResult').value!==fastfixState.desiredResult)$('ffDesiredResult').value=fastfixState.desiredResult;
+ ffSingleSelect('ffIssue',FF_ISSUE_OPTIONS,'issue');
+ ffSingleSelect('ffPlatform',FF_PLATFORM_OPTIONS,'platform');
+ ffSingleSelect('ffIssueCount',FF_ISSUECOUNT_OPTIONS,'issueCount');
+ ffSingleSelect('ffPlatformCount',FF_PLATFORMCOUNT_OPTIONS,'platformCount');
+ ffSingleSelect('ffDataSize',FF_DATASIZE_OPTIONS,'dataSize');
+ $('ffDisqualifiers').innerHTML=FF_DISQUALIFIER_OPTIONS.map(([k,l])=>`<button type="button" class="chip ${fastfixState.disqualifiers.has(k)?'selected':''}" data-ffdis="${k}">${l}</button>`).join('');
+ ffSingleSelect('ffAccess',FF_ACCESS_OPTIONS,'access');
+ document.querySelectorAll('[data-ff]').forEach(b=>b.onclick=()=>{fastfixState[b.dataset.ff]=b.dataset.val;renderFastFixForm();renderFastFixResult();});
+ document.querySelectorAll('[data-ffdis]').forEach(b=>b.onclick=()=>{
+   const k=b.dataset.ffdis;
+   if(k==='none'){fastfixState.disqualifiers.clear();fastfixState.disqualifiers.add('none');}
+   else{fastfixState.disqualifiers.delete('none');if(fastfixState.disqualifiers.has(k))fastfixState.disqualifiers.delete(k);else fastfixState.disqualifiers.add(k);}
+   renderFastFixForm();renderFastFixResult();
+ });
+}
+function ffCampaignHTML(key){
+ const c=FASTFIX_CAMPAIGNS[key];
+ const list=arr=>`<ul class="detail-list">${arr.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+ return `<div class="panel">
+   <div class="eyebrow">Fast Fix Campaign</div><h2>${c.name}</h2>
+   <p class="sub">${c.solves}</p>
+   <div class="detail-grid" style="margin-top:14px">
+     <div class="detail-block"><h3>Ideal Customer</h3>${list(c.idealCustomer)}</div>
+     <div class="detail-block"><h3>Signs to Look For</h3>${list(c.signs)}</div>
+     <div class="detail-block full"><h3>What's Included</h3>${list(c.included)}</div>
+     <div class="detail-block full"><h3>What's NOT Included</h3>${list(c.excluded)}</div>
+     <div class="detail-block full"><h3>Safe Access Method</h3><p>${c.access}</p><p class="mini" style="color:var(--red);margin-top:6px">${c.accessWarning}</p></div>
+     <div class="detail-block"><h3>Fast Fix Eligibility</h3><p>One primary problem, one platform, small/manageable data, clear desired result — no custom coding, API integration, automation, migration, redesign, or multi-branch.</p></div>
+     <div class="detail-block"><h3>When to Escalate</h3><p>Custom coding, API integration, advanced automation, multiple unrelated platforms, large migration, full redesign, complete system build, multi-branch, or a large/complex dataset → Needs AM777 Assessment, not a guessed price.</p></div>
+     <div class="detail-block full"><h3>Customer-Facing Positioning</h3><p>${c.positioning}</p></div>
+     <div class="detail-block"><h3>Price</h3><div class="detail-price">${peso(FASTFIX.packagePrice)}</div><div class="mini">Regular value ${peso(FASTFIX.regularValue)} — save ${peso(FASTFIX.discount)}</div></div>
+     <div class="detail-block"><h3>Agent Commission</h3><div class="detail-price">${peso(FASTFIX.commission)}</div><div class="mini">Flat — commission eligible after payment + accepted scope. Not shown to the customer.</div></div>
+   </div>
+ </div>`;
+}
+function initFastFix(){
+ renderFastFixForm();
+ renderFastFixResult();
+ $('ffGoogle').innerHTML=ffCampaignHTML('google');
+ $('ffFacebook').innerHTML=ffCampaignHTML('facebook');
+ $('ffWhatsapp').innerHTML=ffCampaignHTML('whatsapp');
+ $('ffData').innerHTML=ffCampaignHTML('data');
+ $('ffSafeAccessGrid').innerHTML=SAFE_ACCESS_STEPS.map(s=>`<div class="detail-block"><h3>${s.title}</h3><p>${s.body}</p></div>`).join('');
+ $('ffNeverRequest').textContent=NEVER_REQUEST.join(', ')+'.';
+ document.querySelectorAll('[data-ffsub]').forEach(b=>b.onclick=()=>switchFFSub(b.dataset.ffsub));
+ $('ffDesiredResult').addEventListener('input',()=>{fastfixState.desiredResult=$('ffDesiredResult').value;renderFastFixResult();});
+ $('ffCopyQuote').onclick=async()=>{try{await navigator.clipboard.writeText(generateFastFixQuote());$('ffCopyQuote').textContent='Copied';setTimeout(()=>$('ffCopyQuote').textContent='Copy Customer Quote',1000);}catch(e){}};
+}
 document.addEventListener('DOMContentLoaded',init);
 </script>
 <script>
