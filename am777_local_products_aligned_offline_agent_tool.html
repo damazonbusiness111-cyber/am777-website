@@ -433,10 +433,10 @@ const P = {
     upgrades:['Custom business management system']},
   landing:{id:'landing',name:'Business Landing Page',category:'Website & Customer',price:19777,billing:'Starting',delivery:[3,7],industries:['retail','restaurant','salon','clinic','automotive','logistics','construction','realestate','services'],
     solves:'Gives the business a clear customer-facing page for services, location, contact, and inquiries.',
-    inclusions:['Responsive business page','Services / offer sections','Contact / inquiry path','Basic business information','Lead capture form (inquiries saved directly to a spreadsheet — not the full CRM System)'],
+    inclusions:['Responsive business page','Services / offer sections','Contact / inquiry path','Basic business information','Lead capture form (inquiries saved directly to a spreadsheet — not the full CRM System)','Reference layout/design preview shown before the final page is built'],
     best:['Local businesses without a focused online business page'],
     limits:['Advanced ordering, booking, or integrations are separate','Full CRM System (customer records, follow-up tracking) is a separate product — lead capture here is spreadsheet-based only'],
-    customer:'A simple professional page customers can use to understand and contact your business.',
+    customer:'A single-page professional site (Home, Services/Offers, Contact) built from an AM777 reference layout you review and approve first, then the final version is built for your business.',
     upgrades:['Online inquiry','Ordering','Booking','Messaging connection','Customer / CRM System']},
   inquiry:{id:'inquiry',name:'Online Inquiry System',category:'Website & Customer',price:3777,billing:'Starting',delivery:[3,7],industries:['services','realestate','construction','clinic','retail'],
     solves:'Captures customer inquiries in a structured way instead of relying only on scattered messages.',
@@ -1040,6 +1040,7 @@ function openDetails(id){const p=P[id];$('modalCategory').textContent=p.category
  $('modalBody').innerHTML=`<div class="detail-grid">
  <div class="detail-block"><h3>Price & Billing</h3><div class="detail-price">${modalPrice}</div><div class="pillrow"><span class="pill">${p.billing}</span><span class="pill">${deliveryLabel}</span>${p.assessment?'<span class="pill">Assessment required</span>':''}</div></div>
  <div class="detail-block"><h3>What it solves</h3><p>${p.solves}</p></div>
+ <div class="detail-block full"><h3>What to Expect</h3><p>Before the final build, AM777 shares a reference/demo version of this system so the customer can review the layout, flow, and features first. The final version is completed and delivered within the estimated timeframe above only after that reference is reviewed and approved.</p></div>
  <div class="detail-block full"><h3>Included</h3>${list(p.inclusions)}</div>
  <div class="detail-block"><h3>Best Fit</h3>${list(p.best||((p.industries||[]).map(k=>INDUSTRIES[k]?.label).filter(Boolean)))}</div>
  <div class="detail-block"><h3>Limits / Important Notes</h3>${list(p.limits)}</div>
