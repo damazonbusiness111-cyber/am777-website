@@ -686,21 +686,21 @@ const ADDON_IDS=['landing','inquiry','ordering','booking','messaging','loyalty',
 const CATALOG_IDS=['pos','cloud6','cloud12',...INTEGRATION_IDS,...ADDON_IDS,'completeOps','management','posHr','full','customModules','care'];
 const CATEGORY_ORDER=['POS & Cloud','Existing System Integration','Website & Customer','Inventory & Purchasing','Finance & Reporting','Staff & HR','Sales & CRM','Automation & AI','Complete Bundled Systems','Assessment / Custom','Support'];
 const INDUSTRIES={
- retail:{label:'Retail / Mini Mart / Grocery',core:'pos',products:['inventory','purchasing','cash','attendance','loyalty','messaging']},
- restaurant:{label:'Restaurant / Café',core:'pos',products:['ordering','inventory','purchasing','attendance','delivery','messaging']},
- salon:{label:'Salon / Spa / Wellness',core:'booking',products:['crm','loyalty','notifications','messaging']},
+ retail:{label:'Retail / Mini Mart / Grocery',core:'pos',products:['inventory','purchasing','cash','attendance','loyalty','messaging','crm']},
+ restaurant:{label:'Restaurant / Café',core:'pos',products:['ordering','inventory','purchasing','attendance','delivery','messaging','landing','crm']},
+ salon:{label:'Salon / Spa / Wellness',core:'booking',products:['crm','loyalty','notifications','messaging','pos']},
  clinic:{label:'Clinic / Dental',core:'booking',products:['crm','notifications','messaging']},
- pharmacy:{label:'Pharmacy',core:'inventory',products:['purchasing','attendance','cash']},
- wholesale:{label:'Wholesale / Distribution',core:'inventory',products:['purchasing','warehouse','crm','delivery']},
+ pharmacy:{label:'Pharmacy',core:'inventory',products:['purchasing','attendance','cash','pos']},
+ wholesale:{label:'Wholesale / Distribution',core:'inventory',products:['purchasing','warehouse','crm','delivery','pos','ordering','landing']},
  automotive:{label:'Automotive / Repair',core:'booking',products:['crm','followup','notifications','messaging']},
- logistics:{label:'Logistics / Transport',core:'workflow',products:['booking','cash','delivery','notifications']},
- construction:{label:'Construction / Contractor',core:'purchasing',products:['attendance','cash','crm','workflow']},
+ logistics:{label:'Logistics / Transport',core:'workflow',products:['booking','cash','delivery','notifications','crm','pos','ordering','landing']},
+ construction:{label:'Construction / Contractor',core:'purchasing',products:['attendance','cash','crm','workflow','inventory','pos']},
  realestate:{label:'Real Estate',core:'crm',products:['followup','autoFollow','landing','messaging']},
  hotel:{label:'Hotel / Resort',core:'booking',products:['attendance','notifications','crm']},
- rental:{label:'Rental Business',core:'booking',products:['crm','notifications','cash']},
+ rental:{label:'Rental Business',core:'booking',products:['crm','notifications','cash','pos']},
  services:{label:'Professional Services',core:'crm',products:['followup','inquiry','workflow','landing']},
- ecommerce:{label:'E-commerce / Online Seller',core:'ordering',products:['delivery','inventory','platform']},
- manufacturing:{label:'Manufacturing',core:'inventory',products:['purchasing','warehouse','attendance','analytics']},
+ ecommerce:{label:'E-commerce / Online Seller',core:'ordering',products:['delivery','inventory','platform','landing','pos']},
+ manufacturing:{label:'Manufacturing',core:'inventory',products:['purchasing','warehouse','attendance','analytics','pos','finance','cash']},
  school:{label:'School / Training Center',core:'crm',products:['attendance','notifications','booking']},
  other:{label:'Other / Custom',core:'workflow',products:['crm','landing','inquiry']}
 };
@@ -708,7 +708,7 @@ const NEEDS=[['sales','Sales / POS'],['stocks','Stocks'],['customers','Customers
 const PRESETS=[
  {id:'retailStart',label:'Retail Starter',businessType:'retail',needs:['sales','stocks'],cloud:'none',care:false,staffUsers:5,branches:1},
  {id:'restaurantCloud',label:'Restaurant + Cloud',businessType:'restaurant',needs:['sales','orders','stocks'],cloud:'6m',care:true,staffUsers:5,branches:1},
- {id:'bookingBiz',label:'Salon / Clinic Booking',businessType:'salon',needs:['booking','customers'],cloud:'none',care:false,staffUsers:5,branches:1},
+ {id:'bookingBiz',label:'Salon / Clinic Booking',businessType:'salon',needs:['booking','customers'],cloud:'6m',care:false,staffUsers:5,branches:1},
  {id:'multiBranch',label:'Multi-Branch Retail',businessType:'retail',needs:['sales','stocks','branches'],cloud:'12m',care:true,staffUsers:10,branches:2}
 ];
 const NEED_TO_PRODUCT={everything:'management',branches:'management',sales:'pos',stocks:'inventory',customers:'crm',employees:'hr',orders:'ordering',booking:'booking',expenses:'cash',reports:'analytics',automation:'workflow',online:'landing'};
@@ -950,11 +950,18 @@ function compute(){
  }else if(admins>2||devices>1||branches>1){assessment=true;if(branches>1)approval=true;}
 
  state.addons.forEach(id=>{if(id===coreId&&state.coreIncluded)return;const p=P[id];initial+=p.price;lines.push([`${p.name} (starting)`,p.price]);minD=Math.max(minD,p.delivery[0]);maxD=Math.max(maxD,p.delivery[1]);if(p.assessment)assessment=true;});
- if(state.cloud==='none'){
-   const cloudGated=[];
-   if(state.coreIncluded&&core.requiresCloud)cloudGated.push(core.name);
-   state.addons.forEach(id=>{if(P[id].requiresCloud)cloudGated.push(P[id].name);});
-   if(cloudGated.length){approval=true;lines.push([`Cloud Access required for: ${[...new Set(cloudGated)].join(', ')}`,null]);}
+ {
+   // Catches BOTH the core system's own requirement chain (e.g. Construction's core
+   // Purchasing needs Inventory) and any addon left dangling after its prerequisite
+   // was later removed — toggleAddon() only guards the moment of adding, not removal.
+   const unresolved=[];
+   const checkReq=p=>{
+     if(p.requires&&!isProductInQuote(p.requires))unresolved.push(`${p.name} requires ${P[p.requires].name}`);
+     if(p.requiresCloud&&state.cloud==='none')unresolved.push(`${p.name} requires Cloud Access`);
+   };
+   if(state.coreIncluded)checkReq(core);
+   state.addons.forEach(id=>checkReq(P[id]));
+   if(unresolved.length){approval=true;lines.push([`Unresolved requirements: ${[...new Set(unresolved)].join('; ')}`,null]);}
  }
  if(state.cloud!=='none'){
    const term=CLOUD_TERMS[state.cloud];
