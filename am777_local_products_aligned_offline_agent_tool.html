@@ -271,20 +271,23 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
   </div>
 
   <aside class="panel sticky">
-    <div class="rec-top"><div><div class="eyebrow">Recommended Route</div><strong id="recommendationName">Offline POS Starter</strong></div><span id="quoteStatus" class="status ready">Ready to Quote</span></div>
-    <div id="recommendationPrice" class="price">₱9,777</div>
-    <div id="recommendationReason" class="mini"></div>
-    <div id="quoteLineItems" class="lineitems"></div>
-    <div class="totalbox">
-      <div class="totalrow"><span>Estimated Initial Quote</span><strong id="initialTotal">₱9,777</strong></div>
-      <div class="totalrow secondary"><span>Downpayment (50%)</span><strong id="downpaymentTotal">₱0</strong></div>
-      <div class="totalrow secondary"><span>Balance (on delivery)</span><strong id="balanceTotal">₱0</strong></div>
-      <div class="totalrow secondary"><span>Cloud / Capacity Renewal</span><strong id="renewalTotal">None</strong></div>
-      <div class="totalrow secondary"><span>Optional Support</span><strong id="careTotal">None</strong></div>
-      <div class="totalrow secondary"><span>Estimated Delivery</span><strong id="deliveryEstimate">7–14 business days</strong></div>
+    <div id="recommendationPlaceholder" class="mini hidden">No recommended system yet — continue to Step 2 (Needs) so the tool can tailor a recommendation and quote.</div>
+    <div id="recommendationBlock">
+      <div class="rec-top"><div><div class="eyebrow">Recommended Route</div><strong id="recommendationName">Offline POS Starter</strong></div><span id="quoteStatus" class="status ready">Ready to Quote</span></div>
+      <div id="recommendationPrice" class="price">₱9,777</div>
+      <div id="recommendationReason" class="mini"></div>
+      <div id="quoteLineItems" class="lineitems"></div>
+      <div class="totalbox">
+        <div class="totalrow"><span>Estimated Initial Quote</span><strong id="initialTotal">₱9,777</strong></div>
+        <div class="totalrow secondary"><span>Downpayment (50%)</span><strong id="downpaymentTotal">₱0</strong></div>
+        <div class="totalrow secondary"><span>Balance (on delivery)</span><strong id="balanceTotal">₱0</strong></div>
+        <div class="totalrow secondary"><span>Cloud / Capacity Renewal</span><strong id="renewalTotal">None</strong></div>
+        <div class="totalrow secondary"><span>Optional Support</span><strong id="careTotal">None</strong></div>
+        <div class="totalrow secondary"><span>Estimated Delivery</span><strong id="deliveryEstimate">7–14 business days</strong></div>
+      </div>
+      <div id="assessmentNote" class="notice" style="margin:14px 0 0"></div>
+      <div class="next-action"><span>Recommended Next Action</span><strong id="nextAction"></strong></div>
     </div>
-    <div id="assessmentNote" class="notice" style="margin:14px 0 0"></div>
-    <div class="next-action"><span>Recommended Next Action</span><strong id="nextAction"></strong></div>
     <div class="actions">
       <button id="generateQuote" class="btn primary">Generate Quote</button>
       <button id="copyQuote" class="btn">Copy Quote</button>
@@ -731,6 +734,8 @@ function goToWizardStep(n,scroll){
  $('wizardBack').disabled=state.wizardStep===1;
  $('wizardNext').textContent=state.wizardStep===WIZARD_STEPS.length?'Done — Review Quote':'Next';
  $('wizardStepLabel').textContent=`Step ${state.wizardStep} of ${WIZARD_STEPS.length}: ${WIZARD_STEPS[state.wizardStep-1].label}`;
+ $('recommendationBlock').classList.toggle('hidden',state.wizardStep===1);
+ $('recommendationPlaceholder').classList.toggle('hidden',state.wizardStep!==1);
  renderWizardProgress();
  if(scroll!==false)document.querySelector('.config-left').scrollIntoView({block:'start',behavior:'smooth'});
 }
