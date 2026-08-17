@@ -110,7 +110,8 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
   <div class="qs"><span>POS</span><strong>₱9,777 one-time</strong></div>
   <div class="qs"><span>Cloud 6mo</span><strong>₱12,777</strong></div>
   <div class="qs"><span>Cloud 12mo</span><strong>₱15,777</strong></div>
-  <div class="qs"><span>Cloud included</span><strong>10 staff · 2 admins · 3 devices · 1 branch</strong></div>
+  <div class="qs"><span>Cloud included</span><strong>2 admins · 3 devices · 1 branch</strong></div>
+  <div class="qs"><span>Staff capacity</span><strong>5 included, one-time from ₱777</strong></div>
   <div class="qs"><span>Care</span><strong>from ₱777/mo</strong></div>
   <div class="qs"><span>Downpayment</span><strong>50% before work begins</strong></div>
 </div>
@@ -190,14 +191,14 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
     </div>
 
     <div class="step">
-      <div class="stephead"><div class="num">3</div><div><h3>Users & connectivity</h3><p class="sub">Cloud base includes 10 staff, 2 owner/admin users, 3 connected devices, and 1 branch.</p></div></div>
+      <div class="stephead"><div class="num">3</div><div><h3>Users & connectivity</h3><p class="sub">Staff capacity is one-time and applies to the system itself. Cloud (below) is separate — it only adds admin/device/branch capacity when active.</p></div></div>
       <div class="fieldgrid">
         <div class="field"><label>Staff Users</label><input id="staffUsers" type="number" min="1" value="5" /></div>
         <div class="field"><label>Owner / Admin Users</label><input id="adminUsers" type="number" min="1" value="1" /></div>
         <div class="field"><label>Connected Devices</label><input id="devices" type="number" min="1" value="1" /></div>
         <div class="field"><label>Branches</label><input id="branches" type="number" min="1" value="1" /></div>
       </div>
-      <div class="helper">Base Cloud capacity: 1 business · 1 branch · up to 3 connected devices · up to 10 staff users · 2 owner/admin accounts. Approved annual expansion: +5 staff ₱1,277/year · +10 staff ₱2,277/year · +1 owner/admin ₱1,277/year · +1 connected device ₱2,177/year · additional branch setup from ₱7,777 one-time · additional branch Cloud from ₱5,777/year. If a 6-month Cloud customer exceeds included capacity, the tool flags AM777 approval rather than inventing a 6-month add-on price.</div>
+      <div class="helper">Staff/user capacity (one-time, any system): 5 included · +5 ₱777 · +10 ₱1,477 · +20 ₱2,777 · +50 ₱5,777 — lowest-cost combination is chosen automatically, up to 55 users total. Above that, Evaluation Required. Cloud capacity (only relevant with Cloud active): up to 3 connected devices · 2 owner/admin accounts · 1 branch included. Approved annual expansion: +1 owner/admin ₱1,277/year · +1 connected device ₱2,177/year · additional branch setup from ₱7,777 one-time · additional branch Cloud from ₱5,777/year. A 6-month Cloud customer exceeding included admin/device/branch capacity is flagged for AM777 approval rather than an invented price.</div>
     </div>
 
     <div class="step">
@@ -247,6 +248,12 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
 
 <section id="catalog" class="view">
   <div class="panel">
+    <div class="eyebrow">Product Knowledge</div><h2>Staff / User Capacity</h2>
+    <p class="sub">One-time, attached to the system itself — independent of Cloud. First 5 users are included with any system; only charge beyond that.</p>
+    <div id="staffCapacityRef" class="fieldgrid" style="margin-top:12px;grid-template-columns:repeat(3,minmax(0,1fr))"></div>
+    <div class="helper" style="margin-top:10px">Lowest-cost valid bundle combination is always selected automatically (never "next largest bundle"). Above 55 total users (5 included + the largest single bundle), the system shows Evaluation Required rather than inventing a price. Cloud remains separate: 6-month/12-month term pricing for remote access, with its own admin/device/branch capacity below.</div>
+  </div>
+  <div class="panel">
     <div class="eyebrow">Product Knowledge</div><h2>AM777 local systems catalog</h2>
     <p class="sub">Search any system. Click View Details to review what it solves, inclusions, best fit, limitations, billing, delivery, and upgrade path.</p>
     <div class="catalog-tools"><input id="catalogSearch" placeholder="Search POS, HR, booking, inventory, automation..." /><select id="catalogCategory"><option value="all">All categories</option></select></div>
@@ -271,8 +278,10 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
         <div class="fieldgrid">
           <div class="field full"><label>What was sold?</label><select id="soldPicker"></select></div>
         </div>
+        <div id="staffCapacityRow" class="fieldgrid" style="margin-top:10px">
+          <div class="field full"><label>Staff / Users for this system</label><input id="soldStaffForSystem" type="number" min="1" value="5" /><span class="mini" id="staffCapacityPreview" style="margin-top:4px;display:block"></span></div>
+        </div>
         <div id="capacitySubform" class="fieldgrid hidden" style="margin-top:10px">
-          <div class="field"><label>Extra Staff Users</label><input id="soldStaff" type="number" min="0" value="0" /></div>
           <div class="field"><label>Extra Owner/Admin</label><input id="soldAdmin" type="number" min="0" value="0" /></div>
           <div class="field"><label>Extra Connected Devices</label><input id="soldDevice" type="number" min="0" value="0" /></div>
           <div class="field"><label>Extra Branches (Cloud)</label><input id="soldBranch" type="number" min="0" value="0" /></div>
@@ -572,9 +581,21 @@ const P = {
 };
 
 
+/* Staff/user capacity — one-time, attached to the base system itself (not Cloud).
+   Single source of truth for Configurator, Product Knowledge reference, and Commission. */
+const STAFF_CAPACITY = {
+  included: 5,
+  billing: 'One-time',
+  bundles: [
+    { qty: 5, price: 777 },
+    { qty: 10, price: 1477 },
+    { qty: 20, price: 2777 },
+    { qty: 50, price: 5777 }
+  ],
+  maxBundleQty: 50 // largest single bundle; included(5) + this = 55 max supported before Evaluation Required
+};
+
 const CAPACITY = {
-  staff5:{name:'+5 Staff Users',price:1277,billing:'year'},
-  staff10:{name:'+10 Staff Users',price:2277,billing:'year'},
   admin1:{name:'+1 Owner / Admin',price:1277,billing:'year'},
   device1:{name:'+1 Connected Device',price:2177,billing:'year'},
   branchSetup:{name:'Additional Branch Setup',min:7777,max:12777,billing:'one-time starting'},
@@ -633,7 +654,7 @@ function init(){
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
  $('catalogSearch').addEventListener('input',renderCatalog);$('catalogCategory').addEventListener('change',renderCatalog);
  $('closeModal').onclick=closeModal;$('detailModal').onclick=e=>{if(e.target===$('detailModal'))closeModal();};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
- syncCoreDefault();renderNeeds();renderCloud();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();render();initCommissionCalculator();
+ syncCoreDefault();renderNeeds();renderCloud();renderExisting();renderAddons();buildCatalogCategories();renderCatalog();renderIndustries();renderStaffCapacityRef();render();initCommissionCalculator();
 }
 function switchTab(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:document.querySelector('.tabs').offsetTop-78,behavior:'smooth'});}
 function renderNeeds(){document.querySelectorAll('[data-need]').forEach(b=>b.classList.toggle('selected',state.needs.has(b.dataset.need)));}
@@ -676,7 +697,32 @@ function renderAddons(){
  document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const id=b.dataset.add;if(state.addons.has(id))state.addons.delete(id);else state.addons.add(id);renderAddons();render();});
 }
 
-function cheapestStaff(extra){if(extra<=0)return {amount:0,label:''};let best={amount:Infinity,label:''};for(let t=0;t<=Math.ceil(extra/10)+1;t++)for(let f=0;f<=Math.ceil(extra/5)+2;f++){if(t*10+f*5>=extra){const a=t*CAPACITY.staff10.price+f*CAPACITY.staff5.price;if(a<best.amount)best={amount:a,label:[t?`${t}× +10 staff`:null,f?`${f}× +5 staff`:null].filter(Boolean).join(', ')}}}return best;}
+/* Cheapest valid bundle combination covering `extra` additional staff/users beyond the
+   5 included with the base system. True minimum over all bundle-count combinations
+   (not "next largest bundle"), bounded by STAFF_CAPACITY.bundles. Beyond maxBundleQty
+   additional capacity, returns evaluation:true — never invents a price. */
+function cheapestStaff(extra){
+  if(extra<=0)return {amount:0,label:'',covers:0,evaluation:false};
+  if(extra>STAFF_CAPACITY.maxBundleQty)return {amount:null,label:'Evaluation Required',covers:0,evaluation:true};
+  const bundles=STAFF_CAPACITY.bundles;
+  let best=null;
+  (function rec(i,remaining,counts,cost){
+    if(remaining<=0){
+      const covers=counts.reduce((s,c,idx)=>s+c*bundles[idx].qty,0);
+      if(!best||cost<best.cost)best={cost,covers,counts:counts.slice()};
+      return;
+    }
+    if(i>=bundles.length)return;
+    const maxCount=Math.ceil(remaining/bundles[i].qty)+1;
+    for(let c=0;c<=maxCount;c++){
+      counts.push(c);
+      rec(i+1,remaining-c*bundles[i].qty,counts,cost+c*bundles[i].price);
+      counts.pop();
+    }
+  })(0,extra,[],0);
+  const label=best.counts.map((c,idx)=>c?`${c}× +${bundles[idx].qty} staff`:null).filter(Boolean).join(' + ');
+  return {amount:best.cost,label,covers:best.covers,evaluation:false};
+}
 
 function compute(){
  const setup=$('currentSetup').value,staff=+$('staffUsers').value||1,admins=+$('adminUsers').value||1,devices=+$('devices').value||1,branches=+$('branches').value||1;
@@ -709,16 +755,23 @@ function compute(){
  if(state.cloud==='6m'){initial+=P.cloud6.price;cloudRenewal=P.cloud6.price;lines.push([P.cloud6.name,P.cloud6.price]);minD=Math.max(minD,10);maxD=Math.max(maxD,20);}
  if(state.cloud==='12m'){initial+=P.cloud12.price;cloudRenewal=P.cloud12.price;lines.push([P.cloud12.name,P.cloud12.price]);minD=Math.max(minD,10);maxD=Math.max(maxD,20);}
 
+ // Staff/user capacity: one-time, attached to the base system, independent of Cloud selection.
+ const extraStaff=Math.max(0,staff-STAFF_CAPACITY.included);
+ if(extraStaff>0){
+   const sp=cheapestStaff(extraStaff);
+   if(sp.evaluation){approval=true;lines.push([`Staff Capacity (${staff} users)`,null]);}
+   else{initial+=sp.amount;lines.push([`Additional Staff Capacity — up to ${STAFF_CAPACITY.included+sp.covers} users (${sp.label})`,sp.amount]);}
+ }
+
  if(state.cloud!=='none'){
-   const extraStaff=Math.max(0,staff-10),extraAdmins=Math.max(0,admins-2),extraDevices=Math.max(0,devices-3),extraBranches=Math.max(0,branches-1);
-   if(state.cloud==='6m'&&(extraStaff||extraAdmins||extraDevices||extraBranches))approval=true;
+   const extraAdmins=Math.max(0,admins-2),extraDevices=Math.max(0,devices-3),extraBranches=Math.max(0,branches-1);
+   if(state.cloud==='6m'&&(extraAdmins||extraDevices||extraBranches))approval=true;
    if(state.cloud==='12m'){
-     const sp=cheapestStaff(extraStaff);if(sp.amount){capacityRenewal+=sp.amount;initial+=sp.amount;lines.push([`Extra staff capacity (${sp.label})`,sp.amount]);}
      if(extraAdmins){const a=extraAdmins*CAPACITY.admin1.price;capacityRenewal+=a;initial+=a;lines.push([`${extraAdmins}× +1 Owner/Admin`,a]);}
      if(extraDevices){const a=extraDevices*CAPACITY.device1.price;capacityRenewal+=a;initial+=a;lines.push([`${extraDevices}× +1 Connected Device`,a]);}
      if(extraBranches){const renew=extraBranches*CAPACITY.branchCloud.price;capacityRenewal+=renew;initial+=renew;lines.push([`${extraBranches}× additional branch Cloud (starting)`,renew]);lines.push([`${extraBranches}× additional branch setup`,`${peso(CAPACITY.branchSetup.min)}–${peso(CAPACITY.branchSetup.max)}+ one-time each (range — not totaled, assessment required)`]);assessment=true;approval=true;}
    }
- }else if(staff>10||admins>2||devices>1||branches>1){assessment=true;if(branches>1)approval=true;}
+ }else if(admins>2||devices>1||branches>1){assessment=true;if(branches>1)approval=true;}
 
  state.addons.forEach(id=>{if(id===coreId&&state.coreIncluded)return;const p=P[id];initial+=p.price;lines.push([`${p.name} (starting)`,p.price]);minD=Math.max(minD,p.delivery[0]);maxD=Math.max(maxD,p.delivery[1]);if(p.assessment)assessment=true;});
  if(state.care){initial+=P.care.price;lines.push([`${P.care.name} — first month`,P.care.price]);}
@@ -742,7 +795,8 @@ function render(){
  let note='',next='';if(q.status==='ready'){note='<strong>READY TO QUOTE.</strong> Standard approved configuration.';next='Generate the customer quote and explain the selected inclusions and renewal clearly.'}
  if(q.status==='assess'){note='<strong>NEEDS ASSESSMENT.</strong> Use this as a starting estimate only; do not promise final compatibility or scope.';next='Collect the current software/system name, type, access method, and target connection or improvement, then ask AM777 to confirm the final scope.'}
  if(q.status==='approval'){note='<strong>AM777 APPROVAL REQUIRED.</strong> Do not present this estimate as a final committed price.';next='Send the configuration to AM777 for price/scope approval before committing to the customer.'}
- if(state.cloud==='6m'&&q.status==='approval'&&((+$('staffUsers').value>10)||(+$('adminUsers').value>2))){next='The 6-month Cloud plan exceeds included capacity. AM777 must confirm the add-on pricing before final quote.'}
+ if(state.cloud==='6m'&&q.status==='approval'&&(+$('adminUsers').value>2)){next='The 6-month Cloud plan exceeds included admin/device capacity. AM777 must confirm the add-on pricing before final quote.'}
+ if(+$('staffUsers').value-STAFF_CAPACITY.included>STAFF_CAPACITY.maxBundleQty){next='Staff capacity exceeds the supported bundle table (55 users). Send to AM777 for Evaluation before quoting.'}
  $('assessmentNote').innerHTML=note;$('nextAction').textContent=next;
 }
 
@@ -757,6 +811,12 @@ function generateQuote(){
  return `AM777 AUTOMATION SOLUTIONS\nESTIMATED CUSTOMER QUOTE\n\nBusiness: ${b}\nIndustry: ${industry}\nCurrent Setup: ${currentDetail}\nRecommended: ${q.recName}\n\n${items}\n\nESTIMATED INITIAL QUOTE: ${peso(q.initial)}${q.status!=='ready'?'+':''}${paymentLineEn}\nRENEWAL / RECURRING: ${recurringText(q,'en')}\nESTIMATED DELIVERY: ${q.delivery[0]}–${q.delivery[1]} business days\n\nStatus: ${status}\n\nFinal scope and pricing are confirmed against the actual requirements. Existing software/system integrations, complex setups, and multi-branch requirements require review before a quotation is final. Standard downpayment is 50% before work begins.\n\nPowered by AM777 Automation Solutions`;
 }
 function buildCatalogCategories(){const cats=[...new Set(CATALOG_IDS.map(id=>P[id].category))];$('catalogCategory').innerHTML='<option value="all">All categories</option>'+cats.map(c=>`<option value="${c}">${c}</option>`).join('');}
+function renderStaffCapacityRef(){
+ const rows=[`<div class="statrow" style="grid-column:1/-1"><span>First ${STAFF_CAPACITY.included} staff/users</span><strong>Included with system</strong></div>`]
+   .concat(STAFF_CAPACITY.bundles.map(b=>`<div class="statrow"><span>Additional +${b.qty}</span><strong>${peso(b.price)}</strong></div>`))
+   .concat([`<div class="statrow" style="grid-column:1/-1"><span>Above ${STAFF_CAPACITY.included+STAFF_CAPACITY.maxBundleQty} supported users / complex deployment</span><strong>Evaluation Required</strong></div>`]);
+ $('staffCapacityRef').innerHTML=rows.join('');
+}
 function renderCatalog(){const s=($('catalogSearch').value||'').toLowerCase(),cat=$('catalogCategory').value;$('catalogGrid').innerHTML=CATALOG_IDS.filter(id=>{const p=P[id],txt=`${p.name} ${p.category} ${p.solves} ${p.customer}`.toLowerCase();return(cat==='all'||p.category===cat)&&(!s||txt.includes(s));}).map(id=>{const p=P[id];const priceLabel=p.price==null?'Request Assessment':`${peso(p.price)}${p.billing.includes('Starting')||p.assessment?'+':''}`;return `<div class="card"><span class="tag">${p.category}</span><h3>${p.name}</h3><div class="p">${priceLabel}</div><p>${p.solves}</p><div class="card-actions"><button data-detail="${id}">View Details</button><button data-add-catalog="${id}" ${ADDON_IDS.includes(id)?'':'disabled'}>${ADDON_IDS.includes(id)?(state.addons.has(id)?'Remove from Quote':'Add to Quote'):'Reference'}</button></div></div>`}).join('');
  document.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>openDetails(b.dataset.detail));document.querySelectorAll('[data-add-catalog]').forEach(b=>{if(!b.disabled)b.onclick=()=>{const id=b.dataset.addCatalog;if(state.addons.has(id))state.addons.delete(id);else state.addons.add(id);renderCatalog();renderAddons();render();};});}
 
@@ -796,35 +856,81 @@ function populateSoldPicker(){
  Object.entries(groups).forEach(([cat,ids])=>{
    html+=`<optgroup label="${cat}">`+ids.map(id=>{const p=P[id];return `<option value="${id}">${p.name} — ${p.price==null?'Pending price':peso(p.price)}</option>`;}).join('')+'</optgroup>';
  });
- html+=`<optgroup label="Capacity Bundle"><option value="__capacity">Capacity Bundle (staff / admin / device / branch)</option></optgroup>`;
+ html+=`<optgroup label="Cloud Capacity"><option value="__capacity">Cloud Capacity Bundle (admin / device / branch)</option></optgroup>`;
  $('soldPicker').innerHTML=html;
 }
-function toggleCapacitySubform(){$('capacitySubform').classList.toggle('hidden',$('soldPicker').value!=='__capacity');}
+function toggleCapacitySubform(){
+ const isCapacity=$('soldPicker').value==='__capacity';
+ $('capacitySubform').classList.toggle('hidden',!isCapacity);
+ $('staffCapacityRow').classList.toggle('hidden',isCapacity);
+ renderStaffCapacityPreview();
+}
+function renderStaffCapacityPreview(){
+ const staffCount=Math.max(1,+$('soldStaffForSystem').value||STAFF_CAPACITY.included);
+ const extra=Math.max(0,staffCount-STAFF_CAPACITY.included);
+ const preview=$('staffCapacityPreview');
+ if(extra<=0){preview.textContent=`First ${STAFF_CAPACITY.included} users included — no additional capacity charge.`;return;}
+ const sp=cheapestStaff(extra);
+ preview.textContent=sp.evaluation
+   ? 'Above supported capacity (55 users) — Evaluation Required, no price calculated.'
+   : `Capacity: up to ${STAFF_CAPACITY.included+sp.covers} users — +${peso(sp.amount)} (${sp.label})`;
+}
 
 function addSoldItem(item){soldItems.push(Object.assign({uid:soldSeq++},item));renderSoldItems();}
 function removeSoldItem(uid){soldItems=soldItems.filter(i=>i.uid!==uid);renderSoldItems();}
 
+function itemCommissionBreakdown(it){
+ // Returns {oneTime, recurring, pendingBase, pendingCapacity} — capacity is always one-time per the pricing rule,
+ // even when attached to a recurring system (e.g. Cloud), and never guessed if unresolved.
+ let oneTime=0,recurring=0,pendingBase=(it.amount==null),pendingCapacity=false;
+ if(!pendingBase){
+   const c=commissionForAmount(it.amount);
+   if(it.recurring)recurring+=c;else oneTime+=c;
+ }
+ if(it.capacity){
+   if(it.capacity.evaluation)pendingCapacity=true;
+   else oneTime+=commissionForAmount(it.capacity.amount);
+ }
+ return {oneTime,recurring,pendingBase,pendingCapacity};
+}
+
 function renderSoldItems(){
- $('soldItemsList').innerHTML=soldItems.map(it=>`
-   <div class="sold-item">
+ $('soldItemsList').innerHTML=soldItems.map(it=>{
+   const b=itemCommissionBreakdown(it);
+   let capLine='';
+   if(it.capacity){
+     capLine=it.capacity.evaluation
+       ? `<div class="mini">Staff: ${it.staffCount} · Capacity: Evaluation Required</div>`
+       : `<div class="mini">Staff: ${it.staffCount} · Capacity: up to ${it.capacity.covers} users · Capacity Charge: ${peso(it.capacity.amount)}</div>`;
+   }
+   let commissionLine;
+   if(b.pendingBase)commissionLine='Commission: Pending';
+   else{
+     const total=b.oneTime+b.recurring;
+     commissionLine='Commission: '+peso(total)+(b.pendingCapacity?' (capacity portion pending)':'');
+   }
+   return `<div class="sold-item">
      <div class="sold-item-top"><strong>${it.label}</strong><button class="sold-remove" data-remove="${it.uid}" type="button" aria-label="Remove ${it.label}">×</button></div>
      <div class="mini">Sold Price: ${it.amount==null?'Pending':peso(it.amount)}${it.billing?' · '+it.billing:''}</div>
-     <div class="sold-item-commission${it.amount==null?' pending':''}">${it.amount==null?'Commission: Pending':'Commission: '+peso(commissionForAmount(it.amount))}</div>
-   </div>`).join('') || '<div class="mini" style="color:var(--muted)">No sold items yet. Click + Add Sold System to begin.</div>';
+     ${capLine}
+     <div class="sold-item-commission${b.pendingBase?' pending':''}">${commissionLine}</div>
+   </div>`;
+ }).join('') || '<div class="mini" style="color:var(--muted)">No sold items yet. Click + Add Sold System to begin.</div>';
  document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>removeSoldItem(+b.dataset.remove));
  renderCommSubtotals();
 }
 
 function renderCommSubtotals(){
- const resolved=soldItems.filter(i=>i.amount!=null);
- const oneTimeItems=resolved.filter(i=>!i.recurring),recurringItems=resolved.filter(i=>i.recurring);
- const oneTime=oneTimeItems.reduce((s,i)=>s+commissionForAmount(i.amount),0);
- const recurring=recurringItems.reduce((s,i)=>s+commissionForAmount(i.amount),0);
- let html='';
  if(!soldItems.length){$('commSubtotals').innerHTML='';return;}
- html+='<div class="comm-totalbox">';
- if(oneTimeItems.length)html+=`<div class="comm-totalrow"><span>One-Time Commission</span><strong>${peso(oneTime)}</strong></div>`;
- if(recurringItems.length)html+=`<div class="comm-totalrow"><span>Recurring Commission</span><strong>${peso(recurring)}</strong></div>`;
+ let oneTime=0,recurring=0,hasOneTime=false,hasRecurring=false;
+ soldItems.forEach(it=>{
+   const b=itemCommissionBreakdown(it);
+   if(b.oneTime){oneTime+=b.oneTime;hasOneTime=true;}
+   if(b.recurring){recurring+=b.recurring;hasRecurring=true;}
+ });
+ let html='<div class="comm-totalbox">';
+ if(hasOneTime)html+=`<div class="comm-totalrow"><span>One-Time Commission</span><strong>${peso(oneTime)}</strong></div>`;
+ if(hasRecurring)html+=`<div class="comm-totalrow"><span>Recurring Commission</span><strong>${peso(recurring)}</strong></div>`;
  html+=`<div class="comm-grandtotal"><span>Total Commission</span><strong>${peso(oneTime+recurring)}</strong></div>`;
  html+='</div>';
  $('commSubtotals').innerHTML=html;
@@ -834,19 +940,26 @@ function initCommissionCalculator(){
  $('addSoldBtn').onclick=()=>{populateSoldPicker();toggleCapacitySubform();$('soldPickerBox').classList.remove('hidden');};
  $('cancelAddSold').onclick=()=>{$('soldPickerBox').classList.add('hidden');};
  $('soldPicker').addEventListener('change',toggleCapacitySubform);
+ $('soldStaffForSystem').addEventListener('input',renderStaffCapacityPreview);
  $('confirmAddSold').onclick=()=>{
    const val=$('soldPicker').value;
    if(val==='__capacity'){
-     const staff=Math.max(0,+$('soldStaff').value||0),admin=Math.max(0,+$('soldAdmin').value||0),device=Math.max(0,+$('soldDevice').value||0),branch=Math.max(0,+$('soldBranch').value||0);
-     const sp=cheapestStaff(staff); // same minimum-cost bundle engine as the Configurator — never a different capacity price
-     if(sp.amount)addSoldItem({label:`Staff capacity (${sp.label})`,amount:sp.amount,billing:CAPACITY.staff10.billing,recurring:true});
+     const admin=Math.max(0,+$('soldAdmin').value||0),device=Math.max(0,+$('soldDevice').value||0),branch=Math.max(0,+$('soldBranch').value||0);
      if(admin)addSoldItem({label:`${admin}× +1 Owner/Admin`,amount:admin*CAPACITY.admin1.price,billing:CAPACITY.admin1.billing,recurring:true});
      if(device)addSoldItem({label:`${device}× +1 Connected Device`,amount:device*CAPACITY.device1.price,billing:CAPACITY.device1.billing,recurring:true});
      if(branch)addSoldItem({label:`${branch}× Additional Branch Cloud`,amount:branch*CAPACITY.branchCloud.price,billing:CAPACITY.branchCloud.billing,recurring:true});
-     $('soldStaff').value=0;$('soldAdmin').value=0;$('soldDevice').value=0;$('soldBranch').value=0;
+     $('soldAdmin').value=0;$('soldDevice').value=0;$('soldBranch').value=0;
    }else{
      const p=P[val];
-     addSoldItem({label:p.name,amount:p.price,billing:p.billing,recurring:RECURRING_CATALOG_IDS.includes(val)});
+     const staffCount=Math.max(1,+$('soldStaffForSystem').value||STAFF_CAPACITY.included);
+     const extra=Math.max(0,staffCount-STAFF_CAPACITY.included);
+     let capacity=null;
+     if(extra>0){
+       const sp=cheapestStaff(extra); // same minimum-cost bundle engine as the Configurator — never a different capacity price
+       capacity=sp.evaluation?{evaluation:true}:{amount:sp.amount,label:sp.label,covers:STAFF_CAPACITY.included+sp.covers};
+     }
+     addSoldItem({label:p.name,amount:p.price,billing:p.billing,recurring:RECURRING_CATALOG_IDS.includes(val),staffCount,capacity});
+     $('soldStaffForSystem').value=5;
    }
    $('soldPickerBox').classList.add('hidden');
  };
