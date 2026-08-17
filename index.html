@@ -7,21 +7,49 @@
 <meta name="description" content="AM777 Automation Solutions designs and implements premium B2B AI operations, CRM, workflow automation, internal applications, agent orchestration, and infrastructure controls — the applied execution layer of the InfraMind777 ecosystem." />
 <meta name="author" content="AM777 Automation Solutions" />
 <meta name="robots" content="index, follow" />
-<link rel="canonical" href="https://am777automation.com/" />
+<link rel="canonical" href="https://damazonbusiness111-cyber.github.io/am777-website/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="AM777 Automation Solutions" />
 <meta property="og:title" content="AM777 Automation Solutions | Premium B2B Systems Infrastructure" />
 <meta property="og:description" content="Operational systems for companies ready to move beyond disconnected tools. Part of the InfraMind777 ecosystem." />
-<meta property="og:url" content="https://am777automation.com/" />
+<meta property="og:url" content="https://damazonbusiness111-cyber.github.io/am777-website/" />
+<meta property="og:image" content="https://damazonbusiness111-cyber.github.io/am777-website/og-image.png" />
 <meta property="og:locale" content="en_PH" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="AM777 Automation Solutions | Premium B2B Systems Infrastructure" />
+<meta name="twitter:description" content="Operational systems for companies ready to move beyond disconnected tools. Part of the InfraMind777 ecosystem." />
+<meta name="twitter:image" content="https://damazonbusiness111-cyber.github.io/am777-website/og-image.png" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "AM777 Automation Solutions",
+  "url": "https://damazonbusiness111-cyber.github.io/am777-website/",
+  "image": "https://damazonbusiness111-cyber.github.io/am777-website/og-image.png",
+  "description": "AM777 Automation Solutions designs and implements B2B AI operations, CRM, workflow automation, internal applications, agent orchestration, and infrastructure controls.",
+  "email": "damazonbusiness111@gmail.com",
+  "areaServed": "Worldwide",
+  "sameAs": [
+    "https://www.linkedin.com/in/darwin-alexander-jr-mazon-328067384/",
+    "https://www.facebook.com/AM777AutomationSolutions/"
+  ],
+  "makesOffer": [
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Systems Architecture Sprint" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Focused Business System" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Connected Operations Deployment" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "InfraStack Implementation" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Managed Systems Optimization" } }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#050608;
-  --paper-raised:rgba(12,14,18,.75);
-  --paper-solid:#08090c;
+  --paper:#020203;
+  --paper-raised:rgba(6,7,9,.75);
+  --paper-solid:#000000;
   --ink:#f3f5fa;
   --ink-dim:#a9b2c7;
   --ink-faint:#69758e;
@@ -31,15 +59,15 @@
   --navy:#000000;
   --rule:rgba(139,196,255,.2);
   --rule-soft:rgba(243,245,250,.07);
-  --display:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --display:'Sora',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --ease:cubic-bezier(.16,1,.3,1);
-  --panel-1:rgba(10,12,17,.92);
-  --panel-2:rgba(3,4,6,.86);
-  --panel-solid:rgba(3,4,6,.88);
-  --nav-bg:rgba(2,3,4,.8);
-  --ghost-bg:rgba(4,5,7,.5);
-  --field-bg:rgba(1,2,4,.8);
+  --panel-1:rgba(4,5,7,.94);
+  --panel-2:rgba(0,0,0,.9);
+  --panel-solid:rgba(0,0,0,.92);
+  --nav-bg:rgba(0,0,0,.86);
+  --ghost-bg:rgba(0,0,0,.55);
+  --field-bg:rgba(0,0,0,.85);
 }
 :root[data-theme="light"]{
   --paper:#eef1f7;
@@ -72,7 +100,9 @@ body::before{
   content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-#networkCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.7}
+#networkCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.4s var(--ease)}
+#networkCanvas.is-ready{opacity:.7}
+@media(prefers-reduced-motion:reduce){#networkCanvas{transition:none;opacity:.7}}
 nav,.site-view,footer{position:relative;z-index:1}
 a{color:inherit}.container{width:min(1420px,calc(100vw - 64px));margin:0 auto}.narrow{width:min(980px,calc(100vw - 64px));margin:0 auto}
 @media(max-width:700px){.container,.narrow{width:min(100% - 36px,1420px)}}
@@ -159,6 +189,8 @@ h1{font:700 clamp(45px,7vw,92px)/.98 var(--display);letter-spacing:-.055em;max-w
 .router-layer span{color:var(--ink)}
 .router-layer.conditional span{color:var(--ink-faint);font-style:italic}
 .router-result .btn{margin-top:20px}
+.skip-link{position:fixed;top:-60px;left:12px;z-index:1000;background:var(--ink);color:var(--paper);font:700 13px var(--sans);padding:12px 18px;border-radius:8px;text-decoration:none;transition:top .2s var(--ease)}
+.skip-link:focus{top:12px}
 .page-loader{position:fixed;inset:0;z-index:999;background:var(--paper);display:flex;align-items:center;justify-content:center;transition:opacity .6s var(--ease),visibility 0s linear 0s}
 .page-loader.is-hidden{opacity:0;visibility:hidden;transition:opacity .6s var(--ease),visibility 0s linear .6s;pointer-events:none}
 .loader-stage{display:flex;flex-direction:column;align-items:center;gap:18px}
@@ -216,6 +248,13 @@ section{padding:100px 0;position:relative}.section-kicker{font:700 11px var(--di
 .view-tab{border:0;background:transparent;color:var(--ink-faint);font:700 11px var(--display);letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;border-radius:6px;cursor:pointer;transition:.22s var(--ease);white-space:nowrap}
 .view-tab:hover{color:var(--ink)}.view-tab[aria-selected="true"]{color:#07111f;background:linear-gradient(135deg,#fff,#cce5ff);box-shadow:0 8px 22px rgba(69,157,251,.12)}
 .site-view[hidden]{display:none!important}.quote-view{min-height:calc(100vh - 68px);padding:72px 0 96px;position:relative}.quote-view::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 35% 42%,rgba(69,157,251,.09),transparent 31%),radial-gradient(circle at 84% 24%,rgba(174,219,255,.05),transparent 22%);pointer-events:none}
+.legal-view{min-height:calc(100vh - 68px);padding:96px 0}
+.legal-copy{max-width:680px}
+.legal-copy h1{font-family:var(--display);font-size:clamp(32px,4vw,44px);font-weight:800;margin:18px 0 6px;text-wrap:balance}
+.legal-updated{color:var(--ink-faint);font-size:12.5px;margin-bottom:36px}
+.legal-copy h3{font-family:var(--display);font-size:15px;font-weight:700;margin:30px 0 10px;color:var(--ink)}
+.legal-copy p{color:var(--ink-dim);font-size:14.5px;line-height:1.75}
+.legal-copy strong{color:var(--ink);font-weight:600}
 .quote-layout{display:grid;grid-template-columns:minmax(0,1.03fr) minmax(430px,.82fr);gap:42px;align-items:start;position:relative;z-index:2}.quote-copy{padding:18px 0 0}.quote-copy h1{font-size:clamp(44px,5.8vw,82px);max-width:850px}.quote-copy .lede{font-size:17px;max-width:720px}.quote-accent{display:block;color:var(--blue-bright);text-shadow:0 0 30px rgba(69,157,251,.16)}
 .quote-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.quote-chip{padding:7px 10px;border:1px solid var(--rule-soft);background:rgba(255,255,255,.02);border-radius:999px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
 .workflow-map{margin-top:28px;display:grid;grid-template-columns:1fr 120px 1fr;grid-template-areas:"ai hub data" "crm hub audit" ". auto .";gap:8px;align-items:center;position:relative;padding:14px}.workflow-map::before{content:"";position:absolute;inset:18% 8%;background:radial-gradient(circle,rgba(69,157,251,.11),transparent 58%);filter:blur(8px);pointer-events:none}
@@ -230,6 +269,7 @@ button.btn{font-family:inherit}.btn[type="button"]{border:0;cursor:pointer}.nav-
 @media(max-width:1120px){.view-tabs{margin-left:auto}.nav-links{display:none}.quote-layout{grid-template-columns:1fr}.quote-form-shell{position:relative;top:auto;max-width:760px}.workflow-map{max-width:760px}}
 @media(max-width:680px){.brand small{display:none}.view-tabs{gap:2px}.view-tab{padding:8px 9px;font-size:9px}.quote-view{padding-top:46px}.hero{padding-bottom:110px}.ai-fab{width:52px;height:52px;right:16px;bottom:16px}.ai-panel{right:16px;bottom:78px}.workflow-map{grid-template-columns:1fr 104px 1fr;padding:8px}.workflow-hub{width:80px;height:80px}.map-node{padding:11px;min-height:74px}.map-node span{display:none}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.quote-form-shell{padding:20px}.quote-secondary{flex-direction:column}}
 footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{display:flex;justify-content:space-between;gap:30px;align-items:flex-start}.footer-brand{font:800 16px var(--display)}.footer-brand span{color:var(--blue-bright)}.footer-note{font-size:11px;color:var(--ink-faint);max-width:600px;text-align:right}
+.footer-legal{display:flex;gap:16px;margin-top:14px}.footer-legal button{background:none;border:0;padding:0;font:600 11px var(--sans);color:var(--ink-faint);cursor:pointer;text-decoration:underline;text-underline-offset:3px}.footer-legal button:hover{color:var(--blue-bright)}
 @media(max-width:700px){.footer-inner{flex-direction:column}.footer-note{text-align:left}}
 
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
@@ -333,6 +373,7 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
 </style>
 </head>
 <body>
+<a class="skip-link" href="#top">Skip to content</a>
 <div id="pageLoader" class="page-loader" aria-hidden="true">
   <div class="loader-stage">
     <span class="brand-mark loader-logo"><span class="brand-mark-inner"><span class="brand-mark-face front"></span><span class="brand-mark-face back"></span></span></span>
@@ -354,7 +395,11 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
     if (hidden) return;
     hidden = true;
     const wait = Math.max(0, minTime - (Date.now() - start));
-    setTimeout(() => loader.classList.add('is-hidden'), wait);
+    setTimeout(() => {
+      loader.classList.add('is-hidden');
+      const canvas = document.getElementById('networkCanvas');
+      if (canvas) canvas.classList.add('is-ready');
+    }, wait);
   }
   if (document.readyState === 'complete') hide();
   else window.addEventListener('load', hide);
@@ -668,9 +713,53 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
   </div>
 </section>
 
+<section id="privacyView" class="site-view legal-view" aria-labelledby="privacyTitle" hidden>
+  <div class="container legal-copy">
+    <div class="kicker">AM777 // Privacy Policy</div>
+    <h1 id="privacyTitle">Privacy Policy</h1>
+    <p class="legal-updated">Last updated: August 16, 2026</p>
+    <h3>What we collect</h3>
+    <p>When you submit the Custom Quote form, a Careers application, or leave your details with the AI Assistant chat, we collect what you provide directly — name, company, work email, industry, budget range, timeline, and the project or role details you enter. We do not collect information about you from any other source.</p>
+    <h3>How it's used</h3>
+    <p>Every form on this site opens your own email app with the message pre-filled to <strong>damazonbusiness111@gmail.com</strong> — you review and send it yourself, nothing is submitted silently on your behalf. A copy of Custom Quote and chat inquiries may also be recorded to a private internal spreadsheet so the team can track and follow up on open inquiries. That copy is used only for that purpose and is not sold, rented, or shared with third parties.</p>
+    <h3>Cookies and tracking</h3>
+    <p>This site does not currently use cookies, advertising pixels, or third-party analytics scripts.</p>
+    <h3>Third-party services</h3>
+    <p>Depending on how you choose to reach us, your information may pass through Google (Gmail, Sheets), WhatsApp (Meta), Google Meet, or Zoom — each governed by that provider's own privacy policy, not this one.</p>
+    <h3>Retention and requests</h3>
+    <p>Inquiry information is kept only as long as needed to respond and maintain basic business records. To request a copy or deletion of your information, email <strong>damazonbusiness111@gmail.com</strong>.</p>
+    <h3>Changes</h3>
+    <p>This policy may be updated as the site and its tools evolve. The date above reflects the latest revision.</p>
+  </div>
+</section>
+
+<section id="termsView" class="site-view legal-view" aria-labelledby="termsTitle" hidden>
+  <div class="container legal-copy">
+    <div class="kicker">AM777 // Terms of Service</div>
+    <h1 id="termsTitle">Terms of Service</h1>
+    <p class="legal-updated">Last updated: August 16, 2026</p>
+    <h3>About these terms</h3>
+    <p>This site describes the business systems consulting and implementation services offered by AM777 Automation Solutions. Using this site means you agree to these terms.</p>
+    <h3>Not a binding offer</h3>
+    <p>Pricing shown on this site is a starting estimate for reference, not a fixed quote. Final scope, deliverables, and pricing are determined after a discovery conversation and confirmed in a separate written agreement before any paid work begins.</p>
+    <h3>Acceptable use</h3>
+    <p>Please don't scrape, misuse, or attempt to disrupt this site or its forms, or submit intentionally false information through them.</p>
+    <h3>Intellectual property</h3>
+    <p>Site content, branding, and product names (including InfraOS, InfraFlow, InfraLink, Micro7Infra, InfraSec, AI Execution Module, and InfraStack) belong to AM777 Automation Solutions and may not be reproduced without permission.</p>
+    <h3>Third-party links</h3>
+    <p>Links to WhatsApp, Google Meet, Zoom, LinkedIn, and Facebook lead to services outside our control, governed by their own terms.</p>
+    <h3>No outcome guarantee</h3>
+    <p>Business outcomes depend heavily on your organization's own data, processes, and adoption. We scope engagements carefully, but we don't guarantee a specific result before discovery is complete.</p>
+    <h3>Questions</h3>
+    <p>Reach out any time at <strong>damazonbusiness111@gmail.com</strong>.</p>
+  </div>
+</section>
+
 <footer>
   <div class="container footer-inner">
-    <div class="footer-brand">AM<span>777</span> Automation Solutions<br><span style="color:var(--ink-faint);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase">AI Infrastructure & B2B Systems</span><br><span style="color:var(--ink-faint);font-size:11px;font-weight:500;margin-top:6px;display:inline-block">Part of the InfraMind777 ecosystem</span></div>
+    <div class="footer-brand">AM<span>777</span> Automation Solutions<br><span style="color:var(--ink-faint);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase">AI Infrastructure & B2B Systems</span><br><span style="color:var(--ink-faint);font-size:11px;font-weight:500;margin-top:6px;display:inline-block">Part of the InfraMind777 ecosystem</span>
+    <div class="footer-legal"><button type="button" data-view-trigger="privacy">Privacy Policy</button><button type="button" data-view-trigger="terms">Terms of Service</button></div>
+    </div>
     <p class="footer-note">High-value B2B systems implementation. Final pricing follows discovery and confirmed scope. Third-party software, cloud usage, API fees, licensed professional services, and vendor subscriptions are quoted separately when applicable.</p>
   </div>
 </footer>
@@ -751,9 +840,9 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
       white: { core: '255,255,255', mid: '255,255,255' }
     },
     light: {
-      blue: { core: '30,86,196', mid: '47,111,224' },
-      violet: { core: '96,58,196', mid: '124,84,214' },
-      white: { core: '18,28,48', mid: '30,42,66' }
+      blue: { core: '27,92,214', mid: '58,124,235' },
+      violet: { core: '27,92,214', mid: '58,124,235' },
+      white: { core: '96,105,122', mid: '132,141,158' }
     }
   };
   function currentHues() {
@@ -761,6 +850,30 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
   }
   const parallax = { x: 0, y: 0 };
   let frame = 0;
+  let stars = [];
+  let pulses = [];
+  const MAX_PULSES = 6;
+  const easePulse = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+  function starCount() {
+    return Math.round(Math.min(width * height / 5200, 260));
+  }
+
+  function seedStars(count) {
+    const out = [];
+    for (let i = 0; i < count; i++) {
+      out.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: 0.4 + Math.random() * 1.1,
+        base: 0.25 + Math.random() * 0.4,
+        amp: 0.3 + Math.random() * 0.4,
+        speed: 0.006 + Math.random() * 0.018,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+    return out;
+  }
 
   function resize() {
     width = window.innerWidth;
@@ -773,6 +886,8 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const count = density();
     if (nodes.length !== count) nodes = seedNodes(count);
+    const sCount = starCount();
+    if (stars.length !== sCount) stars = seedStars(sCount);
     draw();
   }
 
@@ -827,10 +942,28 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
         parallax.y += (ay - parallax.y) * 0.02;
       }
     }
+
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    if (stars.length) {
+      const starRGB = isLight ? '47,111,224' : '255,255,255';
+      const starMax = isLight ? 0.22 : 1;
+      ctx.save();
+      ctx.translate(parallax.x * 0.12, parallax.y * 0.12);
+      for (const s of stars) {
+        const tw = reduceMotion ? s.base : s.base + Math.sin(frame * s.speed + s.phase) * s.amp;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${starRGB},${Math.max(0, Math.min(starMax, tw))})`;
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
     ctx.save();
     ctx.translate(parallax.x, parallax.y);
 
     const linkDistance = width < 700 ? 108 : 138;
+    const liveLinks = [];
     for (let i = 0; i < nodes.length; i++) {
       updateNode(nodes[i]);
       for (let j = i + 1; j < nodes.length; j++) {
@@ -852,8 +985,36 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
           ctx.strokeStyle = lineGrad;
           ctx.lineWidth = 0.6 + depthAvg * 0.3;
           ctx.stroke();
+          if (dist > linkDistance * 0.35) liveLinks.push(a, b);
         }
       }
+    }
+
+    if (!reduceMotion && liveLinks.length && pulses.length < MAX_PULSES && frame % 40 === 0) {
+      const pick = Math.floor(Math.random() * (liveLinks.length / 2)) * 2;
+      const a = liveLinks[pick], b = liveLinks[pick + 1];
+      pulses.push({ a, b, t: 0, speed: 0.012 + Math.random() * 0.01, hue: HUES[Math.random() < 0.5 ? a.hue : b.hue] });
+    }
+    pulses = pulses.filter((p) => p.t < 1);
+    for (const p of pulses) {
+      p.t += reduceMotion ? 0 : p.speed;
+      const e = easePulse(Math.min(1, p.t));
+      const px = p.a.x + (p.b.x - p.a.x) * e;
+      const py = p.a.y + (p.b.y - p.a.y) * e;
+      const edge = Math.min(p.t / 0.12, (1 - p.t) / 0.12, 1);
+      const pAlpha = Math.max(0, Math.min(1, edge));
+      const pGlow = ctx.createRadialGradient(px, py, 0, px, py, 6.5);
+      pGlow.addColorStop(0, `rgba(${p.hue.core},${0.85 * pAlpha})`);
+      pGlow.addColorStop(0.5, `rgba(${p.hue.mid},${0.4 * pAlpha})`);
+      pGlow.addColorStop(1, `rgba(${p.hue.mid},0)`);
+      ctx.fillStyle = pGlow;
+      ctx.beginPath();
+      ctx.arc(px, py, 6.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = `rgba(${p.hue.core},${pAlpha})`;
+      ctx.beginPath();
+      ctx.arc(px, py, 1.6, 0, Math.PI * 2);
+      ctx.fill();
     }
 
     const cursorLinkRadius = width < 700 ? 0 : 220;
@@ -884,13 +1045,14 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
         const dx = n.x - pointer.x, dy = n.y - pointer.y;
         const dist = Math.hypot(dx, dy);
         proximity = Math.max(0, 1 - dist / (cursorLinkRadius * 0.7));
+        proximity = proximity * proximity * (3 - 2 * proximity);
       }
-      const rr = n.r * pulse * (1 + proximity * 0.55);
+      const rr = n.r * pulse * (1 + proximity * 1.1);
 
       if (!skipHalo && n.depth > 0.75) {
         const haloR = rr * 11;
         const halo = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, haloR);
-        halo.addColorStop(0, `rgba(${hue.mid},${0.07 + (n.depth - 0.75) * 0.1})`);
+        halo.addColorStop(0, `rgba(${hue.mid},${0.07 + (n.depth - 0.75) * 0.1 + proximity * 0.1})`);
         halo.addColorStop(1, `rgba(${hue.mid},0)`);
         ctx.fillStyle = halo;
         ctx.beginPath();
@@ -898,19 +1060,27 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
         ctx.fill();
       }
 
-      const glowR = rr * (5.5 + proximity * 2.5);
+      const glowR = rr * (5.5 + proximity * 5.5);
       const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR);
-      glow.addColorStop(0, `rgba(${hue.core},${0.56 + n.depth * 0.32 + proximity * 0.3})`);
-      glow.addColorStop(0.5, `rgba(${hue.mid},${0.2 + n.depth * 0.12 + proximity * 0.15})`);
+      glow.addColorStop(0, `rgba(${hue.core},${0.56 + n.depth * 0.32 + proximity * 0.42})`);
+      glow.addColorStop(0.5, `rgba(${hue.mid},${0.2 + n.depth * 0.12 + proximity * 0.25})`);
       glow.addColorStop(1, `rgba(${hue.mid},0)`);
       ctx.fillStyle = glow;
       ctx.beginPath();
       ctx.arc(n.x, n.y, glowR, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = `rgba(${hue.core},${0.72 + n.depth * 0.28 + proximity * 0.2})`;
+      ctx.fillStyle = `rgba(${hue.core},${0.72 + n.depth * 0.28 + proximity * 0.28})`;
       ctx.beginPath();
       ctx.arc(n.x, n.y, rr, 0, Math.PI * 2);
       ctx.fill();
+
+      if (proximity > 0.16) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, rr + 3.5 + proximity * 3, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255,255,255,${(proximity - 0.16) * 0.5})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
     }
     ctx.restore();
   }
@@ -943,10 +1113,12 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
 (() => {
   const tabs = Array.from(document.querySelectorAll('[role="tab"][data-view-tab]'));
   const triggers = Array.from(document.querySelectorAll('[data-view-trigger]'));
-  const VIEWS = ['systems', 'careers', 'quote'];
+  const VIEWS = ['systems', 'careers', 'quote', 'privacy', 'terms'];
   const mainView = document.getElementById('siteMainView');
   const quoteView = document.getElementById('quoteView');
   const careersView = document.getElementById('careersView');
+  const privacyView = document.getElementById('privacyView');
+  const termsView = document.getElementById('termsView');
   const form = document.getElementById('workflowQuoteForm');
   const status = document.getElementById('quoteStatus');
   const careersForm = document.getElementById('careersForm');
@@ -957,6 +1129,8 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}.footer-inner{d
     mainView.hidden = name !== 'systems';
     careersView.hidden = name !== 'careers';
     quoteView.hidden = name !== 'quote';
+    privacyView.hidden = name !== 'privacy';
+    termsView.hidden = name !== 'terms';
     tabs.forEach((tab) => tab.setAttribute('aria-selected', String(tab.dataset.viewTab === name)));
     const hash = name === 'systems' ? '#top' : '#' + name;
     if (options.updateHash !== false) history.replaceState(null, '', hash);

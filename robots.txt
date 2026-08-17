@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://damazonbusiness111-cyber.github.io/am777-website/sitemap.xml

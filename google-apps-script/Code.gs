@@ -6,10 +6,14 @@
  * Web App and paste the /exec URL into AM777_SHEET_ENDPOINT in index.html.
  *
  * SETUP
- * 1. Go to https://sheets.google.com and create a new spreadsheet
- *    (e.g. "AM777 Inquiries"). Note its name — any sheet works, a tab named
- *    "Leads" will be created automatically the first time a row is written.
- * 2. In the spreadsheet: Extensions → Apps Script.
+ * This script is standalone (not bound to a specific spreadsheet's Extensions
+ * menu) and instead opens the target sheet by ID via SPREADSHEET_ID below —
+ * this sidesteps the Extensions -> Apps Script menu entirely.
+ * 1. Create or open the target Google Sheet, copy its ID out of the URL
+ *    (the long string between /d/ and /edit), and set SPREADSHEET_ID to it.
+ *    A tab named "Leads" is created automatically the first time a row is
+ *    written, with headers.
+ * 2. Go to https://script.new to create a standalone Apps Script project.
  * 3. Delete any starter code in Code.gs and paste this entire file in its place.
  * 4. Click Deploy → New deployment.
  *    - Select type: Web app
@@ -32,6 +36,7 @@
  *   writes rows, it does not read or expose the sheet back to the site.
  */
 
+var SPREADSHEET_ID = '13BqH3UF6H0uOljJnWm-dK5THy9zWnR7dc_ObBILcmUo'; // AM777 Inquiries
 var SHEET_NAME = 'Leads';
 var HEADERS = [
   'Timestamp', 'Source', 'Full Name', 'Company', 'Email', 'Industry',
@@ -40,7 +45,7 @@ var HEADERS = [
 ];
 
 function getSheet_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
