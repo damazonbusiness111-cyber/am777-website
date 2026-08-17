@@ -53,6 +53,10 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{width:min
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 20px}.tab{border-color:var(--line);background:rgba(255,255,255,.02);border-radius:999px}.view{display:none}.view.active{display:block}
 .layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:16px;align-items:start}.panel{padding:18px}.panel.sticky{position:sticky;top:88px}.panel h2{margin:0 0 4px;font-size:22px;letter-spacing:-.03em}.panel h3{margin:0 0 4px;font-size:16px}.sub{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
 .step{padding:17px 0;border-bottom:1px solid var(--line);display:none}.step.active{display:block}.step:last-child{border-bottom:0}.stephead{display:flex;gap:10px;align-items:center;margin-bottom:12px}.num{width:26px;height:26px;flex:0 0 26px;border-radius:8px;display:grid;place-items:center;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11px;color:var(--text)}
+.biztype-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px}
+.biztype-card{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:12px;padding:13px 10px;text-align:center;color:var(--muted);font-size:11.5px;font-weight:700;line-height:1.35;transition:border-color .15s,background .15s,color .15s}
+.biztype-card:hover{border-color:var(--line2)}
+.biztype-card.selected{border-color:var(--line2);background:rgba(127,169,233,.1);color:var(--text);box-shadow:inset 0 0 0 1px rgba(127,169,233,.2)}
 .wizard-progress{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:20px}
 .wizard-progress button{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:10px;padding:8px 4px;text-align:center;color:var(--muted);font-size:9.5px;font-weight:700;line-height:1.4}
 .wizard-progress button strong{display:block;font-size:12px;margin-bottom:2px;color:var(--text)}
@@ -108,7 +112,7 @@ textarea{min-height:80px;resize:vertical}.chips{display:flex;gap:8px;flex-wrap:w
 
 footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;color:var(--muted);font-size:11px}.footerinner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 @media(max-width:1080px){.hero,.layout{grid-template-columns:1fr}.panel.sticky{position:static}.catalog,.industrygrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:720px){.nav{display:none}.hero{padding-top:36px}.hero h1{font-size:44px}.fieldgrid,.segment,.addon-grid,.catalog,.industrygrid,.calcgrid,.actions,.card-actions,.detail-grid{grid-template-columns:1fr}.catalog-tools{grid-template-columns:1fr}.detail-block.full{grid-column:auto}.totalrow{align-items:flex-start}.totalrow strong{font-size:18px}}
+@media(max-width:720px){.nav{display:none}.hero{padding-top:36px}.hero h1{font-size:44px}.fieldgrid,.segment,.addon-grid,.catalog,.industrygrid,.calcgrid,.actions,.card-actions,.detail-grid{grid-template-columns:1fr}.catalog-tools{grid-template-columns:1fr}.detail-block.full{grid-column:auto}.totalrow{align-items:flex-start}.totalrow strong{font-size:18px}.biztype-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media print{.topbar,.hero,.notice,.tabs,.config-left,.actions,footer,.modal-backdrop,#networkCanvas,.quickstats{display:none!important}body{background:#fff;color:#111}.layout{display:block}.panel{border:0;box-shadow:none;background:#fff;color:#111}.panel.sticky{position:static}.lineitem span,.mini,.sub,.helper{color:#444}.quote-output{border:1px solid #ccc;background:#fff;color:#111}}
 </style>
 </head>
@@ -190,16 +194,24 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 38px;colo
       <div class="stephead"><div class="num">1</div><div><h3>Customer context</h3><p class="sub">Only for the quote; this is not a CRM record.</p></div></div>
       <div class="fieldgrid">
         <div class="field"><label>Business Name</label><input id="customerName" placeholder="Optional" /></div>
-        <div class="field"><label>Business Type</label><select id="businessType"></select></div>
         <div class="field"><label>Quote Language</label><select id="quoteLanguage"><option value="en">English</option><option value="tl">Tagalog</option></select></div>
-        <div class="field"><label>Current Operating Setup</label><select id="currentSetup">
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Business Type</label>
+        <div class="biztype-grid" id="businessTypeGrid"></div>
+        <select id="businessType" class="hidden"></select>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Current Operating Setup</label>
+        <div class="chips" id="currentSetupChips"></div>
+        <select id="currentSetup" class="hidden">
           <option value="none">No System Yet</option>
           <option value="manual">Manual / Paper</option>
           <option value="sheets">Excel / Google Sheets</option>
           <option value="am777">Existing AM777 System</option>
           <option value="thirdparty">Existing Third-Party Software</option>
           <option value="multiple">Multiple Disconnected Tools</option>
-        </select></div>
+        </select>
       </div>
       <div id="existingSystemBox" class="fieldgrid hidden" style="margin-top:10px">
         <div class="field"><label>Main Current System Type</label><select id="currentSystemType">
@@ -703,6 +715,8 @@ function lineAmountLabel(a){if(typeof a==='string')return a;if(a===null)return '
 
 function init(){
  $('businessType').innerHTML=Object.entries(INDUSTRIES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+ renderBusinessTypeGrid();
+ renderCurrentSetupChips();
  $('integrationTier').innerHTML=INTEGRATION_IDS.map(id=>`<option value="${id}">${P[id].name} · ${P[id].price==null?'Assessment / Custom Quote':peso(P[id].price)+'+'}</option>`).join('');
  $('needsChips').innerHTML=NEEDS.map(([k,l])=>`<button class="chip" data-need="${k}">${l}</button>`).join('');
  $('presetChips').innerHTML=PRESETS.map(p=>`<button class="chip" data-preset="${p.id}">${p.label}</button>`).join('');
@@ -750,6 +764,16 @@ function renderExisting(){
  const hasSoftware=['am777','thirdparty','multiple'].includes(setup);
  $('existingSystemBox').classList.toggle('hidden',!hasSoftware);
  $('integrationFields').classList.toggle('hidden',!['thirdparty','multiple'].includes(setup));
+}
+function setHiddenField(id,value){const el=$(id);el.value=value;el.dispatchEvent(new Event('input',{bubbles:true}));}
+function renderBusinessTypeGrid(){
+ $('businessTypeGrid').innerHTML=Object.entries(INDUSTRIES).map(([k,v])=>`<button type="button" class="biztype-card ${k===$('businessType').value?'selected':''}" data-biz="${k}">${v.label}</button>`).join('');
+ document.querySelectorAll('[data-biz]').forEach(b=>b.onclick=()=>{setHiddenField('businessType',b.dataset.biz);renderBusinessTypeGrid();});
+}
+function renderCurrentSetupChips(){
+ const opts=[['none','No System Yet'],['manual','Manual / Paper'],['sheets','Excel / Google Sheets'],['am777','Existing AM777 System'],['thirdparty','Existing Third-Party Software'],['multiple','Multiple Disconnected Tools']];
+ $('currentSetupChips').innerHTML=opts.map(([k,l])=>`<button type="button" class="chip ${k===$('currentSetup').value?'selected':''}" data-setup="${k}">${l}</button>`).join('');
+ document.querySelectorAll('[data-setup]').forEach(b=>b.onclick=()=>{setHiddenField('currentSetup',b.dataset.setup);renderCurrentSetupChips();});
 }
 
 function recommendCoreId(){
@@ -1200,7 +1224,7 @@ function initCommissionCalculator(){
  renderSoldItems();
 }
 function saveDraft(){const data={customerName:$('customerName').value,businessType:$('businessType').value,quoteLanguage:$('quoteLanguage').value,currentSetup:$('currentSetup').value,currentSystemType:$('currentSystemType').value,existingSystemName:$('existingSystemName').value,existingAccess:$('existingAccess').value,integrationTier:$('integrationTier').value,staffUsers:$('staffUsers').value,adminUsers:$('adminUsers').value,devices:$('devices').value,branches:$('branches').value,cloud:state.cloud,care:state.care,needs:[...state.needs],addons:[...state.addons],coreIncluded:state.coreIncluded};localStorage.setItem('am777_offline_quote_draft',JSON.stringify(data));$('saveDraft').textContent='Saved';setTimeout(()=>$('saveDraft').textContent='Save Offline Draft',1000);}
-function loadDraft(){try{const d=JSON.parse(localStorage.getItem('am777_offline_quote_draft')||'null');if(!d)return alert('No offline draft saved.');['customerName','businessType','quoteLanguage','currentSetup','currentSystemType','existingSystemName','existingAccess','integrationTier','staffUsers','adminUsers','devices','branches'].forEach(id=>{if(d[id]!=null)$(id).value=d[id];});state.cloud=d.cloud||'none';state.care=!!d.care;state.needs=new Set(d.needs||[]);state.addons=new Set(d.addons||[]);syncCoreDefault();if(typeof d.coreIncluded==='boolean')state.coreIncluded=d.coreIncluded;$('careToggle').classList.toggle('selected',state.care);renderNeeds();renderCloud();renderExisting();renderAddons();render();}catch(e){alert('Could not load the saved draft.');}}
+function loadDraft(){try{const d=JSON.parse(localStorage.getItem('am777_offline_quote_draft')||'null');if(!d)return alert('No offline draft saved.');['customerName','businessType','quoteLanguage','currentSetup','currentSystemType','existingSystemName','existingAccess','integrationTier','staffUsers','adminUsers','devices','branches'].forEach(id=>{if(d[id]!=null)$(id).value=d[id];});state.cloud=d.cloud||'none';state.care=!!d.care;state.needs=new Set(d.needs||[]);state.addons=new Set(d.addons||[]);syncCoreDefault();if(typeof d.coreIncluded==='boolean')state.coreIncluded=d.coreIncluded;$('careToggle').classList.toggle('selected',state.care);renderNeeds();renderCloud();renderExisting();renderAddons();renderBusinessTypeGrid();renderCurrentSetupChips();render();}catch(e){alert('Could not load the saved draft.');}}
 function applyPreset(id){
  const p=PRESETS.find(x=>x.id===id);if(!p)return;
  $('businessType').value=p.businessType;
@@ -1216,9 +1240,9 @@ function applyPreset(id){
  syncCoreDefault();
  $('careToggle').classList.toggle('selected',state.care);
  document.querySelectorAll('[data-preset]').forEach(b=>b.classList.toggle('selected',b.dataset.preset===id));
- renderNeeds();renderCloud();renderExisting();renderAddons();render();
+ renderNeeds();renderCloud();renderExisting();renderAddons();renderBusinessTypeGrid();renderCurrentSetupChips();render();
 }
-function reset(){localStorage.removeItem('am777_offline_quote_draft');document.querySelectorAll('[data-preset]').forEach(b=>b.classList.remove('selected'));$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.care=false;state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('careToggle').classList.remove('selected');$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderExisting();renderAddons();renderCatalog();render();goToWizardStep(1,false);}
+function reset(){localStorage.removeItem('am777_offline_quote_draft');document.querySelectorAll('[data-preset]').forEach(b=>b.classList.remove('selected'));$('customerName').value='';$('businessType').value='retail';$('quoteLanguage').value='en';$('currentSetup').value='none';$('currentSystemType').value='pos';$('existingSystemName').value='';$('existingAccess').value='unknown';$('staffUsers').value=5;$('adminUsers').value=1;$('devices').value=1;$('branches').value=1;state.cloud='none';state.care=false;state.needs.clear();state.addons.clear();state.showAll=false;syncCoreDefault();$('careToggle').classList.remove('selected');$('quoteOutput').textContent='Configure the system, then generate the customer-facing quote.';renderNeeds();renderCloud();renderExisting();renderAddons();renderCatalog();renderBusinessTypeGrid();renderCurrentSetupChips();render();goToWizardStep(1,false);}
 document.addEventListener('DOMContentLoaded',init);
 </script>
 <script>
