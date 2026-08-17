@@ -205,6 +205,42 @@ main{padding:52px 0 90px}
 .lead-status{font-size:12.5px;color:var(--blue-soft);margin-top:12px;min-height:16px}
 .safety-note{font-size:11px;color:var(--ink-faint);line-height:1.7;max-width:640px;margin:28px auto 0;text-align:center}
 
+.faq-item{border:1px solid var(--rule-soft);border-radius:11px;margin-bottom:10px;overflow:hidden;background:rgba(255,255,255,.015)}
+.faq-q{padding:15px 18px;font-size:13.5px;font-weight:650;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-q::-webkit-details-marker{display:none}
+.faq-q::after{content:"+";font-size:18px;color:var(--blue-bright);flex-shrink:0;transition:transform .25s var(--ease)}
+.faq-item[open] .faq-q::after{transform:rotate(45deg)}
+.faq-a{padding:0 18px 16px;font-size:12.5px;color:var(--ink-dim);line-height:1.7}
+.ai-fab{position:fixed;right:22px;bottom:22px;z-index:80;width:58px;height:58px;border-radius:50%;border:1px solid rgba(174,219,255,.4);background:linear-gradient(145deg,var(--panel-1),var(--panel-2));backdrop-filter:blur(14px);display:grid;place-items:center;cursor:pointer;box-shadow:0 12px 40px rgba(0,0,0,.35),0 0 0 0 rgba(69,157,251,.4);color:var(--blue-soft);transition:.25s var(--ease);animation:aiPulse 3.2s ease-in-out infinite}
+.ai-fab:hover{transform:translateY(-2px);border-color:rgba(174,219,255,.65)}
+.ai-fab svg{width:24px;height:24px}
+@keyframes aiPulse{0%,100%{box-shadow:0 12px 40px rgba(0,0,0,.35),0 0 0 0 rgba(69,157,251,.28)}50%{box-shadow:0 12px 40px rgba(0,0,0,.35),0 0 0 10px rgba(69,157,251,0)}}
+.ai-panel{position:fixed;right:22px;bottom:92px;z-index:80;width:min(360px,calc(100vw - 44px));max-height:min(560px,calc(100vh - 140px));display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:16px;background:linear-gradient(180deg,var(--panel-1),var(--panel-2));backdrop-filter:blur(20px);box-shadow:0 30px 90px rgba(0,0,0,.4);opacity:0;transform:translateY(14px) scale(.98);pointer-events:none;transition:.28s var(--ease)}
+.ai-panel.is-open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.ai-head{display:flex;align-items:center;gap:11px;padding:16px 16px 14px;border-bottom:1px solid var(--rule-soft)}
+.ai-head .dot{width:7px;height:7px;border-radius:50%;background:#8bffb0;box-shadow:0 0 8px #8bffb0}
+.ai-head strong{font:700 13.5px var(--display)}
+.ai-head span{display:block;font-size:10.5px;color:var(--ink-faint);margin-top:2px}
+.ai-close{margin-left:auto;background:none;border:0;color:var(--ink-faint);cursor:pointer;font-size:16px;line-height:1;padding:4px}
+.ai-body{flex:0 1 auto;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;max-height:40vh}
+.ai-msg{max-width:88%;font-size:12.5px;line-height:1.6;padding:10px 12px;border-radius:11px}
+.ai-msg.bot{align-self:flex-start;background:rgba(255,255,255,.04);border:1px solid var(--rule-soft);color:var(--ink-dim)}
+.ai-msg.user{align-self:flex-end;background:linear-gradient(135deg,rgba(69,157,251,.22),rgba(69,157,251,.1));border:1px solid rgba(139,196,255,.28);color:var(--ink)}
+.ai-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px}
+.ai-chip{font-size:10.5px;padding:6px 10px;border:1px solid var(--rule-soft);border-radius:999px;background:rgba(255,255,255,.02);color:var(--ink-faint);cursor:pointer;transition:.2s var(--ease)}
+.ai-chip:hover{border-color:rgba(139,196,255,.4);color:var(--blue-soft)}
+.ai-input-row{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--rule-soft)}
+.ai-input-row input{flex:1;border:1px solid var(--rule-soft);background:var(--field-bg);color:var(--ink);border-radius:9px;padding:10px 12px;font:500 12.5px var(--sans);outline:none}
+.ai-input-row input:focus{border-color:rgba(139,196,255,.5)}
+.ai-input-row button{border:0;border-radius:9px;padding:0 14px;background:linear-gradient(135deg,#fff,#cce5ff);color:#07111f;font-weight:700;font-size:12px;cursor:pointer}
+.ai-foot{display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 16px 14px;font-size:9.5px;color:var(--ink-faint)}
+.ai-lead{align-self:stretch;display:grid;gap:8px;padding:12px;border:1px solid rgba(139,196,255,.22);border-radius:12px;background:rgba(139,196,255,.05)}
+.ai-lead-title{font-size:11.5px;line-height:1.5;color:var(--ink-dim)}
+.ai-lead-input{width:100%;border:1px solid var(--rule-soft);background:var(--field-bg);color:var(--ink);border-radius:8px;padding:9px 10px;font:500 12px var(--sans);outline:none;transition:.2s var(--ease)}
+.ai-lead-input:focus{border-color:rgba(139,196,255,.55);box-shadow:0 0 0 3px rgba(69,157,251,.08)}
+.ai-lead-textarea{min-height:56px;resize:vertical}
+.ai-lead-submit{border:0;border-radius:8px;padding:9px 14px;background:linear-gradient(135deg,#fff,#cce5ff);color:#07111f;font-weight:700;font-size:12px;cursor:pointer;transition:.2s var(--ease)}
+.ai-lead-submit:hover{filter:brightness(1.05)}
 .footer-legal{display:flex;gap:16px;margin-top:14px}
 .footer-legal a{font:600 11px var(--sans);color:var(--ink-faint);text-decoration:underline;text-underline-offset:3px}
 .footer-legal a:hover{color:var(--blue-bright)}
@@ -215,6 +251,11 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}
 .footer-note{font-size:11px;color:var(--ink-faint);max-width:440px;text-align:right}
 @media(max-width:700px){.footer-inner{flex-direction:column}.footer-note{text-align:left}.nav-links{display:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media(hover:hover) and (pointer:fine){body.custom-cursor,body.custom-cursor a,body.custom-cursor button,body.custom-cursor input,body.custom-cursor select,body.custom-cursor textarea,body.custom-cursor .choice-card,body.custom-cursor .lang-card,body.custom-cursor .need-chip{cursor:none}}
+.cursor-ring{position:fixed;top:0;left:0;width:26px;height:26px;border:1px solid var(--blue-bright);border-radius:50%;pointer-events:none;z-index:9998;opacity:0;transition:opacity .3s var(--ease),width .25s var(--ease),height .25s var(--ease),border-color .25s var(--ease)}
+.cursor-dot{position:fixed;top:0;left:0;width:5px;height:5px;background:var(--blue-bright);border-radius:50%;pointer-events:none;z-index:9999;opacity:0;transition:opacity .3s var(--ease)}
+.cursor-ring.is-visible,.cursor-dot.is-visible{opacity:1}
+.cursor-ring.is-active{width:42px;height:42px;border-color:#fff;background:rgba(139,196,255,.08)}
 </style>
 </head>
 <body>
@@ -363,6 +404,11 @@ footer{border-top:1px solid var(--rule-soft);padding:34px 0 40px}
       <div class="integration-tiers" id="integrationTiers"></div>
     </div>
 
+    <div class="faq-section" id="faqSection" style="max-width:760px;margin:56px auto 0">
+      <h3 style="font-family:var(--display);font-size:18px;font-weight:700;text-align:center;margin-bottom:18px" data-i18n="faq.title">Frequently Asked Questions</h3>
+      <div id="faqList"></div>
+    </div>
+
     <div class="lead-shell" id="leadShell" style="margin-top:60px">
       <h3 style="font-family:var(--display);font-size:18px;font-weight:700" data-i18n="lead.title">Request a Quote / Assessment</h3>
       <p style="color:var(--ink-faint);font-size:12.5px;margin-top:6px" data-i18n="lead.sub">We'll reach out to confirm scope, pricing, and estimated delivery.</p>
@@ -483,6 +529,23 @@ const COMPLETE_SYSTEMS = {
 
 const OTHER_SYSTEMS = ['Quotation System','Invoicing','Job Orders','Queue Management','Membership','Reservation','Rentals','Asset Tracking','Equipment Tracking','Maintenance','Project Management','Document Approval','Procurement','Field Staff','Service / Repair Tracking','Fleet Management','Delivery Management','Order Management','Customer Portal','Employee Portal','Supplier Portal','Multi-Branch Dashboard','Custom Internal Business Portal'];
 
+const FAQ_ITEMS = [
+  { en_q: 'Is ₱9,777 really one-time?', en_a: 'Yes — the Offline POS Starter is a one-time payment. Cloud / Online Access is a separate, optional yearly service.',
+    tl_q: 'Isang beses lang talaga ang ₱9,777?', tl_a: 'Oo — isang beses lang bayad ang Offline POS Starter. Ang Cloud / Online Access ay hiwalay at opsyonal na taunang serbisyo.' },
+  { en_q: 'Do I need internet to use the POS?', en_a: 'No. The Offline POS Starter works fully without internet. You only need internet if you add Cloud / Online Access.',
+    tl_q: 'Kailangan ba ng internet para gamitin ang POS?', tl_a: 'Hindi. Gumagana ang Offline POS Starter kahit walang internet. Kailangan lang ng internet kapag idinagdag ang Cloud / Online Access.' },
+  { en_q: 'What if I already have a POS or system?', en_a: "We can assess whether it can be connected to other business tools instead of replacing it. See \"Already Have a System?\" above.",
+    tl_q: 'Paano kung may POS o sistema na ako?', tl_a: 'Susuriin namin kung ma-cco-connect ito sa ibang business tools sa halip na palitan. Tingnan ang "May Sistema ka na?" sa itaas.' },
+  { en_q: 'Is there a warranty?', en_a: 'The Offline POS Starter includes a 30-day defect warranty from handover.',
+    tl_q: 'May warranty ba?', tl_a: 'May 30-day defect warranty ang Offline POS Starter mula sa handover.' },
+  { en_q: 'Can I add more staff, devices, or branches later?', en_a: 'Yes. Cloud starts with 1 branch, 3 devices, and 10 staff users — additional capacity can be added as your business grows.',
+    tl_q: 'Pwede bang magdagdag ng staff, device, o branch mamaya?', tl_a: 'Oo. Nagsisimula ang Cloud sa 1 branch, 3 device, at 10 staff users — pwedeng dagdagan ang capacity habang lumalaki ang negosyo.' },
+  { en_q: 'Is there a monthly fee?', en_a: 'The POS itself is one-time. Cloud is optional at ₱12,777/year. Ongoing support (AM777 Care) is optional, starting at ₱777/month.',
+    tl_q: 'May monthly fee ba?', tl_a: 'Isang beses lang ang POS. Opsyonal ang Cloud sa ₱12,777/taon. Opsyonal din ang ongoing support (AM777 Care), mula sa ₱777/buwan.' },
+  { en_q: 'How fast can I get started?', en_a: 'Typical delivery for the Offline POS Starter is 7–14 business days, depending on scope. Exact timelines are confirmed after assessment.',
+    tl_q: 'Gaano kabilis makakapagsimula?', tl_a: 'Karaniwang 7–14 business days ang Offline POS Starter, depende sa saklaw. Kukumpirmahin ang eksaktong timeline pagkatapos ng assessment.' }
+];
+
 const INDUSTRIES = [
   { key: 'retail', ico: '🛒', en: 'Retail / Mini Mart / Grocery', tl: 'Retail / Mini Mart / Grocery' },
   { key: 'restaurant', ico: '🍽️', en: 'Restaurant / Café', tl: 'Restaurant / Kainan / Café' },
@@ -573,7 +636,12 @@ const TRANSLATIONS = {
     'other.systems': 'Also available on request', 'capacity.note': 'Cloud includes 1 branch, up to 3 devices, 10 staff users, 2 admin accounts. Additional capacity available.',
     'lead.sent': 'Thanks — opening your email app to send this inquiry to AM777.',
     'care.title': 'AM777 Care — from ₱777/month', 'care.body': 'Optional ongoing support: minor fixes, troubleshooting, system checks, small settings adjustments. New features, modules, redesigns, and integrations are quoted separately.',
-    'scale.title': 'Looking for something bigger?'
+    'scale.title': 'Looking for something bigger?', 'faq.title': 'Frequently Asked Questions',
+    'ai.greeting': "Hi! I'm the AM777 assistant. Ask me about pricing, delivery, or how the system works — or leave your details and the team will follow up.",
+    'ai.fallback': "I can help with pricing, delivery timelines, Cloud/Offline options, or connecting your existing system. Ask away, or leave your details below.",
+    'ai.leadPrompt': "Talk to a real person", 'ai.leadTitle': 'Leave your details and the AM777 team will follow up.',
+    'ai.name': 'Your name', 'ai.contact': 'Phone / Messenger / WhatsApp', 'ai.msg': 'What are you looking for?', 'ai.send': 'Send',
+    'ai.thanks': 'Thanks! Opening your email app to send this to AM777.'
   },
   tl: {
     'nav.back': 'Bumalik', 'nav.next': 'Magpatuloy',
@@ -598,7 +666,12 @@ const TRANSLATIONS = {
     'other.systems': 'Available din kapag hiniling', 'capacity.note': 'Kasama sa Cloud ang 1 branch, hanggang 3 device, 10 staff users, 2 admin accounts. May dagdag na capacity kung kailangan.',
     'lead.sent': 'Salamat — bubuksan na ang email app mo para ipadala ang inquiry sa AM777.',
     'care.title': 'AM777 Care — mula sa ₱777/buwan', 'care.body': 'Opsyonal na suporta: minor fixes, troubleshooting, system checks, maliliit na settings adjustments. Ang bagong features, modules, redesign, at integrations ay may hiwalay na quote.',
-    'scale.title': 'Naghahanap ng mas malaki?'
+    'scale.title': 'Naghahanap ng mas malaki?', 'faq.title': 'Mga Madalas Itanong',
+    'ai.greeting': 'Hi! Ako ang AM777 assistant. Tanungin mo ako tungkol sa presyo, delivery, o kung paano gumagana ang sistema — o mag-iwan ng details para ma-follow up ka ng team.',
+    'ai.fallback': 'Pwede kitang tulungan tungkol sa presyo, delivery timeline, Cloud/Offline options, o pag-connect ng existing system mo. Magtanong ka lang, o mag-iwan ng details sa baba.',
+    'ai.leadPrompt': 'Makipag-usap sa tao', 'ai.leadTitle': 'Mag-iwan ng details at ma-fo-follow up ka ng AM777 team.',
+    'ai.name': 'Pangalan mo', 'ai.contact': 'Phone / Messenger / WhatsApp', 'ai.msg': 'Ano ang hinahanap mo?', 'ai.send': 'Ipadala',
+    'ai.thanks': 'Salamat! Bubuksan na ang email app mo para ipadala ito sa AM777.'
   }
 };
 </script>
@@ -676,6 +749,8 @@ const TRANSLATIONS = {
       renderIndustryGrid();
       renderNeedsGrid();
       renderIntegrationTiers();
+      renderFAQ();
+      if (window.AM777_renderAIChat) window.AM777_renderAIChat();
       setTimeout(() => nextBtn.click(), 260);
     });
   });
@@ -717,6 +792,11 @@ const TRANSLATIONS = {
   function renderIntegrationTiers() {
     const wrap = document.getElementById('integrationTiers');
     wrap.innerHTML = INTEGRATION_TIERS.map((tier) => `<div class="integration-tier"><b>${tier.price}</b>${lang === 'tl' ? tier.tl : tier.en}</div>`).join('');
+  }
+
+  function renderFAQ() {
+    const wrap = document.getElementById('faqList');
+    wrap.innerHTML = FAQ_ITEMS.map((item) => `<details class="faq-item"><summary class="faq-q">${lang === 'tl' ? item.tl_q : item.en_q}</summary><div class="faq-a">${lang === 'tl' ? item.tl_a : item.en_a}</div></details>`).join('');
   }
 
   function productName(p) { return lang === 'tl' ? p.tl : p.en; }
@@ -787,7 +867,11 @@ const TRANSLATIONS = {
   renderIndustryGrid();
   renderNeedsGrid();
   renderIntegrationTiers();
+  renderFAQ();
   showStep('lang');
+  window.AM777_getLang = () => lang;
+  window.AM777_currentIndustry = () => selectedIndustry;
+  window.AM777_currentNeeds = () => Array.from(selectedNeeds);
 
   const leadForm = document.getElementById('leadForm');
   const leadStatus = document.getElementById('leadStatus');
@@ -833,6 +917,35 @@ const TRANSLATIONS = {
   }
   btn.addEventListener('click', () => { apply(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); });
   apply(stored === 'light' ? 'light' : 'dark');
+})();
+</script>
+<script>
+(() => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (!canHover) return;
+  document.body.classList.add('custom-cursor');
+  const ring = document.createElement('div'); ring.className = 'cursor-ring';
+  const dot = document.createElement('div'); dot.className = 'cursor-dot';
+  document.body.appendChild(ring); document.body.appendChild(dot);
+  let rx = 0, ry = 0, tx = 0, ty = 0, shown = false;
+  window.addEventListener('pointermove', (e) => {
+    tx = e.clientX; ty = e.clientY;
+    if (!shown) { shown = true; rx = tx; ry = ty; ring.classList.add('is-visible'); dot.classList.add('is-visible'); }
+    dot.style.transform = `translate(${tx}px,${ty}px) translate(-50%,-50%)`;
+  }, { passive: true });
+  document.addEventListener('mouseover', (e) => {
+    const el = e.target.closest && e.target.closest('a,button,.choice-card,.lang-card,.need-chip,input,select,textarea,.theme-toggle,.faq-q');
+    ring.classList.toggle('is-active', !!el);
+  });
+  document.documentElement.addEventListener('mouseleave', () => { ring.classList.remove('is-visible'); dot.classList.remove('is-visible'); });
+  function raf() {
+    const ease = reduceMotion ? 1 : 0.18;
+    rx += (tx - rx) * ease; ry += (ty - ry) * ease;
+    ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(raf);
+  }
+  raf();
 })();
 </script>
 <script>
@@ -1001,6 +1114,154 @@ const TRANSLATIONS = {
   window.addEventListener('pointerleave', () => { pointer.active = false; }, { passive: true });
   resize();
   if (!reduceMotion) loop(); else draw();
+})();
+</script>
+
+<button class="ai-fab" id="aiFab" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="aiPanel" aria-label="Open AM777 Assistant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+</button>
+<div class="ai-panel" id="aiPanel" role="dialog" aria-modal="false" aria-labelledby="aiPanelTitle">
+  <div class="ai-head">
+    <span class="dot" aria-hidden="true"></span>
+    <div><strong id="aiPanelTitle">AM777 Assistant</strong><span>Pricing · delivery · your system</span></div>
+    <button class="ai-close" id="aiClose" type="button" aria-label="Close assistant">✕</button>
+  </div>
+  <div class="ai-body" id="aiBody" aria-live="polite"></div>
+  <div class="ai-chips" id="aiChips"></div>
+  <form class="ai-input-row" id="aiForm">
+    <input id="aiInput" type="text" placeholder="Ask a question…" autocomplete="off" aria-label="Ask the AM777 Assistant a question" />
+    <button type="submit">→</button>
+  </form>
+  <div class="ai-foot">Powered by AM777 Automation Solutions</div>
+</div>
+<script>
+(() => {
+  function currentLang() { return (window.AM777_getLang && window.AM777_getLang()) || 'en'; }
+
+  const KB = [
+    { id: 'pricing', keywords: ['price', 'presyo', 'magkano', 'cost', 'pos'],
+      chip: { en: "What's the price?", tl: 'Magkano?' },
+      reply: { en: 'The Offline POS Starter is ₱9,777 one-time. Cloud / Online Access is ₱12,777/year (optional). Adding Cloud on a new POS is ₱22,554 for the first year, then ₱12,777/year after.',
+        tl: 'Ang Offline POS Starter ay ₱9,777 isang beses lang. Ang Cloud / Online Access ay ₱12,777/taon (opsyonal). Kung idadagdag ang Cloud sa bagong POS, ₱22,554 sa unang taon, tapos ₱12,777/taon.' } },
+    { id: 'delivery', keywords: ['delivery', 'ilang araw', 'how long', 'kailan'],
+      chip: { en: 'How long is delivery?', tl: 'Gaano katagal?' },
+      reply: { en: 'The Offline POS Starter typically takes 7–14 business days. Cloud setup takes 10–20 business days. Exact timing depends on scope and is confirmed after assessment.',
+        tl: 'Karaniwang 7–14 business days ang Offline POS Starter. 10–20 business days naman ang Cloud setup. Depende ito sa saklaw at kukumpirmahin pagkatapos ng assessment.' } },
+    { id: 'existing', keywords: ['existing', 'meron na', 'may pos na', 'palit', 'connect'],
+      chip: { en: 'I already have a POS', tl: 'May POS na ako' },
+      reply: { en: "You may not need to replace it — we can assess whether your existing system can be connected instead. Integration starts at ₱4,777, depending on what your current system supports.",
+        tl: 'Baka hindi mo na kailangan palitan — susuriin namin kung ma-cco-connect ang existing system mo. Nagsisimula sa ₱4,777 ang integration, depende sa suportado ng kasalukuyang sistema mo.' } },
+    { id: 'care', keywords: ['support', 'maintenance', 'care', 'ayos'],
+      chip: null,
+      reply: { en: 'AM777 Care is optional ongoing support (fixes, checks, small adjustments) starting at ₱777/month. New features or redesigns are quoted separately.',
+        tl: 'Opsyonal ang AM777 Care para sa ongoing support (ayos, checks, maliliit na adjustments), mula sa ₱777/buwan. Ang bagong features o redesign ay may hiwalay na quote.' } },
+    { id: 'contact', keywords: ['talk', 'quote', 'contact', 'kausap', 'assessment', 'human', 'tao'],
+      chip: { en: 'Talk to the team', tl: 'Makipag-usap sa team' },
+      lead: true,
+      reply: { en: 'Happy to connect you directly — leave your details below and the team will follow up.', tl: 'Sige, mag-iwan ka lang ng details sa baba at ma-fo-follow up ka ng team.' } }
+  ];
+
+  const fab = document.getElementById('aiFab');
+  const panel = document.getElementById('aiPanel');
+  const closeBtn = document.getElementById('aiClose');
+  const body = document.getElementById('aiBody');
+  const chipsWrap = document.getElementById('aiChips');
+  const form = document.getElementById('aiForm');
+  const input = document.getElementById('aiInput');
+  let open = false, seeded = false, leadShown = false;
+
+  function addMessage(role, text) {
+    const el = document.createElement('div');
+    el.className = 'ai-msg ' + role;
+    el.textContent = text;
+    body.appendChild(el);
+    body.scrollTop = body.scrollHeight;
+    return el;
+  }
+
+  function matchKB(text) {
+    const q = text.toLowerCase();
+    let best = null, bestScore = 0;
+    KB.forEach((entry) => {
+      let score = 0;
+      entry.keywords.forEach((k) => { if (q.includes(k)) score += k.length; });
+      if (score > bestScore) { bestScore = score; best = entry; }
+    });
+    return best;
+  }
+
+  function renderLeadForm() {
+    if (leadShown) return;
+    leadShown = true;
+    const lang = currentLang();
+    const wrap = document.createElement('div');
+    wrap.className = 'ai-lead';
+    const t = lang === 'tl'
+      ? { title: 'Mag-iwan ng details at ma-fo-follow up ka ng AM777 team.', name: 'Pangalan mo', contact: 'Phone / Messenger / WhatsApp', msg: 'Ano ang hinahanap mo?', send: 'Ipadala' }
+      : { title: 'Leave your details and the AM777 team will follow up.', name: 'Your name', contact: 'Phone / Messenger / WhatsApp', msg: 'What are you looking for?', send: 'Send' };
+    wrap.innerHTML = `<div class="ai-lead-title">${t.title}</div>
+      <input class="ai-lead-input" id="aiLeadName" type="text" placeholder="${t.name}" autocomplete="name" />
+      <input class="ai-lead-input" id="aiLeadContact" type="text" placeholder="${t.contact}" />
+      <textarea class="ai-lead-input ai-lead-textarea" id="aiLeadMsg" placeholder="${t.msg}"></textarea>
+      <button class="ai-lead-submit" type="button" id="aiLeadSubmit">${t.send}</button>`;
+    body.appendChild(wrap);
+    body.scrollTop = body.scrollHeight;
+    const title = wrap.querySelector('.ai-lead-title');
+    wrap.querySelector('#aiLeadSubmit').addEventListener('click', () => {
+      const name = wrap.querySelector('#aiLeadName').value.trim();
+      const contact = wrap.querySelector('#aiLeadContact').value.trim();
+      const msg = wrap.querySelector('#aiLeadMsg').value.trim();
+      if (!name) { title.textContent = lang === 'tl' ? 'Kailangan ang pangalan.' : 'Please add your name.'; return; }
+      const industry = window.AM777_currentIndustry ? window.AM777_currentIndustry() : null;
+      const needs = window.AM777_currentNeeds ? window.AM777_currentNeeds().join(', ') : '';
+      if (window.AM777_submitLead) window.AM777_submitLead({ source: 'Local Chat Assistant', fullName: name, contact, message: msg, industry, needs, lang });
+      const subject = 'AM777 Local Chat Inquiry — ' + name;
+      const mailBody = 'Name: ' + name + '\nContact: ' + contact + '\nIndustry: ' + (industry || '') + '\nNeeds: ' + needs + '\n\n' + (msg || '(no message)');
+      wrap.innerHTML = `<div class="ai-lead-title">${lang === 'tl' ? 'Salamat! Bubuksan na ang email app mo.' : 'Thanks! Opening your email app now.'}</div>`;
+      window.location.href = 'mailto:damazonbusiness111@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(mailBody);
+    });
+  }
+
+  function respond(text) {
+    addMessage('user', text);
+    input.value = '';
+    const typing = addMessage('bot', '…');
+    setTimeout(() => {
+      const match = matchKB(text);
+      const lang = currentLang();
+      typing.textContent = match ? match.reply[lang] || match.reply.en : (lang === 'tl'
+        ? 'Pwede kitang tulungan tungkol sa presyo, delivery, o pag-connect ng existing system. Magtanong ka lang.'
+        : 'I can help with pricing, delivery, or connecting your existing system — just ask.');
+      body.scrollTop = body.scrollHeight;
+      if (match && match.lead) renderLeadForm();
+    }, 380 + Math.random() * 240);
+  }
+
+  function seed() {
+    body.innerHTML = ''; chipsWrap.innerHTML = ''; leadShown = false; seeded = true;
+    const lang = currentLang();
+    addMessage('bot', lang === 'tl' ? 'Hi! Ako ang AM777 assistant. Tanungin mo ako tungkol sa presyo, delivery, o pag-connect ng existing system mo.' : "Hi! I'm the AM777 Assistant. Ask about pricing, delivery, or connecting your existing system.");
+    KB.filter((e) => e.chip).forEach((e) => {
+      const chip = document.createElement('button');
+      chip.type = 'button'; chip.className = 'ai-chip';
+      chip.textContent = e.chip[lang] || e.chip.en;
+      chip.addEventListener('click', () => respond(chip.textContent));
+      chipsWrap.appendChild(chip);
+    });
+  }
+  window.AM777_renderAIChat = () => { if (open || seeded) seed(); };
+
+  function setOpen(next) {
+    open = next;
+    panel.classList.toggle('is-open', open);
+    fab.setAttribute('aria-expanded', String(open));
+    if (open) { seed(); input.focus(); } else { fab.focus(); }
+  }
+
+  fab.addEventListener('click', () => setOpen(!open));
+  closeBtn.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) setOpen(false); });
+  form.addEventListener('submit', (e) => { e.preventDefault(); const val = input.value.trim(); if (val) respond(val); });
 })();
 </script>
 </body>
