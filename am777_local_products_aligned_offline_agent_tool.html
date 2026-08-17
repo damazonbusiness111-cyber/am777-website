@@ -754,9 +754,12 @@ function renderExisting(){
 
 function recommendCoreId(){
  if(state.needs.has('everything')||state.needs.has('branches'))return 'management';
+ const bizCore=INDUSTRIES[$('businessType').value]?.core||'workflow';
+ const bizCoreNeed=Object.keys(NEED_TO_PRODUCT).find(k=>NEED_TO_PRODUCT[k]===bizCore);
+ if(bizCoreNeed&&state.needs.has(bizCoreNeed))return bizCore;
  const priority=['sales','stocks','customers','employees','orders','booking','expenses','reports','automation','online'];
  for(const need of priority)if(state.needs.has(need)&&NEED_TO_PRODUCT[need])return NEED_TO_PRODUCT[need];
- return INDUSTRIES[$('businessType').value]?.core||'workflow';
+ return bizCore;
 }
 
 function syncCoreDefault(){
