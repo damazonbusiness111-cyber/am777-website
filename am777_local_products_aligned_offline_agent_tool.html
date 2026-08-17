@@ -466,21 +466,21 @@ const P = {
     limits:['Official API automation and third-party charges are separate'],
     customer:'Make it easier for customers to reach the business from the system.',
     upgrades:['Automated notifications','AI customer assistant']},
-  loyalty:{id:'loyalty',name:'Loyalty / Points System',category:'Website & Customer',price:4777,billing:'Starting',delivery:[5,10],industries:['retail','restaurant','salon'],
+  loyalty:{id:'loyalty',name:'Loyalty / Points System',category:'Website & Customer',price:4777,billing:'Starting',delivery:[5,10],industries:['retail','restaurant','salon'],pairsWith:'pos',
     solves:'Tracks approved customer rewards or points.',
     inclusions:['Customer loyalty record','Points/reward basics'],
     best:['Retail','Restaurant / café','Salon / wellness'],
     limits:['Complex membership tiers and external loyalty integrations are separate'],
     customer:'Reward repeat customers with a simple loyalty system.',
     upgrades:['CRM','Customer portal']},
-  delivery:{id:'delivery',name:'Delivery / Order Tracking',category:'Website & Customer',price:7777,billing:'Starting',delivery:[7,14],industries:['restaurant','ecommerce','wholesale','logistics'],
+  delivery:{id:'delivery',name:'Delivery / Order Tracking',category:'Website & Customer',price:7777,billing:'Starting',delivery:[7,14],industries:['restaurant','ecommerce','wholesale','logistics'],requires:'ordering',
     solves:'Tracks order/delivery status inside an approved business workflow.',
     inclusions:['Order/delivery status','Basic tracking workflow','Internal visibility'],
     best:['Food delivery','E-commerce','Distribution','Logistics'],
     limits:['GPS, third-party courier APIs, or live maps may require separate assessment'],
     customer:'Track where an order is in the delivery process.',
     upgrades:['Notifications','Platform integration']},
-  inventory:{id:'inventory',name:'Advanced Inventory / Expiry',category:'Inventory & Purchasing',price:3777,billing:'Starting',delivery:[4,8],industries:['retail','pharmacy','wholesale','restaurant'],
+  inventory:{id:'inventory',name:'Advanced Inventory / Expiry',category:'Inventory & Purchasing',price:3777,billing:'Starting',delivery:[4,8],industries:['retail','pharmacy','wholesale','restaurant'],pairsWith:'pos',
     solves:'Adds deeper stock visibility beyond basic POS inventory.',
     inclusions:['Expiry monitoring','Low-stock awareness','Stock movement visibility','Advanced stock fields'],
     best:['Grocery / mini mart','Pharmacy','Wholesale','Food businesses'],
@@ -494,7 +494,7 @@ const P = {
     limits:['Full accounting/compliance is separate'],
     customer:'See what money came in, what went out, and where it was spent.',
     upgrades:['Financial dashboard']},
-  purchasing:{id:'purchasing',name:'Supplier & Purchasing',category:'Inventory & Purchasing',price:4777,billing:'Starting',delivery:[5,10],industries:['retail','restaurant','wholesale','manufacturing','construction'],
+  purchasing:{id:'purchasing',name:'Supplier & Purchasing',category:'Inventory & Purchasing',price:4777,billing:'Starting',delivery:[5,10],industries:['retail','restaurant','wholesale','manufacturing','construction'],requires:'inventory',
     solves:'Tracks suppliers, purchases, deliveries, and stock-in activity.',
     inclusions:['Supplier records','Purchasing records','Receiving / stock-in workflow'],
     best:['Retail','Restaurant','Wholesale','Manufacturing','Construction'],
@@ -508,14 +508,14 @@ const P = {
     limits:['Payroll and full HR are separate'],
     customer:'Track employee attendance in one system.',
     upgrades:['HR Management','Payroll']},
-  hr:{id:'hr',name:'HR Management',category:'Staff & HR',price:9777,billing:'Starting',delivery:[10,20],industries:['retail','restaurant','construction','manufacturing','hotel','services'],
+  hr:{id:'hr',name:'HR Management',category:'Staff & HR',price:9777,billing:'Starting',delivery:[10,20],industries:['retail','restaurant','construction','manufacturing','hotel','services'],requires:'attendance',
     solves:'Organizes employee information and basic HR workflows.',
     inclusions:['Employee profiles','HR records','Basic schedule/attendance connections','Access controls as scoped'],
     best:['Growing SMEs with multiple employees'],
     limits:['Payroll and regulated compliance claims require separate scope/validation'],
     customer:'Keep employee records and HR information organized.',
     upgrades:['Payroll','Employee portal']},
-  payroll:{id:'payroll',name:'Payroll Module',category:'Staff & HR',price:9777,billing:'Starting',delivery:[15,30],industries:['retail','restaurant','construction','manufacturing','hotel','services'],assessment:true,
+  payroll:{id:'payroll',name:'Payroll Module',category:'Staff & HR',price:9777,billing:'Starting',delivery:[15,30],industries:['retail','restaurant','construction','manufacturing','hotel','services'],assessment:true,requires:'hr',
     solves:'Reduces manual payroll record handling and computation workflow.',
     inclusions:['Payroll records','Employee/payroll data connection','Attendance input connection where scoped'],
     best:['Businesses ready to digitize payroll workflow'],
@@ -529,28 +529,28 @@ const P = {
     limits:['This is a product module; the offline agent tool itself is not a CRM'],
     customer:'Keep customers and follow-ups organized in one place.',
     upgrades:['Automated follow-up','Inquiry integration']},
-  followup:{id:'followup',name:'Sales Follow-up System',category:'Sales & CRM',price:7777,billing:'Starting',delivery:[5,10],industries:['services','realestate','automotive','wholesale','construction'],
+  followup:{id:'followup',name:'Sales Follow-up System',category:'Sales & CRM',price:7777,billing:'Starting',delivery:[5,10],industries:['services','realestate','automotive','wholesale','construction'],requires:'crm',
     solves:'Makes follow-up responsibilities and statuses visible.',
     inclusions:['Follow-up records','Status / due tracking','Customer connection'],
     best:['Businesses with recurring inquiries and quotations'],
     limits:['Messaging automation is separate'],
     customer:'Know who needs a follow-up and what happens next.',
     upgrades:['Automated follow-up','CRM']},
-  warehouse:{id:'warehouse',name:'Warehouse Management',category:'Inventory & Purchasing',price:12777,billing:'Starting',delivery:[15,30],industries:['wholesale','manufacturing','retail'],assessment:true,
+  warehouse:{id:'warehouse',name:'Warehouse Management',category:'Inventory & Purchasing',price:12777,billing:'Starting',delivery:[15,30],industries:['wholesale','manufacturing','retail'],assessment:true,requires:'inventory',
     solves:'Adds deeper inventory control for warehouse-heavy operations.',
     inclusions:['Warehouse stock visibility','Receiving / movement workflow','Purchasing connection as scoped'],
     best:['Wholesale','Distribution','Manufacturing'],
     limits:['Multiple warehouses / branches require assessment'],
     customer:'Manage larger stock operations beyond a basic store inventory.',
     upgrades:['Multi-branch business system']},
-  finance:{id:'finance',name:'Financial Dashboard',category:'Finance & Reporting',price:9777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','construction','wholesale','services'],
+  finance:{id:'finance',name:'Financial Dashboard',category:'Finance & Reporting',price:9777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','construction','wholesale','services'],requires:'cash',
     solves:'Summarizes approved sales, expense, and business figures into a management view.',
     inclusions:['Dashboard','Selected financial summaries','Date filters / reports as scoped'],
     best:['Owners who need faster visibility into operations'],
     limits:['Not a replacement for regulated accounting unless specifically scoped'],
     customer:'See important business numbers in one management view.',
     upgrades:['Advanced analytics']},
-  analytics:{id:'analytics',name:'Advanced Analytics',category:'Finance & Reporting',price:7777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','wholesale','manufacturing','services'],
+  analytics:{id:'analytics',name:'Advanced Analytics',category:'Finance & Reporting',price:7777,billing:'Starting',delivery:[7,14],industries:['retail','restaurant','wholesale','manufacturing','services'],requires:'finance',
     solves:'Provides deeper reporting and trend visibility using available business data.',
     inclusions:['Custom business metrics','Trend reports','Selected charts / comparisons'],
     best:['Businesses with enough reliable data to analyze'],
@@ -564,7 +564,7 @@ const P = {
     limits:['Third-party messaging/API fees are separate'],
     customer:'Get automatic alerts when important business events happen.',
     upgrades:['Workflow automation']},
-  autoFollow:{id:'autoFollow',name:'Automated Follow-up',category:'Automation & AI',price:4777,billing:'Starting',delivery:[3,7],industries:['services','realestate','clinic','automotive'],
+  autoFollow:{id:'autoFollow',name:'Automated Follow-up',category:'Automation & AI',price:4777,billing:'Starting',delivery:[3,7],industries:['services','realestate','clinic','automotive'],pairsWith:'crm',
     solves:'Reduces missed follow-ups by triggering an approved reminder or communication workflow.',
     inclusions:['Follow-up trigger','Customer/status connection','Approved notification/message path'],
     best:['Service sales','Real estate','Bookings','Repair/service'],
@@ -585,7 +585,7 @@ const P = {
     limits:['Requires supported access/API/export','Third-party fees are separate'],
     customer:'Connect a supported platform to the system after compatibility is checked.',
     upgrades:['Multi-platform integration']},
-  ai:{id:'ai',name:'AI Customer Assistant',category:'Automation & AI',price:7777,billing:'Starting',delivery:[7,14],industries:['services','clinic','realestate','retail','restaurant'],assessment:true,
+  ai:{id:'ai',name:'AI Customer Assistant',category:'Automation & AI',price:7777,billing:'Starting',delivery:[7,14],industries:['services','clinic','realestate','retail','restaurant'],assessment:true,pairsWith:'messaging',
     solves:'Handles approved repetitive customer questions or routing using business-specific knowledge.',
     inclusions:['Business knowledge setup','Approved FAQ/inquiry handling','Escalation/routing as scoped'],
     best:['Businesses with repeated customer questions'],
@@ -771,6 +771,19 @@ function syncCoreDefault(){
  else state.coreIncluded=false;
 }
 
+function isProductInQuote(id){
+ if(state.coreIncluded&&(state.coreId||recommendCoreId())===id)return true;
+ return state.addons.has(id);
+}
+function toggleAddon(id){
+ if(state.addons.has(id)){state.addons.delete(id);return;}
+ const req=P[id].requires;
+ if(req&&P[req]&&!isProductInQuote(req)){
+   const ok=confirm(`${P[id].name} typically requires ${P[req].name}, which isn't in this quote yet.\n\nAdd ${P[id].name} anyway?`);
+   if(!ok)return;
+ }
+ state.addons.add(id);
+}
 function recommendedIds(){
  const base=INDUSTRIES[$('businessType').value]?.products||[];
  return [...new Set([state.coreId||recommendCoreId(),...base])].filter(id=>ADDON_IDS.includes(id));
@@ -779,11 +792,12 @@ function renderAddons(){
  const rec=new Set(recommendedIds());let ids=state.showAll?ADDON_IDS:recommendedIds();
  $('addonModeText').textContent=state.showAll?'Showing all approved systems':'Showing recommended systems';
  $('toggleAllAddons').textContent=state.showAll?'Show recommended only':'Show all systems';
- $('addonGrid').innerHTML=ids.map(id=>{const p=P[id];return `<div class="addon ${rec.has(id)?'recommended':''} ${state.addons.has(id)?'selected':''}">
+ $('addonGrid').innerHTML=ids.map(id=>{const p=P[id];const missingReq=p.requires&&!isProductInQuote(p.requires);return `<div class="addon ${rec.has(id)?'recommended':''} ${state.addons.has(id)?'selected':''}">
   <div class="addon-top"><div><strong>${p.name}</strong><br><small>${p.category}${rec.has(id)?' · Recommended':''}</small></div><strong>${peso(p.price)}+</strong></div>
+  ${missingReq?`<div class="mini" style="color:var(--amber);margin-top:6px">Requires ${P[p.requires].name} (not in quote yet)</div>`:''}
   <div class="addon-actions"><button data-detail="${id}">Details</button><button data-add="${id}">${state.addons.has(id)?'Remove':'Add'}</button></div></div>`}).join('');
  document.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>openDetails(b.dataset.detail));
- document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const id=b.dataset.add;if(state.addons.has(id))state.addons.delete(id);else state.addons.add(id);renderAddons();render();});
+ document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{toggleAddon(b.dataset.add);renderAddons();render();});
 }
 
 /* Cheapest valid bundle combination covering `extra` additional staff/users beyond the
@@ -1031,14 +1045,14 @@ function renderCatalog(){
    const groups=CATEGORY_ORDER.filter(c=>matches.some(id=>P[id].category===c));
    $('catalogGrid').innerHTML=groups.map(c=>`<div class="catalog-section"><h3 class="catalog-section-title">${c}</h3><div class="catalog">${matches.filter(id=>P[id].category===c).map(cardHtml).join('')}</div></div>`).join('');
  }
- document.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>openDetails(b.dataset.detail));document.querySelectorAll('[data-add-catalog]').forEach(b=>{if(!b.disabled)b.onclick=()=>{const id=b.dataset.addCatalog;if(state.addons.has(id))state.addons.delete(id);else state.addons.add(id);renderCatalog();renderAddons();render();};});}
+ document.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>openDetails(b.dataset.detail));document.querySelectorAll('[data-add-catalog]').forEach(b=>{if(!b.disabled)b.onclick=()=>{toggleAddon(b.dataset.addCatalog);renderCatalog();renderAddons();render();};});}
 
 function openDetails(id){const p=P[id];$('modalCategory').textContent=p.category;$('modalTitle').textContent=p.name;
  const list=a=>`<ul class="detail-list">${(a||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`;
  const modalPrice=p.price==null?'Request Assessment':`${peso(p.price)}${p.billing.includes('Starting')||p.assessment?'+':''}`;
  const deliveryLabel=p.delivery?`${p.delivery[0]}–${p.delivery[1]} business days`:'Delivery after assessment';
  $('modalBody').innerHTML=`<div class="detail-grid">
- <div class="detail-block"><h3>Price & Billing</h3><div class="detail-price">${modalPrice}</div><div class="pillrow"><span class="pill">${p.billing}</span><span class="pill">${deliveryLabel}</span>${p.assessment?'<span class="pill">Assessment required</span>':''}</div></div>
+ <div class="detail-block"><h3>Price & Billing</h3><div class="detail-price">${modalPrice}</div><div class="pillrow"><span class="pill">${p.billing}</span><span class="pill">${deliveryLabel}</span>${p.assessment?'<span class="pill">Assessment required</span>':''}${p.requires?`<span class="pill">Requires: ${P[p.requires]?.name||p.requires}</span>`:''}${p.pairsWith?`<span class="pill">Pairs with: ${P[p.pairsWith]?.name||p.pairsWith}</span>`:''}</div></div>
  <div class="detail-block"><h3>What it solves</h3><p>${p.solves}</p></div>
  <div class="detail-block full"><h3>What to Expect</h3><p>Before the final build, AM777 shares a reference/demo version of this system so the customer can review the layout, flow, and features first. The final version is completed and delivered within the estimated timeframe above only after that reference is reviewed and approved.</p></div>
  <div class="detail-block full"><h3>Included</h3>${list(p.inclusions)}</div>
