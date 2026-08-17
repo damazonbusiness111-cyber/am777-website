@@ -758,7 +758,13 @@ function recommendCoreId(){
  const bizCoreNeed=Object.keys(NEED_TO_PRODUCT).find(k=>NEED_TO_PRODUCT[k]===bizCore);
  if(bizCoreNeed&&state.needs.has(bizCoreNeed))return bizCore;
  const priority=['sales','stocks','customers','employees','orders','booking','expenses','reports','automation','online'];
- for(const need of priority)if(state.needs.has(need)&&NEED_TO_PRODUCT[need])return NEED_TO_PRODUCT[need];
+ for(const need of priority){
+   if(!state.needs.has(need))continue;
+   const product=NEED_TO_PRODUCT[need];
+   if(!product)continue;
+   if(need==='sales'&&bizCore!=='pos')continue;
+   return product;
+ }
  return bizCore;
 }
 
