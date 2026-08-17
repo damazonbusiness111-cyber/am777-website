@@ -817,9 +817,15 @@ function syncCoreDefault(){
  else state.coreIncluded=false;
 }
 
+const EXISTING_SYSTEM_TO_PRODUCT={pos:'pos',booking:'booking',inventory:'inventory',crm:'crm',hr:'hr',accounting:'cash',ordering:'ordering',website:'landing'};
+function existingSystemCovers(id){
+ if(!['am777','thirdparty','multiple'].includes($('currentSetup').value))return false;
+ return EXISTING_SYSTEM_TO_PRODUCT[$('currentSystemType').value]===id;
+}
 function isProductInQuote(id){
  if(state.coreIncluded&&(state.coreId||recommendCoreId())===id)return true;
- return state.addons.has(id);
+ if(state.addons.has(id))return true;
+ return existingSystemCovers(id);
 }
 function unmetRequirements(p){
  const missing=[];
@@ -833,6 +839,10 @@ function toggleAddon(id){
  if(missing.length){
    alert(`${p.name} requires ${missing.join(' and ')}, which isn't in this quote yet. Add ${missing.join(' and ')} first, then ${p.name} can be added.`);
    return;
+ }
+ if(p.requires&&existingSystemCovers(p.requires)&&!state.addons.has(p.requires)&&!(state.coreIncluded&&state.coreId===p.requires)){
+   const proceed=confirm(`${p.name} requires ${P[p.requires].name}. The customer's existing system may already cover this — if they want it properly connected rather than replaced, add an Existing System Integration product instead of (or alongside) this.\n\nAdd ${p.name} to the quote now?`);
+   if(!proceed)return;
  }
  state.addons.add(id);
 }
